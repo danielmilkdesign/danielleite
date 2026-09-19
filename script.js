@@ -25,34 +25,44 @@ function initTimelineScroll() {
     const section = document.getElementById('experience');
     if (!container || !section) return;
 
+    // Remove existing ScrollTriggers for this section if any
     if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
         gsap.registerPlugin(ScrollTrigger);
-
-        const cards = gsap.utils.toArray('.timeline-card');
-        if (!cards.length) return;
 
         ScrollTrigger.getAll().forEach(st => {
             if (st.vars && st.vars.trigger === section) st.kill();
         });
 
-        const getScrollAmount = () => {
-            const containerWidth = container.scrollWidth;
-            const windowWidth = window.innerWidth;
-            const extraPadding = windowWidth < 768 ? 60 : 250;
-            return Math.max(0, containerWidth - windowWidth + extraPadding);
-        };
+        // Use ScrollTrigger matchMedia to separate Desktop pin from Mobile native scroll
+        ScrollTrigger.matchMedia({
+            // Desktop (>= 768px): Smooth GSAP Pinning
+            "(min-width: 768px)": function() {
+                const getScrollAmount = () => {
+                    return Math.max(0, container.scrollWidth - window.innerWidth + 120);
+                };
 
-        gsap.to(container, {
-            x: () => -getScrollAmount(),
-            ease: "none",
-            scrollTrigger: {
-                trigger: section,
-                pin: true,
-                scrub: 0.8,
-                start: "top top",
-                end: () => "+=" + (getScrollAmount() + 400),
-                invalidateOnRefresh: true,
-                anticipatePin: 1
+                const tween = gsap.to(container, {
+                    x: () => -getScrollAmount(),
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: section,
+                        pin: true,
+                        scrub: 1,
+                        start: "top top",
+                        end: () => "+=" + (container.scrollWidth - window.innerWidth + 300),
+                        invalidateOnRefresh: true,
+                        anticipatePin: 1
+                    }
+                });
+
+                return () => {
+                    tween.kill();
+                    gsap.set(container, { clearProps: "transform,x" });
+                };
+            },
+            // Mobile (< 768px): Reset inline transform so CSS native overflow works cleanly
+            "(max-width: 767px)": function() {
+                gsap.set(container, { clearProps: "transform,x" });
             }
         });
     }
@@ -60,21 +70,27 @@ function initTimelineScroll() {
     // Touch & Wheel Fallback listener for seamless horizontal navigation
     let startX = 0;
     let scrollLeft = 0;
+    let isDown = false;
 
-    container.addEventListener('touchstart', (e) => {
-        startX = e.touches[0].pageX - container.offsetLeft;
+    container.addEventListener('mousedown', (e) => {
+        isDown = true;
+        startX = e.pageX - container.offsetLeft;
         scrollLeft = container.scrollLeft;
-    }, { passive: true });
+    });
 
-    container.addEventListener('touchmove', (e) => {
-        if (!startX) return;
-        const x = e.touches[0].pageX - container.offsetLeft;
-        const walk = (x - startX) * 1.5;
+    container.addEventListener('mouseleave', () => { isDown = false; });
+    container.addEventListener('mouseup', () => { isDown = false; });
+
+    container.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - container.offsetLeft;
+        const walk = (x - startX) * 2;
         container.scrollLeft = scrollLeft - walk;
-    }, { passive: true });
+    });
 
     container.addEventListener('wheel', (e) => {
-        if (e.deltaY !== 0 && Math.abs(e.deltaX) < Math.abs(e.deltaY)) {
+        if (window.innerWidth < 768 && e.deltaY !== 0 && Math.abs(e.deltaX) < Math.abs(e.deltaY)) {
             const maxScrollLeft = container.scrollWidth - container.clientWidth;
             if ((container.scrollLeft < maxScrollLeft && e.deltaY > 0) || (container.scrollLeft > 0 && e.deltaY < 0)) {
                 container.scrollLeft += e.deltaY;

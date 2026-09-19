@@ -342,6 +342,24 @@ p {
 }
 
 /* Timeline Horizontal Scroll */
+.timeline-scroll-wrapper {
+  overflow-x: auto !important;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+@media (min-width: 768px) {
+  .timeline-scroll-wrapper {
+    overflow-x: visible !important;
+    scroll-snap-type: none !important;
+  }
+}
+
+.timeline-card {
+  scroll-snap-align: center;
+}
+
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
