@@ -31,7 +31,6 @@ function initTimelineScroll() {
         const cards = gsap.utils.toArray('.timeline-card');
         if (!cards.length) return;
 
-        // Limpa instâncias antigas se houver
         ScrollTrigger.getAll().forEach(st => {
             if (st.vars && st.vars.trigger === section) st.kill();
         });
@@ -39,8 +38,7 @@ function initTimelineScroll() {
         const getScrollAmount = () => {
             const containerWidth = container.scrollWidth;
             const windowWidth = window.innerWidth;
-            // Garante margem de respiro suficiente para que o último card fique 100% visível na tela antes de soltar a trava de pin
-            const extraPadding = windowWidth < 768 ? 40 : 250;
+            const extraPadding = windowWidth < 768 ? 60 : 250;
             return Math.max(0, containerWidth - windowWidth + extraPadding);
         };
 
@@ -50,24 +48,39 @@ function initTimelineScroll() {
             scrollTrigger: {
                 trigger: section,
                 pin: true,
-                scrub: 0.6,
+                scrub: 0.8,
                 start: "top top",
-                end: () => "+=" + (getScrollAmount() + 500),
+                end: () => "+=" + (getScrollAmount() + 400),
                 invalidateOnRefresh: true,
                 anticipatePin: 1
             }
         });
-    } else {
-        container.addEventListener('wheel', (e) => {
-            if (e.deltaY !== 0) {
-                const maxScrollLeft = container.scrollWidth - container.clientWidth;
-                if ((container.scrollLeft < maxScrollLeft && e.deltaY > 0) || (container.scrollLeft > 0 && e.deltaY < 0)) {
-                    e.preventDefault();
-                    container.scrollLeft += e.deltaY;
-                }
-            }
-        }, { passive: false });
     }
+
+    // Touch & Wheel Fallback listener for seamless horizontal navigation
+    let startX = 0;
+    let scrollLeft = 0;
+
+    container.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].pageX - container.offsetLeft;
+        scrollLeft = container.scrollLeft;
+    }, { passive: true });
+
+    container.addEventListener('touchmove', (e) => {
+        if (!startX) return;
+        const x = e.touches[0].pageX - container.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        container.scrollLeft = scrollLeft - walk;
+    }, { passive: true });
+
+    container.addEventListener('wheel', (e) => {
+        if (e.deltaY !== 0 && Math.abs(e.deltaX) < Math.abs(e.deltaY)) {
+            const maxScrollLeft = container.scrollWidth - container.clientWidth;
+            if ((container.scrollLeft < maxScrollLeft && e.deltaY > 0) || (container.scrollLeft > 0 && e.deltaY < 0)) {
+                container.scrollLeft += e.deltaY;
+            }
+        }
+    }, { passive: true });
 }
 
 /* --------------------------------------------------------
