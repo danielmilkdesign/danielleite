@@ -1,93 +1,821 @@
-<!doctype html>
-<html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Daniel Leite - Design Engineer | Senior Product Designer</title>
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daniel Leite — Design Engineer | Senior Product Designer</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon-dl.svg">
+    <link rel="shortcut icon" href="favicon-dl.svg">
 
-    <!-- SEO -->
-    <meta name="description" content="Daniel Leite - Design Engineer & Senior Product Designer. Especialista em UX Strategy, Product Design e IA. Portfólio com cases em aviação, recrutamento tech, IoT e AI." />
-    <meta name="keywords" content="UX Design, Product Design, UI Design, Design Engineer, Senior Designer, AI Design, React Developer Portfolio" />
-    <meta name="author" content="Daniel Leite" />
-    <link rel="canonical" href="https://danielmilkdesign.github.io/danielleitedesign/" />
-
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Daniel Leite - Design Engineer | Senior Product Designer" />
-    <meta property="og:description" content="Portfólio de design focado em resolver problemas complexos através de UX Strategy, Product Design e Inteligência Artificial." />
-    <meta property="og:url" content="https://danielmilkdesign.github.io/danielleitedesign/" />
-    <meta property="og:image" content="https://danielmilkdesign.github.io/danielleitedesign/CAPA%20RECRUITER.png" />
-    <meta property="og:locale" content="pt_BR" />
-    <meta property="og:locale:alternate" content="en_US" />
-    <meta property="og:locale:alternate" content="es_ES" />
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Daniel Leite - Design Engineer | Senior Product Designer" />
-    <meta name="twitter:description" content="Portfólio de design focado em resolver problemas complexos através de UX Strategy, Product Design e IA." />
-    <meta name="twitter:image" content="https://danielmilkdesign.github.io/danielleitedesign/CAPA%20RECRUITER.png" />
-
-    <!-- Preconnect to external resources -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://www.googletagmanager.com" />
-
-    <!-- Google Analytics (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VWS7D61TCP"></script>
+    <!-- Meta Tags -->
+    <meta name="description" content="Portfólio de Daniel Leite — Senior Product Designer & Design Engineer. Moldando o futuro com UX, estratégia e IA.">
+    <meta name="keywords" content="Design Engineer, Senior Product Designer, UX Strategy, UI Design, Motion Design, GSAP, React, AI">
+    <meta name="author" content="Daniel Leite">
+    <meta property="og:title" content="Daniel Leite — Design Engineer | Senior Product Designer">
+    <meta property="og:description" content="Portfólio de Daniel Leite — Senior Product Designer & Design Engineer. Moldando o futuro com UX, estratégia e IA.">
+    <meta property="og:type" content="website">
+    
+    <!-- Resource Hints & Preconnects -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-VWS7D61TCP', {
-        page_title: document.title,
-        page_path: location.pathname + location.hash,
-        send_page_view: true
-      });
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        heading: ['"Space Grotesk"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                            glow: '#0ea5e9',
+                        },
+                        dark: {
+                            bg: '#000000',
+                            card: '#1E293B',
+                            border: '#334155',
+                            surface: '#1E293B'
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
     </script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <noscript>
-      <link rel="stylesheet" href="./noscript.css" />
-      <div class="container">
-        <div class="badge">DESIGN ENGINEER | SENIOR PRODUCT DESIGNER</div>
-        <h1>Daniel Leite</h1>
-        <p>Apaixonado por construir experiências digitais que realmente impactam a vida das pessoas.</p>
 
-        <h2>Sobre</h2>
-        <p>Trabalho na interseção entre UX, Estratégia e IA, transformando problemas complexos em produtos digitais simples, úteis e bem pensados.</p>
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.9/dist/lenis.css">
 
-        <h2>Projetos</h2>
-        <div class="project">
-          <strong>Abismo</strong> — App de recrutamento tech com IA, eliminando o gap de comunicação entre recrutadores e candidatos de TI.
+    <!-- GSAP & Plugins -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-dark-bg text-slate-100 selection:bg-brand-500 selection:text-white font-sans antialiased overflow-x-hidden bg-noise">
+
+    <!-- Interactive Follower Cursor -->
+    <div id="cursor-dot" class="fixed top-0 left-0 w-3 h-3 bg-brand-400 rounded-full pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2 transition-transform duration-100 ease-out hidden lg:block"></div>
+    <div id="cursor-ring" class="fixed top-0 left-0 w-10 h-10 border border-brand-400/40 rounded-full pointer-events-none z-[9998] -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ease-out hidden lg:block"></div>
+
+    <!-- Ambient Grid Canvas -->
+    <canvas id="bg-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
+    
+    <!-- Ambient Background Glows -->
+    <div class="fixed top-[-10%] left-[-10%] w-[500px] h-[500px] bg-brand-600/10 rounded-full blur-[60px] pointer-events-none z-0 animate-pulse-slow"></div>
+    <div class="fixed bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-[60px] pointer-events-none z-0 animate-pulse-slow" style="animation-delay: 2s;"></div>
+
+    <!-- Scroll Progress Indicator -->
+    <div id="scroll-progress" class="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-brand-500 via-cyan-400 to-indigo-500 z-[100] w-0"></div>
+
+    <!-- Header Navigation (Trava Direta para Mobile) -->
+    <header id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 p-2 sm:py-5 sm:px-6 lg:px-12">
+        <div id="navbar-inner" style="width: 100% !important; max-width: 100% !important; margin: 0 auto !important;" class="w-full lg:max-w-7xl mx-auto flex items-center justify-between bg-dark-card/70 backdrop-blur-xl border border-white/10 rounded-full px-4 sm:px-6 py-2 sm:py-3 shadow-2xl shadow-black/50 transition-all">
+            <!-- Brand Logo -->
+            <a href="#hero" class="group flex items-center gap-3 shrink-0">
+                <img src="LOGO-DL.svg" alt="Daniel Leite Logo" class="h-5 sm:h-9 w-auto group-hover:scale-105 transition-transform">
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+                <a href="#about" class="hover:text-brand-400 transition-colors relative py-1">Sobre</a>
+                <a href="#portfolio" class="hover:text-brand-400 transition-colors relative py-1">Portfólio</a>
+                <a href="#skills" class="hover:text-brand-400 transition-colors relative py-1">Especialidades</a>
+                <a href="#process" class="hover:text-brand-400 transition-colors relative py-1">Processo</a>
+                <a href="#contact" class="hover:text-brand-400 transition-colors relative py-1">Contato</a>
+            </nav>
+
+            <!-- CTA & Mobile Trigger -->
+            <div class="flex items-center gap-2 shrink-0">
+                <a href="#contact" class="hidden md:inline-flex edge-glow-btn-sm group">
+                    <span class="edge-glow-inner">
+                        <span>Fale Comigo</span>
+                        <i data-lucide="arrow-up-right" class="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"></i>
+                    </span>
+                </a>
+
+                <!-- Mobile Menu Trigger -->
+                <button id="mobile-menu-btn" class="flex md:hidden items-center justify-center p-1.5 text-slate-300 hover:text-white rounded-lg focus:outline-none" aria-label="Abrir Menu">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
         </div>
-        <div class="project">
-          <strong>Pet Plant</strong> — Ecossistema IoT B2C para monitoramento inteligente de pets e plantas, com curadoria botânica integrada.
-        </div>
-        <div class="project">
-          <strong>Diário de Bordo Aeronáutico (Hóruz)</strong> — Digitalização de logbook aéreo conforme ANAC, com Green UX e métricas de carbono.
-        </div>
-        <div class="project">
-          <strong>AI Lab</strong> — Laboratório experimental de interfaces generativas e IA nativa em ferramentas de produtividade.
+    </header>
+
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 bg-dark-bg/95 backdrop-blur-2xl z-[100] flex flex-col justify-between p-6 sm:p-8 translate-x-full transition-transform duration-300 ease-in-out md:hidden">
+        <!-- Top Bar with Header title & Close icon -->
+        <div class="flex items-center justify-between border-b border-white/10 pb-5">
+            <div class="flex items-center gap-3">
+                <img src="LOGO-DL.svg" alt="Daniel Leite Logo" class="h-6 sm:h-8 w-auto">
+                <span class="text-lg font-heading font-bold text-white tracking-wide">Menu</span>
+            </div>
+            <button id="close-menu-btn" class="p-2.5 text-slate-300 hover:text-white rounded-full bg-white/5 border border-white/10 transition-colors focus:outline-none" aria-label="Fechar Menu">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
         </div>
 
-        <h2>Skills</h2>
-        <div class="skills">
-          <span>UX Strategy</span><span>Product Design</span>
-          <span>UI Design</span><span>AI Integration</span>
-          <span>Design System</span><span>Prototipagem</span>
-          <span>User Research</span><span>Design Thinking</span>
+        <!-- Central Nav Links -->
+        <div class="py-8 flex flex-col justify-between flex-1 overflow-y-auto">
+            <nav class="flex flex-col items-center justify-center gap-6 my-auto text-center">
+                <a href="#about" class="mobile-nav-link text-2xl font-heading font-semibold text-slate-200 hover:text-brand-400 transition-colors py-2">Sobre</a>
+                <a href="#portfolio" class="mobile-nav-link text-2xl font-heading font-semibold text-slate-200 hover:text-brand-400 transition-colors py-2">Portfólio</a>
+                <a href="#skills" class="mobile-nav-link text-2xl font-heading font-semibold text-slate-200 hover:text-brand-400 transition-colors py-2">Especialidades</a>
+                <a href="#process" class="mobile-nav-link text-2xl font-heading font-semibold text-slate-200 hover:text-brand-400 transition-colors py-2">Processo</a>
+                <a href="#contact" class="mobile-nav-link text-2xl font-heading font-semibold text-slate-200 hover:text-brand-400 transition-colors py-2">Contato</a>
+            </nav>
+
+            <!-- Bottom Action CTA -->
+            <div class="pt-6 border-t border-white/10 flex justify-center w-full">
+                <a href="#contact" class="mobile-nav-link edge-glow-btn group w-full text-center">
+                    <span class="edge-glow-inner flex items-center justify-center gap-2 py-3.5 text-base font-semibold">
+                        <span>Fale Comigo</span>
+                        <i data-lucide="arrow-up-right" class="w-5 h-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"></i>
+                    </span>
+                </a>
+            </div>
         </div>
 
-        <div class="contact">
-          <h2>Contato</h2>
-          <p>E-mail: <a href="mailto:danielleitedesign@gmail.com">danielleitedesign@gmail.com</a></p>
-          <p>LinkedIn: <a href="https://www.linkedin.com/in/daniel-rodrigo-leite/">linkedin.com/in/daniel-rodrigo-leite</a></p>
-          <p>WhatsApp: <a href="https://api.whatsapp.com/send/?phone=5592992552746">(92) 99255-2746</a></p>
+        <!-- Footer Info -->
+        <div class="pt-4 border-t border-white/5 text-xs text-slate-500 text-center">
+            <span>Daniel Leite &copy; 2026 — Design Engineer</span>
         </div>
-      </div>
-    </noscript>
-    <script type="module" src="./src/main.tsx"></script>
-  </body>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="relative z-10">
+
+        <!-- HERO SECTION -->
+        <section id="hero" class="hero-section min-h-[85vh] sm:min-h-screen pt-24 sm:pt-32 lg:pt-36 pb-12 sm:pb-20 px-6 lg:px-12 flex flex-col justify-center relative overflow-hidden">
+            <!-- Hero Video Background -->
+            <div class="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
+                <video autoplay loop muted playsinline preload="auto" class="w-full h-full object-cover opacity-35">
+                    <source src="hero-bg.mp4" type="video/mp4">
+                </video>
+                <div class="absolute inset-0 bg-gradient-to-b from-dark-bg/80 via-dark-bg/60 to-dark-bg"></div>
+            </div>
+
+            <div class="max-w-5xl mx-auto w-full text-center space-y-8 relative z-10">
+                
+                <!-- Status Badge -->
+                <div class="hero-reveal hidden-temporarily inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md text-xs font-semibold text-brand-300 uppercase tracking-widest mx-auto">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    Design Engineer | Senior Product Designer
+                </div>
+
+                <!-- Main Headline -->
+                <h1 class="hero-title font-heading font-extrabold tracking-tight">
+                    <span class="hero-line-1">MOLDANDO O FUTURO COM</span>
+                    <span class="hero-line-2">UX, ESTRATÉGIA E IA</span>
+                </h1>
+
+                <!-- Subtitle -->
+                <p class="hero-reveal text-sm sm:text-base md:text-lg lg:text-xl text-slate-300 max-w-5xl mx-auto font-normal leading-relaxed">
+                    Da ideia ao produto: criando experiências digitais <strong class="font-bold text-white">significativas e escaláveis.</strong>
+                </p>
+
+
+
+                <!-- Action Edge Glow Buttons -->
+                <div class="hero-reveal flex flex-wrap items-center justify-center gap-4 pt-4">
+                    <!-- Microkit Cursor Edge Glow Button Primary -->
+                    <a href="#portfolio" class="edge-glow-btn group">
+                        <span class="edge-glow-inner">
+                            <span>Ver Portfólio</span>
+                            <i data-lucide="arrow-down" class="w-4 h-4 transition-transform group-hover:translate-y-0.5"></i>
+                        </span>
+                    </a>
+                    
+                    <!-- Microkit Cursor Edge Glow Button Secondary -->
+                    <a href="#contact" class="edge-glow-btn group">
+                        <span class="edge-glow-inner">
+                            <span>Fale Comigo</span>
+                            <i data-lucide="message-square" class="w-4 h-4 transition-transform group-hover:scale-110"></i>
+                        </span>
+                    </a>
+                </div>
+
+
+
+            </div>
+
+            <!-- Scroll indicator -->
+            <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-400 text-xs font-mono">
+                <span>SCROLL TO EXPLORE</span>
+                <i data-lucide="chevron-down" class="w-4 h-4 animate-bounce"></i>
+            </div>
+        </section>
+
+        <!-- ABOUT ME SECTION -->
+        <section id="about" class="py-16 md:py-24 lg:py-32 px-6 lg:px-12 relative border-t border-white/5 bg-dark-card/40">
+            <div class="max-w-6xl mx-auto space-y-12">
+                
+                <div class="space-y-4 max-w-4xl">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-300 text-xs font-bold uppercase tracking-wider">
+                        <i data-lucide="user" class="w-3.5 h-3.5"></i> Sobre Mim
+                    </div>
+
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-semibold text-white tracking-tight leading-tight">
+                        Transformo complexidade em simplicidade através do design estratégico e focado no usuário."
+                    </h2>
+                </div>
+
+                <div class="grid lg:grid-cols-12 gap-12 items-center">
+                    
+                    <!-- Left Profile Image Showcase -->
+                    <div class="lg:col-span-5 relative group">
+                        <div class="glow-card-border p-2 rounded-3xl">
+                            <div class="relative overflow-hidden rounded-2xl bg-dark-bg border border-white/10 aspect-[4/5]">
+                                <img src="assets/avatarnovo.png" alt="Daniel Leite — Design Engineer" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700">
+                                <div class="absolute inset-0 bg-gradient-to-t from-dark-bg via-transparent to-transparent opacity-80"></div>
+                                
+                                <div class="absolute bottom-5 left-5 right-5 p-4 rounded-xl bg-dark-card/90 border border-white/10 backdrop-blur-md space-y-1">
+                                    <span class="text-xs font-mono text-brand-400 font-semibold uppercase tracking-wider block">Manaus, Brasil</span>
+                                    <span class="text-base font-heading font-bold text-white block">Daniel Leite</span>
+                                    <span class="text-xs text-slate-300 block">Senior Product Designer & Mentor em Hackathons</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Text Column -->
+                    <div class="lg:col-span-7 space-y-6 text-slate-300 text-base sm:text-lg leading-relaxed">
+                        <p>
+                            Sou Product Designer baseado em Manaus, Brasil, focado em <strong class="font-semibold text-brand-300">transformar problemas complexos em produtos digitais simples, úteis e bem pensados.</strong> Trabalho na interseção entre <strong class="font-semibold text-brand-300">UX, interface, tecnologia e estratégia de produto</strong>, ajudando ideias a se tornarem soluções reais para pessoas e negócios.
+                        </p>
+
+                        <p>
+                            Ao longo da minha trajetória venho desenvolvendo produtos digitais e projetos autorais, explorando desde <strong class="font-semibold text-brand-300">pesquisa e experiência do usuário até prototipação e lançamento de MVPs.</strong> Entre esses projetos estão aplicações voltadas para recrutamento, serviços digitais e novos modelos de produto.
+                        </p>
+
+                        <p>
+                            Também contribuo com o ecossistema de tecnologia e inovação atuando como <strong class="font-semibold text-brand-300">mentor em hackathons e iniciativas colaborativas</strong>, apoiando equipes na criação de soluções digitais e no desenvolvimento de produtos centrados no usuário.
+                        </p>
+
+                        <p>
+                            Além da carreira em design e tecnologia, sou pai, e acredito que criar bons produtos também significa pensar em <strong class="font-semibold text-brand-300">impacto, responsabilidade e no futuro</strong> das próximas gerações.
+                        </p>
+
+                        <!-- Approach Pill Tags -->
+                        <div class="pt-4 border-t border-white/10 flex flex-wrap gap-2.5">
+                            <span class="px-4 py-2 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-300 text-xs font-semibold">Especialista em user-friendly</span>
+                            <span class="px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-semibold">Wireframing</span>
+                            <span class="px-4 py-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs font-semibold">Colaborativo</span>
+                            <span class="px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-semibold">Integração de IA</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- EXPERIENCE SECTION -->
+        <section id="experience" class="py-16 md:py-24 px-4 sm:px-6 lg:px-12 relative border-t border-white/5 bg-dark-bg flex flex-col justify-center">
+            <div class="max-w-7xl mx-auto w-full space-y-6">
+                
+                <div class="space-y-3 max-w-3xl section-header">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-bold uppercase tracking-wider">
+                        <i data-lucide="briefcase" class="w-3.5 h-3.5"></i> Carreira
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-heading font-extrabold text-white tracking-tight">
+                        Minha Experiência
+                    </h2>
+                    <p class="text-slate-400 text-sm sm:text-base">
+                        Trajetória profissional focada em transformar desafios de negócio e UX em produtos de alto impacto. (Role para descer e navegar pela linha do tempo).
+                    </p>
+                </div>
+
+                <!-- Linha conectora superior da Timeline -->
+                <div class="relative mb-2 hidden md:block">
+                    <div class="absolute top-1/2 left-0 right-0 h-[2px] bg-gradient-to-r from-cyan-500/10 via-cyan-500/50 to-indigo-500/20 -translate-y-1/2"></div>
+                </div>
+
+                <!-- Container de Scroll Horizontal com suporte a Wheel Scroll -->
+                <div id="timeline-container" class="timeline-scroll-wrapper flex gap-6 sm:gap-8 md:gap-10 py-6 px-4 scrollbar-none items-stretch">
+                    
+                    <!-- Card 1: Agência Digi -->
+                    <div class="timeline-card shrink-0 w-[290px] sm:w-[340px] md:w-[370px] bg-dark-card/95 border border-cyan-500/20 rounded-2xl p-5 md:p-6 backdrop-blur-md relative hover:border-cyan-500/60 transition-all duration-300 flex flex-col justify-between shadow-xl">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="text-xs font-semibold px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 uppercase">Set/2024 – Set/2026</span>
+                            </div>
+                            <h3 class="text-lg sm:text-xl font-bold text-white mb-0.5">Designer de Interfaces</h3>
+                            <p class="text-cyan-400 font-medium text-xs sm:text-sm mb-3">Agência Digi (Plataforma B2B)</p>
+                            <ul class="text-slate-300 text-xs space-y-1.5 list-disc list-inside leading-relaxed">
+                                <li>Liderei o design de experiências para plataforma B2B de incentivos, gamificação e recompensas para mais de 10 clientes corporativos.</li>
+                                <li>Redesenhei a arquitetura de interface e fluxos críticos do produto Incentify, reduzindo em 30% o tempo de navegação.</li>
+                                <li>Colaborei com Produto e Engenharia em ciclos ágeis, conduzindo problemas desde discovery e prototipação até o desenvolvimento.</li>
+                                <li>Produzi protótipos de alta fidelidade e especificações que aceleram o alinhamento estratégico.</li>
+                            </ul>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-white/10 text-xs text-slate-500 font-mono">01 / 06</div>
+                    </div>
+
+                    <!-- Card 2: Garupa -->
+                    <div class="timeline-card shrink-0 w-[290px] sm:w-[340px] md:w-[370px] bg-dark-card/95 border border-cyan-500/20 rounded-2xl p-5 md:p-6 backdrop-blur-md relative hover:border-cyan-500/60 transition-all duration-300 flex flex-col justify-between shadow-xl">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="text-xs font-semibold px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 uppercase">Abr/2023 – Mai/2024</span>
+                            </div>
+                            <h3 class="text-lg sm:text-xl font-bold text-white mb-0.5">UX/UI Designer</h3>
+                            <p class="text-cyan-400 font-medium text-xs sm:text-sm mb-3">Garupa</p>
+                            <ul class="text-slate-300 text-xs space-y-1.5 list-disc list-inside leading-relaxed">
+                                <li>Liderei Product Discovery e redesenho do Portal Garupa, reduzindo em 40% o tempo de cadastro de motoristas em 5 meses.</li>
+                                <li>Aumentei em 25% a conversão de pagamentos via PIX ao otimizar a jornada e remover fricções.</li>
+                                <li>Reduzi de 3 para 1 semana o ciclo de validação de hipóteses com discovery contínuo e prototipação rápida.</li>
+                                <li>Projetei solução de pagamento NFC para motoristas, reduzindo dependência de máquinas de cartão.</li>
+                            </ul>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-white/10 text-xs text-slate-500 font-mono">02 / 06</div>
+                    </div>
+
+                    <!-- Card 3: Aliare -->
+                    <div class="timeline-card shrink-0 w-[290px] sm:w-[340px] md:w-[370px] bg-dark-card/95 border border-cyan-500/20 rounded-2xl p-5 md:p-6 backdrop-blur-md relative hover:border-cyan-500/60 transition-all duration-300 flex flex-col justify-between shadow-xl">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="text-xs font-semibold px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 uppercase">Nov/2021 – Fev/2023</span>
+                            </div>
+                            <h3 class="text-lg sm:text-xl font-bold text-white mb-0.5">Product Designer</h3>
+                            <p class="text-cyan-400 font-medium text-xs sm:text-sm mb-3">Aliare — Hub Conexa</p>
+                            <ul class="text-slate-300 text-xs space-y-1.5 list-disc list-inside leading-relaxed">
+                                <li>Cocriei e estruturei o Design System Aliare, reduzindo em 50% o tempo de desenvolvimento de novas funcionalidades.</li>
+                                <li>Reduzi em 60% a complexidade do fluxo de cadastro e assinatura eletrônica de documentos via testes com usuários.</li>
+                                <li>Estruturei processo contínuo de testes de usabilidade integrado ao ciclo de desenvolvimento das squads.</li>
+                                <li>Parceria direta com Product Managers e Engenharia para criar soluções escaláveis.</li>
+                            </ul>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-white/10 text-xs text-slate-500 font-mono">03 / 06</div>
+                    </div>
+
+                    <!-- Card 4: Instituto Creathus -->
+                    <div class="timeline-card shrink-0 w-[290px] sm:w-[340px] md:w-[370px] bg-dark-card/95 border border-cyan-500/20 rounded-2xl p-5 md:p-6 backdrop-blur-md relative hover:border-cyan-500/60 transition-all duration-300 flex flex-col justify-between shadow-xl">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="text-xs font-semibold px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 uppercase">Out/2020 – Nov/2021</span>
+                            </div>
+                            <h3 class="text-lg sm:text-xl font-bold text-white mb-0.5">UX/UI Designer</h3>
+                            <p class="text-cyan-400 font-medium text-xs sm:text-sm mb-3">Instituto Creathus</p>
+                            <ul class="text-slate-300 text-xs space-y-1.5 list-disc list-inside leading-relaxed">
+                                <li>Contribuí para a construção de plataforma de telemedicina com validação de fluxos e pesquisas de campo.</li>
+                                <li>Transformei necessidades de usuários em soluções de experiência em saúde digital.</li>
+                                <li>Validação de conceitos e jornadas com stakeholders multidisciplinares.</li>
+                                <li>Desenvolvimento de soluções digitais para o Polo Industrial de Manaus (Indústria 4.0).</li>
+                            </ul>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-white/10 text-xs text-slate-500 font-mono">04 / 06</div>
+                    </div>
+
+                    <!-- Card 5: Banco BMG -->
+                    <div class="timeline-card shrink-0 w-[290px] sm:w-[340px] md:w-[370px] bg-dark-card/95 border border-cyan-500/20 rounded-2xl p-5 md:p-6 backdrop-blur-md relative hover:border-cyan-500/60 transition-all duration-300 flex flex-col justify-between shadow-xl">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="text-xs font-semibold px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 uppercase">2020</span>
+                            </div>
+                            <h3 class="text-lg sm:text-xl font-bold text-white mb-0.5">UX/UI Designer</h3>
+                            <p class="text-cyan-400 font-medium text-xs sm:text-sm mb-3">Banco BMG (Projeto Gamer)</p>
+                            <ul class="text-slate-300 text-xs space-y-1.5 list-disc list-inside leading-relaxed">
+                                <li>Atuação em squad selecionada pelo Banco BMG na concepção de um aplicativo voltado ao público gamer.</li>
+                                <li>Colaborei na definição da experiência, dos fluxos de navegação e na prototipação da solução.</li>
+                            </ul>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-white/10 text-xs text-slate-500 font-mono">05 / 06</div>
+                    </div>
+
+                    <!-- Card 6: Experiência Anterior -->
+                    <div class="timeline-card shrink-0 w-[290px] sm:w-[340px] md:w-[370px] bg-dark-card/95 border border-cyan-500/20 rounded-2xl p-5 md:p-6 backdrop-blur-md relative hover:border-cyan-500/60 transition-all duration-300 flex flex-col justify-between shadow-xl">
+                        <div>
+                            <div class="flex justify-between items-start mb-3">
+                                <span class="text-xs font-semibold px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 uppercase">2012 – 2020</span>
+                            </div>
+                            <h3 class="text-lg sm:text-xl font-bold text-white mb-0.5">Experiência Anterior</h3>
+                            <p class="text-cyan-400 font-medium text-xs sm:text-sm mb-3">Tterra | ULBRA Manaus | Mix Comunicação</p>
+                            <ul class="text-slate-300 text-xs space-y-1.5 list-disc list-inside leading-relaxed">
+                                <li><strong>Tterra (Diretor de Arte | 2018–2020):</strong> Estratégias visuais, branding e campanhas para 15+ clientes.</li>
+                                <li><strong>ULBRA Manaus (Designer Gráfico | 2015–2018):</strong> Campanhas e peças institucionais.</li>
+                                <li><strong>Mix Comunicação (Designer Gráfico | 2012–2014):</strong> Materiais gráficos e soluções visuais.</li>
+                            </ul>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-white/10 text-xs text-slate-500 font-mono">06 / 06</div>
+                    </div>
+
+                    <!-- End Spacing Spacer for Full Card Pinning -->
+                    <div class="shrink-0 w-12 sm:w-24 md:w-32 pointer-events-none"></div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- PORTFOLIO SECTION -->
+        <section id="portfolio" class="py-16 md:py-24 lg:py-32 px-6 lg:px-12 relative">
+            <div class="max-w-7xl mx-auto space-y-20">
+                
+                <!-- Section Header -->
+                <div class="space-y-4 max-w-3xl section-header">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-300 text-xs font-bold uppercase tracking-wider">
+                        <i data-lucide="briefcase" class="w-3.5 h-3.5"></i> Portfólio
+                    </div>
+                    <h2 class="text-3xl sm:text-5xl font-heading font-extrabold text-white tracking-tight">
+                        Projetos Selecionados
+                    </h2>
+                    <p class="text-slate-400 text-base sm:text-lg">
+                        Uma seleção de trabalhos que demonstram minha abordagem para resolver problemas complexos através do design.
+                    </p>
+                </div>
+
+                <!-- Projects Grid -->
+                <div class="space-y-16">
+
+                    <!-- Project 1: RecruiterSys -->
+                    <div class="project-card glow-card-border group">
+                        <div class="bg-dark-card/95 rounded-[1.65rem] p-6 sm:p-10 grid lg:grid-cols-12 gap-8 items-center">
+                            <div class="lg:col-span-6 space-y-6">
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3.5 py-1 rounded-full bg-brand-500/15 border border-brand-500/30 text-brand-300 text-xs font-semibold">Senior Product Designer & Lead de UX/UI</span>
+                                    <span class="px-3.5 py-1 rounded-full bg-white/5 border border-white/10 text-slate-400 text-xs font-semibold">Recrutamento Tech</span>
+                                </div>
+
+                                <h3 class="text-2xl sm:text-4xl font-heading font-bold text-white group-hover:text-brand-300 transition-colors">
+                                    RecruiterSys – O Ecossistema de Recrutamento Tech
+                                </h3>
+
+                                <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
+                                    Eliminando o gap de comunicação e a ineficiência técnica no recrutamento de profissionais de TI. Redesenho da experiência de contratação através de um ecossistema dual (Dashboard B2B + App B2C).
+                                </p>
+
+                                <div class="pt-2">
+                                    <a href="recruitersys.html" class="edge-glow-btn group">
+                                        <span class="edge-glow-inner">
+                                            <span>Ver Case Study Completo</span>
+                                            <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Real Image Showcase -->
+                            <div class="lg:col-span-6 image-wrapper rounded-2xl border border-white/10 overflow-hidden bg-dark-bg shadow-2xl">
+                                <a href="recruitersys.html"><img src="assets/CAPA RECRUITER.png" alt="RecruiterSys Interface" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-500"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 2: Diário de Bordo Aeronáutico -->
+                    <div class="project-card glow-card-border group">
+                        <div class="bg-dark-card/95 rounded-[1.65rem] p-6 sm:p-10 grid lg:grid-cols-12 gap-8 items-center">
+                            <div class="lg:col-span-6 space-y-6">
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3.5 py-1 rounded-full bg-cyan-500/15 border border-cyan-500/30 text-cyan-300 text-xs font-semibold">Product Designer & CDO</span>
+                                    <span class="px-3.5 py-1 rounded-full bg-white/5 border border-white/10 text-slate-400 text-xs font-semibold">Aviação & ANAC</span>
+                                </div>
+
+                                <h3 class="text-2xl sm:text-4xl font-heading font-bold text-white group-hover:text-brand-300 transition-colors">
+                                    <a href="diario-edb.html">Diário de Bordo Aeronáutico (Hóruz eDB)</a>
+                                </h3>
+
+                                <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
+                                    Plataforma estratégica de dados para modernizar o diário de bordo da aviação geral no Brasil. Conformidade regulatória ANAC em tablet 10.4'', abordagem Green UX com metrificação de carbono e suporte a combate a queimadas na Amazônia.
+                                </p>
+
+                                <div class="pt-2">
+                                    <a href="diario-edb.html" class="edge-glow-btn group">
+                                        <span class="edge-glow-inner">
+                                            <span>Ver Case Study Completo</span>
+                                            <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Real Image Showcase -->
+                            <div class="lg:col-span-6 image-wrapper rounded-2xl border border-white/10 overflow-hidden bg-dark-bg shadow-2xl">
+                                <a href="diario-edb.html"><img src="assets/HORUZ.png" alt="Diário de Bordo Aeronáutico Hóruz eDB" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-500"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 3: Pet Plant App -->
+                    <div class="project-card glow-card-border group">
+                        <div class="bg-dark-card/95 rounded-[1.65rem] p-6 sm:p-10 grid lg:grid-cols-12 gap-8 items-center">
+                            <div class="lg:col-span-6 space-y-6">
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3.5 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-semibold">Product Designer Sênior</span>
+                                    <span class="px-3.5 py-1 rounded-full bg-white/5 border border-white/10 text-slate-400 text-xs font-semibold">IoT & UX Botânica</span>
+                                </div>
+
+                                <h3 class="text-2xl sm:text-4xl font-heading font-bold text-white group-hover:text-brand-300 transition-colors">
+                                    <a href="petplant.html">Pet Plant App – Monitoramento Inteligente e UX Botânica</a>
+                                </h3>
+
+                                <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
+                                    Consolidação de tecnologia IoT com uma interface de gestão completa. Monitoramento vital de umidade, luz, fertilidade e temperatura para eliminar a adivinhação e proteger a saúde das plantas.
+                                </p>
+
+                                <div class="pt-2">
+                                    <a href="petplant.html" class="edge-glow-btn group">
+                                        <span class="edge-glow-inner">
+                                            <span>Ver Case Study Completo</span>
+                                            <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Real Image Showcase -->
+                            <div class="lg:col-span-6 image-wrapper rounded-2xl border border-white/10 overflow-hidden bg-dark-bg shadow-2xl">
+                                <a href="petplant.html"><img src="assets/MOCK PET PLANT.png" alt="Pet Plant App UX Botânica" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-500"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project 4: VentHome -->
+                    <div class="project-card glow-card-border group">
+                        <div class="bg-dark-card/95 rounded-[1.65rem] p-6 sm:p-10 grid lg:grid-cols-12 gap-8 items-center">
+                            <div class="lg:col-span-6 space-y-6">
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-3.5 py-1 rounded-full bg-purple-500/15 border border-purple-500/30 text-purple-300 text-xs font-semibold">Product Designer (UX/UI)</span>
+                                    <span class="px-3.5 py-1 rounded-full bg-white/5 border border-white/10 text-slate-400 text-xs font-semibold">IoT & Automação</span>
+                                </div>
+
+                                <h3 class="text-2xl sm:text-4xl font-heading font-bold text-white group-hover:text-brand-300 transition-colors">
+                                    <a href="ventihome.html">VentHome – Além do Vento</a>
+                                </h3>
+
+                                <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
+                                    Transformando um eletrodoméstico analógico em um serviço personalizado de ventilação inteligente. Interface com preset de Modos (Gamer, Bike) e preservação do ciclo circadiano.
+                                </p>
+
+                                <div class="pt-2">
+                                    <a href="ventihome.html" class="edge-glow-btn group">
+                                        <span class="edge-glow-inner">
+                                            <span>Ver Case Study Completo</span>
+                                            <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Real Image Showcase -->
+                            <div class="lg:col-span-6 image-wrapper rounded-2xl border border-white/10 overflow-hidden bg-dark-bg shadow-2xl">
+                                <a href="ventihome.html"><img src="assets/VENTIHOME.png" alt="VentHome IoT Automation" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-500"></a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SPECIALTIES & SKILLS SECTION -->
+        <section id="skills" class="py-16 md:py-24 lg:py-32 px-6 lg:px-12 bg-dark-card/40 border-y border-white/5 relative">
+            <div class="max-w-7xl mx-auto space-y-16">
+                
+                <div class="space-y-4 max-w-3xl section-header">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-300 text-xs font-bold uppercase tracking-wider">
+                        <i data-lucide="layers" class="w-3.5 h-3.5"></i> Especialidades
+                    </div>
+                    <h2 class="text-3xl sm:text-5xl font-heading font-extrabold text-white tracking-tight">
+                        Habilidades Técnicas
+                    </h2>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    
+                    <!-- Category 1: UX Design -->
+                    <div class="p-6 rounded-2xl bg-dark-bg/90 border border-white/10 space-y-4 hover:border-brand-500/40 transition-colors">
+                        <div class="w-12 h-12 rounded-xl bg-brand-500/20 border border-brand-500/30 flex items-center justify-center text-brand-300">
+                            <i data-lucide="target" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-heading font-bold text-white">UX Design</h3>
+                        <ul class="space-y-2 text-sm text-slate-300">
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-400"></i> Research & Entrevistas</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-400"></i> Arquitetura de Informação</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-400"></i> Testes de Usabilidade</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-400"></i> Wireframing & Fluxos</li>
+                        </ul>
+                    </div>
+
+                    <!-- Category 2: UI Design -->
+                    <div class="p-6 rounded-2xl bg-dark-bg/90 border border-white/10 space-y-4 hover:border-cyan-500/40 transition-colors">
+                        <div class="w-12 h-12 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-300">
+                            <i data-lucide="palette" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-heading font-bold text-white">UI Design</h3>
+                        <ul class="space-y-2 text-sm text-slate-300">
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-cyan-400"></i> Design Systems & Tokens</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-cyan-400"></i> Interfaces de Alta Fidelidade</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-cyan-400"></i> Microinterações & Motion</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-cyan-400"></i> Acessibilidade & Contraste</li>
+                        </ul>
+                    </div>
+
+                    <!-- Category 3: Product Design -->
+                    <div class="p-6 rounded-2xl bg-dark-bg/90 border border-white/10 space-y-4 hover:border-indigo-500/40 transition-colors">
+                        <div class="w-12 h-12 rounded-xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
+                            <i data-lucide="briefcase" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-heading font-bold text-white">Product Design</h3>
+                        <ul class="space-y-2 text-sm text-slate-300">
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-indigo-400"></i> Estratégia de Produto</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-indigo-400"></i> Metodologia Double Diamond</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-indigo-400"></i> Prototipagem & Lançamento MVP</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-indigo-400"></i> Visão de Negócio & Métricas</li>
+                        </ul>
+                    </div>
+
+                    <!-- Category 4: AI & Tecnologia -->
+                    <div class="p-6 rounded-2xl bg-dark-bg/90 border border-white/10 space-y-4 hover:border-emerald-500/40 transition-colors">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-300">
+                            <i data-lucide="cpu" class="w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-heading font-bold text-white">AI e Tecnologia</h3>
+                        <ul class="space-y-2 text-sm text-slate-300">
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Integração de IA em Produtos</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Front-end (HTML/CSS/JS/React)</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Design Engineering</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Prototipagem Interativa</li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <!-- Empathy Card -->
+                <div class="p-8 rounded-3xl bg-brand-950/40 border border-brand-500/30 space-y-3 max-w-4xl mx-auto text-center shadow-xl">
+                    <h3 class="text-xl font-heading font-bold text-brand-300">Empatia</h3>
+                    <p class="text-slate-300 text-base leading-relaxed">
+                        Design é sobre pessoas, não apenas pixels. Se não entendermos as dores e necessidades reais do cliente, a técnica perde o sentido. Minha prioridade é traduzir sentimentos em soluções úteis.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- PROCESS SECTION -->
+        <section id="process" class="py-16 md:py-24 lg:py-32 px-6 lg:px-12 relative">
+            <div class="max-w-7xl mx-auto space-y-16">
+                
+                <div class="space-y-4 max-w-3xl section-header">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-300 text-xs font-bold uppercase tracking-wider">
+                        <i data-lucide="git-commit" class="w-3.5 h-3.5"></i> Metodologia
+                    </div>
+                    <h2 class="text-3xl sm:text-5xl font-heading font-extrabold text-white tracking-tight">
+                        Processo de Design
+                    </h2>
+                </div>
+
+                <div id="process-grid" class="grid md:grid-cols-5 gap-6">
+                    
+                    <!-- Step 1 -->
+                    <div class="process-step p-6 rounded-2xl bg-dark-card/90 border border-white/10 space-y-3 relative hover:border-brand-500/40 transition-colors">
+                        <span class="text-2xl font-heading font-bold text-brand-400">01</span>
+                        <h3 class="text-lg font-heading font-bold text-white">Descoberta</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">Entendimento do problema, stakeholders e objetivos de negócio.</p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="process-step p-6 rounded-2xl bg-dark-card/90 border border-white/10 space-y-3 relative hover:border-cyan-500/40 transition-colors">
+                        <span class="text-2xl font-heading font-bold text-cyan-400">02</span>
+                        <h3 class="text-lg font-heading font-bold text-white">Pesquisa</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">Pesquisa com usuários, análise competitiva e levantamento de dados.</p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="process-step p-6 rounded-2xl bg-dark-card/90 border border-white/10 space-y-3 relative hover:border-indigo-500/40 transition-colors">
+                        <span class="text-2xl font-heading font-bold text-indigo-400">03</span>
+                        <h3 class="text-lg font-heading font-bold text-white">Ideação</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">Brainstorming, fluxos de usuário e rascunhos de solução.</p>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="process-step p-6 rounded-2xl bg-dark-card/90 border border-white/10 space-y-3 relative hover:border-emerald-500/40 transition-colors">
+                        <span class="text-2xl font-heading font-bold text-emerald-400">04</span>
+                        <h3 class="text-lg font-heading font-bold text-white">Design</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">Interface de alta fidelidade, prototipagem e sistemas de design.</p>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="process-step p-6 rounded-2xl bg-dark-card/90 border border-white/10 space-y-3 relative hover:border-rose-500/40 transition-colors">
+                        <span class="text-2xl font-heading font-bold text-rose-400">05</span>
+                        <h3 class="text-lg font-heading font-bold text-white">Validação</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">Testes de usabilidade, iteração e acompanhamento de métricas.</p>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section id="contact" class="py-16 md:py-24 lg:py-32 px-6 lg:px-12 bg-gradient-to-b from-transparent to-dark-card border-t border-white/10 relative overflow-hidden">
+            <div class="max-w-4xl mx-auto text-center space-y-12 relative z-10">
+                
+                <div class="space-y-4">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-300 text-xs font-bold uppercase tracking-wider">
+                        <i data-lucide="mail" class="w-3.5 h-3.5"></i> Contato
+                    </div>
+
+                    <h2 class="text-4xl sm:text-6xl font-heading font-extrabold text-white tracking-tight">
+                        Vamos construir algo <span class="text-brand-400">extraordinário</span>
+                    </h2>
+
+                    <p class="text-slate-400 text-lg max-w-xl mx-auto">
+                        Estou sempre aberto a novos desafios e colaborações em projetos inovadores.
+                    </p>
+                </div>
+
+
+
+                <!-- Action Contact Buttons Prominent Showcase -->
+                <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6 pt-4">
+                    <!-- Email Button -->
+                    <a href="mailto:danielleitedesign@gmail.com" class="inline-flex items-center gap-3 px-6 py-4 sm:px-8 sm:py-5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-brand-400/50 backdrop-blur-md text-base sm:text-lg font-semibold text-white transition-all duration-300 hover:scale-105 shadow-lg group">
+                        <i data-lucide="mail" class="w-6 h-6 text-brand-400 group-hover:scale-110 transition-transform"></i>
+                        <span>E-mail</span>
+                    </a>
+
+                    <!-- LinkedIn Button -->
+                    <a href="https://www.linkedin.com/in/daniel-rodrigo-leite/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 px-6 py-4 sm:px-8 sm:py-5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-brand-400/50 backdrop-blur-md text-base sm:text-lg font-semibold text-white transition-all duration-300 hover:scale-105 shadow-lg group">
+                        <svg class="w-6 h-6 fill-current text-brand-400 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+                        </svg>
+                        <i data-lucide="linkedin" class="w-6 h-6 text-brand-400 group-hover:scale-110 transition-transform hidden"></i>
+                        <span>LinkedIn</span>
+                    </a>
+
+                    <!-- WhatsApp Button -->
+                    <a href="https://api.whatsapp.com/send/?phone=5592992552746" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 px-6 py-4 sm:px-8 sm:py-5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-emerald-500/50 backdrop-blur-md text-base sm:text-lg font-semibold text-white transition-all duration-300 hover:scale-105 shadow-lg group">
+                        <i data-lucide="phone" class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition-transform"></i>
+                        <span>WhatsApp</span>
+                    </a>
+                </div>
+
+                <!-- Footer details -->
+                <div class="pt-16 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-slate-400">
+                    <div class="flex items-center gap-3">
+                        <span class="font-heading font-bold text-white text-base">DL.</span>
+                        <span>Todos os direitos reservados. &copy; 2026 Daniel Leite.</span>
+                    </div>
+
+                    <div>
+                        <a href="#hero" class="hover:text-brand-400 transition-colors">Voltar ao topo ↑</a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- CASE DETAILS MODAL / DRAWER -->
+    <div id="case-modal" class="fixed inset-0 bg-dark-bg/90 backdrop-blur-2xl z-[100] hidden opacity-0 transition-opacity duration-300 flex items-center justify-center p-4 sm:p-8">
+        <div class="bg-dark-card border border-white/15 rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-10 relative space-y-6 shadow-2xl">
+            <button onclick="closeCaseModal()" class="absolute top-6 right-6 p-2 text-slate-400 hover:text-white rounded-full bg-white/5 border border-white/10">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+
+            <div id="modal-content" class="space-y-6">
+                <!-- Injected via JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Script -->
+    <!-- Scroll To Top Button -->
+    <button id="scroll-to-top" class="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-border/40 hover:bg-border backdrop-blur-md border border-white/10 text-white opacity-0 pointer-events-none transition-all duration-300 shadow-xl" aria-label="Voltar ao topo">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/>
+        </svg>
+    </button>
+
+    <script src="script.js"></script>
+</body>
 </html>
