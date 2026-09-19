@@ -25,49 +25,40 @@ function initTimelineScroll() {
     const section = document.getElementById('experience');
     if (!container || !section) return;
 
-    // Remove existing ScrollTriggers for this section if any
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-        gsap.registerPlugin(ScrollTrigger);
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+    gsap.registerPlugin(ScrollTrigger);
 
+    function setupTimelineGSAP() {
+        // Kill existing triggers for this section
         ScrollTrigger.getAll().forEach(st => {
             if (st.vars && st.vars.trigger === section) st.kill();
         });
 
-        // Use ScrollTrigger matchMedia to separate Desktop pin from Mobile native scroll
-        ScrollTrigger.matchMedia({
-            // Desktop (>= 768px): Smooth GSAP Pinning
-            "(min-width: 768px)": function() {
-                const getScrollAmount = () => {
-                    return Math.max(0, container.scrollWidth - window.innerWidth + 120);
-                };
+        const getScrollAmount = () => {
+            return container.scrollWidth - window.innerWidth + 80;
+        };
 
-                const tween = gsap.to(container, {
-                    x: () => -getScrollAmount(),
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: section,
-                        pin: true,
-                        scrub: 1,
-                        start: "top top",
-                        end: () => "+=" + (container.scrollWidth - window.innerWidth + 300),
-                        invalidateOnRefresh: true,
-                        anticipatePin: 1
-                    }
-                });
-
-                return () => {
-                    tween.kill();
-                    gsap.set(container, { clearProps: "transform,x" });
-                };
-            },
-            // Mobile (< 768px): Reset inline transform so CSS native overflow works cleanly
-            "(max-width: 767px)": function() {
-                gsap.set(container, { clearProps: "transform,x" });
+        gsap.to(container, {
+            x: () => -getScrollAmount(),
+            ease: "none",
+            scrollTrigger: {
+                trigger: section,
+                pin: true,
+                scrub: 1,
+                start: "top top",
+                end: () => "+=" + (container.scrollWidth - window.innerWidth + 200),
+                invalidateOnRefresh: true,
+                anticipatePin: 1
             }
         });
+        ScrollTrigger.refresh();
     }
 
-    // Touch & Wheel Fallback listener for seamless horizontal navigation
+    // Run setup immediately and on window load to catch image sizes
+    setupTimelineGSAP();
+    window.addEventListener('load', setupTimelineGSAP);
+
+    // Touch & Wheel Fallback listener for smooth interaction
     let startX = 0;
     let scrollLeft = 0;
     let isDown = false;
@@ -88,15 +79,6 @@ function initTimelineScroll() {
         const walk = (x - startX) * 2;
         container.scrollLeft = scrollLeft - walk;
     });
-
-    container.addEventListener('wheel', (e) => {
-        if (window.innerWidth < 768 && e.deltaY !== 0 && Math.abs(e.deltaX) < Math.abs(e.deltaY)) {
-            const maxScrollLeft = container.scrollWidth - container.clientWidth;
-            if ((container.scrollLeft < maxScrollLeft && e.deltaY > 0) || (container.scrollLeft > 0 && e.deltaY < 0)) {
-                container.scrollLeft += e.deltaY;
-            }
-        }
-    }, { passive: true });
 }
 
 /* --------------------------------------------------------
