@@ -342,24 +342,6 @@ p {
 }
 
 /* Timeline Horizontal Scroll */
-.timeline-scroll-wrapper {
-  overflow-x: auto !important;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
-}
-
-@media (min-width: 768px) {
-  .timeline-scroll-wrapper {
-    overflow-x: visible !important;
-    scroll-snap-type: none !important;
-  }
-}
-
-.timeline-card {
-  scroll-snap-align: center;
-}
-
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
@@ -440,16 +422,10 @@ html, body {
   box-sizing: border-box !important;
 }
 
-
-/* Fallback de visibilidade e ícones */
-.hero-reveal {
-  opacity: 1 !important;
-  transform: none !important;
+/* Restringe a largura máxima apenas para desktop */
+@media (min-width: 1024px) {
+  #navbar-inner {
+    max-width: 80rem !important; /* equivalente a max-w-7xl */
+  }
 }
-
-[data-lucide] {
-  display: inline-block;
-  stroke: currentColor;
-}
-
 

@@ -25,17 +25,23 @@ function initTimelineScroll() {
     const section = document.getElementById('experience');
     if (!container || !section) return;
 
-    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-    gsap.registerPlugin(ScrollTrigger);
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
 
-    function setupTimelineGSAP() {
-        // Kill existing triggers for this section
+        const cards = gsap.utils.toArray('.timeline-card');
+        if (!cards.length) return;
+
+        // Limpa instâncias antigas se houver
         ScrollTrigger.getAll().forEach(st => {
             if (st.vars && st.vars.trigger === section) st.kill();
         });
 
         const getScrollAmount = () => {
-            return container.scrollWidth - window.innerWidth + 80;
+            const containerWidth = container.scrollWidth;
+            const windowWidth = window.innerWidth;
+            // Garante margem de respiro suficiente para que o último card fique 100% visível na tela antes de soltar a trava de pin
+            const extraPadding = windowWidth < 768 ? 40 : 250;
+            return Math.max(0, containerWidth - windowWidth + extraPadding);
         };
 
         gsap.to(container, {
@@ -44,41 +50,24 @@ function initTimelineScroll() {
             scrollTrigger: {
                 trigger: section,
                 pin: true,
-                scrub: 1,
+                scrub: 0.6,
                 start: "top top",
-                end: () => "+=" + (container.scrollWidth - window.innerWidth + 200),
+                end: () => "+=" + (getScrollAmount() + 500),
                 invalidateOnRefresh: true,
                 anticipatePin: 1
             }
         });
-        ScrollTrigger.refresh();
+    } else {
+        container.addEventListener('wheel', (e) => {
+            if (e.deltaY !== 0) {
+                const maxScrollLeft = container.scrollWidth - container.clientWidth;
+                if ((container.scrollLeft < maxScrollLeft && e.deltaY > 0) || (container.scrollLeft > 0 && e.deltaY < 0)) {
+                    e.preventDefault();
+                    container.scrollLeft += e.deltaY;
+                }
+            }
+        }, { passive: false });
     }
-
-    // Run setup immediately and on window load to catch image sizes
-    setupTimelineGSAP();
-    window.addEventListener('load', setupTimelineGSAP);
-
-    // Touch & Wheel Fallback listener for smooth interaction
-    let startX = 0;
-    let scrollLeft = 0;
-    let isDown = false;
-
-    container.addEventListener('mousedown', (e) => {
-        isDown = true;
-        startX = e.pageX - container.offsetLeft;
-        scrollLeft = container.scrollLeft;
-    });
-
-    container.addEventListener('mouseleave', () => { isDown = false; });
-    container.addEventListener('mouseup', () => { isDown = false; });
-
-    container.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
-        e.preventDefault();
-        const x = e.pageX - container.offsetLeft;
-        const walk = (x - startX) * 2;
-        container.scrollLeft = scrollLeft - walk;
-    });
 }
 
 /* --------------------------------------------------------

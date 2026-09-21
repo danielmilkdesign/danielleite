@@ -1,20 +1,30 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+﻿# Portfólio de Daniel Leite — Senior Product Designer & Design Engineer
 
-# Run and deploy your AI Studio app
+Repositório pronto para publicação estática (GitHub Pages, Vercel, Netlify).
 
-This contains everything you need to run your app locally.
+## 🚀 Como subir para um novo repositório no GitHub:
 
-View your app in AI Studio: https://ai.studio/apps/91478ab7-ab61-4a13-8532-c7b090a51111
+1. Abra o terminal na pasta SITE FINAL:
+   `ash
+   cd "D:\portfolio daniel leite site\SITE FINAL"
+   `
 
-## Run Locally
+2. Inicialize o Git e adicione os arquivos:
+   `ash
+   git init
+   git add .
+   git commit -m "Initial commit - Portfolio Daniel Leite"
+   `
 
-**Prerequisites:**  Node.js
+3. Vincule ao seu novo repositório remoto e envie:
+   `ash
+   git branch -M main
+   git remote add origin https://github.com/SEU-USUARIO/SEU-NOVO-REPOSITORIO.git
+   git push -u origin main
+   `
 
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+4. No GitHub, ative o **GitHub Pages**:
+   - Acesse: Settings > Pages
+   - Em **Source**: Deploy from a branch
+   - Em **Branch**: main / / (root)
+   - Clique em **Save**.

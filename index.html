@@ -122,12 +122,8 @@
                 </a>
 
                 <!-- Mobile Menu Trigger -->
-                <button id="mobile-menu-btn" class="flex md:hidden items-center justify-center p-2 text-white bg-white/10 hover:bg-white/20 border border-white/15 rounded-full focus:outline-none transition-colors shrink-0" aria-label="Abrir Menu">
-                    <svg class="w-6 h-6 stroke-white shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="4" y1="6" x2="20" y2="6"></line>
-                        <line x1="4" y1="12" x2="20" y2="12"></line>
-                        <line x1="4" y1="18" x2="20" y2="18"></line>
-                    </svg>
+                <button id="mobile-menu-btn" class="flex md:hidden items-center justify-center p-1.5 text-slate-300 hover:text-white rounded-lg focus:outline-none" aria-label="Abrir Menu">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
                 </button>
             </div>
         </div>
@@ -141,11 +137,8 @@
                 <img src="LOGO-DL.svg" alt="Daniel Leite Logo" class="h-6 sm:h-8 w-auto">
                 <span class="text-lg font-heading font-bold text-white tracking-wide">Menu</span>
             </div>
-            <button id="close-menu-btn" class="p-2.5 text-slate-300 hover:text-white rounded-full bg-white/5 border border-white/10 transition-colors focus:outline-none shrink-0" aria-label="Fechar Menu">
-                <svg class="w-6 h-6 stroke-current shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
+            <button id="close-menu-btn" class="p-2.5 text-slate-300 hover:text-white rounded-full bg-white/5 border border-white/10 transition-colors focus:outline-none" aria-label="Fechar Menu">
+                <i data-lucide="x" class="w-6 h-6"></i>
             </button>
         </div>
 
@@ -479,18 +472,18 @@
                                 </p>
 
                                 <div class="pt-2">
-                                    <button onclick="openCaseModal('recruitersys')" class="edge-glow-btn group">
+                                    <a href="recruitersys.html" class="edge-glow-btn group">
                                         <span class="edge-glow-inner">
                                             <span>Ver Case Study Completo</span>
-                                            <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                            <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
                                         </span>
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
 
                             <!-- Real Image Showcase -->
                             <div class="lg:col-span-6 image-wrapper rounded-2xl border border-white/10 overflow-hidden bg-dark-bg shadow-2xl">
-                                <button onclick="openCaseModal('recruitersys')" class="w-full text-left cursor-pointer"><img src="assets/CAPA RECRUITER.png" alt="RecruiterSys Interface" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-500"></button>
+                                <a href="recruitersys.html"><img src="assets/CAPA RECRUITER.png" alt="RecruiterSys Interface" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-500"></a>
                             </div>
                         </div>
                     </div>
@@ -505,7 +498,7 @@
                                 </div>
 
                                 <h3 class="text-2xl sm:text-4xl font-heading font-bold text-white group-hover:text-brand-300 transition-colors">
-                                    <button onclick="openCaseModal('diario')" class="text-left hover:text-brand-300 transition-colors">Diário de Bordo Aeronáutico (Hóruz eDB)</button>
+                                    <a href="diario-edb.html">Diário de Bordo Aeronáutico (Hóruz eDB)</a>
                                 </h3>
 
                                 <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
@@ -513,18 +506,18 @@
                                 </p>
 
                                 <div class="pt-2">
-                                    <button onclick="openCaseModal('diario')" class="edge-glow-btn group">
+                                    <a href="diario-edb.html" class="edge-glow-btn group">
                                         <span class="edge-glow-inner">
                                             <span>Ver Case Study Completo</span>
-                                            <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                            <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
                                         </span>
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
 
                             <!-- Real Image Showcase -->
                             <div class="lg:col-span-6 image-wrapper rounded-2xl border border-white/10 overflow-hidden bg-dark-bg shadow-2xl">
-                                <button onclick="openCaseModal('diario')" class="w-full text-left cursor-pointer"><img src="assets/HORUZ.png" alt="Diário de Bordo Aeronáutico Hóruz eDB" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-500"></button>
+                                <a href="diario-edb.html"><img src="assets/HORUZ.png" alt="Diário de Bordo Aeronáutico Hóruz eDB" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-500"></a>
                             </div>
                         </div>
                     </div>
@@ -539,7 +532,7 @@
                                 </div>
 
                                 <h3 class="text-2xl sm:text-4xl font-heading font-bold text-white group-hover:text-brand-300 transition-colors">
-                                    <button onclick="openCaseModal('petplant')" class="text-left hover:text-brand-300 transition-colors">Pet Plant App – Monitoramento Inteligente e UX Botânica</button>
+                                    <a href="petplant.html">Pet Plant App – Monitoramento Inteligente e UX Botânica</a>
                                 </h3>
 
                                 <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
@@ -547,18 +540,18 @@
                                 </p>
 
                                 <div class="pt-2">
-                                    <button onclick="openCaseModal('petplant')" class="edge-glow-btn group">
+                                    <a href="petplant.html" class="edge-glow-btn group">
                                         <span class="edge-glow-inner">
                                             <span>Ver Case Study Completo</span>
-                                            <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                            <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
                                         </span>
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
 
                             <!-- Real Image Showcase -->
                             <div class="lg:col-span-6 image-wrapper rounded-2xl border border-white/10 overflow-hidden bg-dark-bg shadow-2xl">
-                                <button onclick="openCaseModal('petplant')" class="w-full text-left cursor-pointer"><img src="assets/MOCK PET PLANT.png" alt="Pet Plant App UX Botânica" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-500"></button>
+                                <a href="petplant.html"><img src="assets/MOCK PET PLANT.png" alt="Pet Plant App UX Botânica" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-500"></a>
                             </div>
                         </div>
                     </div>
@@ -573,7 +566,7 @@
                                 </div>
 
                                 <h3 class="text-2xl sm:text-4xl font-heading font-bold text-white group-hover:text-brand-300 transition-colors">
-                                    <button onclick="openCaseModal('ailab')" class="text-left hover:text-brand-300 transition-colors">VentHome – Além do Vento</button>
+                                    <a href="ventihome.html">VentHome – Além do Vento</a>
                                 </h3>
 
                                 <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
@@ -581,18 +574,18 @@
                                 </p>
 
                                 <div class="pt-2">
-                                    <button onclick="openCaseModal('ailab')" class="edge-glow-btn group">
+                                    <a href="ventihome.html" class="edge-glow-btn group">
                                         <span class="edge-glow-inner">
                                             <span>Ver Case Study Completo</span>
-                                            <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                            <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
                                         </span>
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
 
                             <!-- Real Image Showcase -->
                             <div class="lg:col-span-6 image-wrapper rounded-2xl border border-white/10 overflow-hidden bg-dark-bg shadow-2xl">
-                                <button onclick="openCaseModal('ailab')" class="w-full text-left cursor-pointer"><img src="assets/VENTIHOME.png" alt="VentHome IoT Automation" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-500"></button>
+                                <a href="ventihome.html"><img src="assets/VENTIHOME.png" alt="VentHome IoT Automation" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-500"></a>
                             </div>
                         </div>
                     </div>
@@ -620,56 +613,56 @@
                     <!-- Category 1: UX Design -->
                     <div class="p-6 rounded-2xl bg-dark-bg/90 border border-white/10 space-y-4 hover:border-brand-500/40 transition-colors">
                         <div class="w-12 h-12 rounded-xl bg-brand-500/20 border border-brand-500/30 flex items-center justify-center text-brand-300">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+                            <i data-lucide="target" class="w-6 h-6"></i>
                         </div>
                         <h3 class="text-xl font-heading font-bold text-white">UX Design</h3>
                         <ul class="space-y-2 text-sm text-slate-300">
-                            <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Research & Entrevistas</li>
-                            <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Arquitetura de Informação</li>
-                            <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Testes de Usabilidade</li>
-                            <li class="flex items-center gap-2"><svg class="w-4 h-4 text-brand-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Wireframing & Fluxos</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-400"></i> Research & Entrevistas</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-400"></i> Arquitetura de Informação</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-400"></i> Testes de Usabilidade</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-brand-400"></i> Wireframing & Fluxos</li>
                         </ul>
                     </div>
 
                     <!-- Category 2: UI Design -->
                     <div class="p-6 rounded-2xl bg-dark-bg/90 border border-white/10 space-y-4 hover:border-cyan-500/40 transition-colors">
                         <div class="w-12 h-12 rounded-xl bg-cyan-500/20 border border-cyan-500/30 flex items-center justify-center text-cyan-300">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M12 21a9 9 0 100-18 9 9 0 000 18z"/><circle cx="7.5" cy="10.5" r="1.5"/><circle cx="12" cy="7.5" r="1.5"/><circle cx="16.5" cy="10.5" r="1.5"/></svg>
+                            <i data-lucide="palette" class="w-6 h-6"></i>
                         </div>
                         <h3 class="text-xl font-heading font-bold text-white">UI Design</h3>
                         <ul class="space-y-2 text-sm text-slate-300">
-                            <li class="flex items-center gap-2"><svg class="w-4 h-4 text-cyan-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Design Systems & Tokens</li>
-                            <li class="flex items-center gap-2"><svg class="w-4 h-4 text-cyan-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Interfaces de Alta Fidelidade</li>
-                            <li class="flex items-center gap-2"><svg class="w-4 h-4 text-cyan-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Microinterações & Motion</li>
-                            <li class="flex items-center gap-2"><svg class="w-4 h-4 text-cyan-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Acessibilidade & Contraste</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-cyan-400"></i> Design Systems & Tokens</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-cyan-400"></i> Interfaces de Alta Fidelidade</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-cyan-400"></i> Microinterações & Motion</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-cyan-400"></i> Acessibilidade & Contraste</li>
                         </ul>
                     </div>
 
                     <!-- Category 3: Product Design -->
                     <div class="p-6 rounded-2xl bg-dark-bg/90 border border-white/10 space-y-4 hover:border-indigo-500/40 transition-colors">
                         <div class="w-12 h-12 rounded-xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center text-indigo-300">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+                            <i data-lucide="briefcase" class="w-6 h-6"></i>
                         </div>
                         <h3 class="text-xl font-heading font-bold text-white">Product Design</h3>
                         <ul class="space-y-2 text-sm text-slate-300">
-                            <li class="flex items-center gap-2"><svg class="w-4 h-4 text-indigo-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Estratégia de Produto</li>
-                            <li class="flex items-center gap-2"><svg class="w-4 h-4 text-indigo-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Metodologia Double Diamond</li>
-                            <li class="flex items-center gap-2"><svg class="w-4 h-4 text-indigo-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Prototipagem & Lançamento MVP</li>
-                            <li class="flex items-center gap-2"><svg class="w-4 h-4 text-indigo-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Visão de Negócio & Métricas</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-indigo-400"></i> Estratégia de Produto</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-indigo-400"></i> Metodologia Double Diamond</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-indigo-400"></i> Prototipagem & Lançamento MVP</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-indigo-400"></i> Visão de Negócio & Métricas</li>
                         </ul>
                     </div>
 
                     <!-- Category 4: AI & Tecnologia -->
                     <div class="p-6 rounded-2xl bg-dark-bg/90 border border-white/10 space-y-4 hover:border-emerald-500/40 transition-colors">
                         <div class="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-300">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/></svg>
+                            <i data-lucide="cpu" class="w-6 h-6"></i>
                         </div>
                         <h3 class="text-xl font-heading font-bold text-white">AI e Tecnologia</h3>
                         <ul class="space-y-2 text-sm text-slate-300">
-                            <li class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Integração de IA em Produtos</li>
-                            <li class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Front-end (HTML/CSS/JS/React)</li>
-                            <li class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Design Engineering</li>
-                            <li class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Prototipagem Interativa</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Integração de IA em Produtos</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Front-end (HTML/CSS/JS/React)</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Design Engineering</li>
+                            <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-emerald-400"></i> Prototipagem Interativa</li>
                         </ul>
                     </div>
 
@@ -765,28 +758,29 @@
                 <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6 pt-4">
                     <!-- Email Button -->
                     <a href="mailto:danielleitedesign@gmail.com" class="inline-flex items-center gap-3 px-6 py-4 sm:px-8 sm:py-5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-brand-400/50 backdrop-blur-md text-base sm:text-lg font-semibold text-white transition-all duration-300 hover:scale-105 shadow-lg group">
-                        <svg class="w-6 h-6 text-brand-400 group-hover:scale-110 transition-transform shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        <i data-lucide="mail" class="w-6 h-6 text-brand-400 group-hover:scale-110 transition-transform"></i>
                         <span>E-mail</span>
                     </a>
 
                     <!-- LinkedIn Button -->
                     <a href="https://www.linkedin.com/in/daniel-rodrigo-leite/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 px-6 py-4 sm:px-8 sm:py-5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-brand-400/50 backdrop-blur-md text-base sm:text-lg font-semibold text-white transition-all duration-300 hover:scale-105 shadow-lg group">
-                        <svg class="w-6 h-6 fill-current text-brand-400 group-hover:scale-110 transition-transform shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <svg class="w-6 h-6 fill-current text-brand-400 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
                         </svg>
+                        <i data-lucide="linkedin" class="w-6 h-6 text-brand-400 group-hover:scale-110 transition-transform hidden"></i>
                         <span>LinkedIn</span>
                     </a>
 
                     <!-- WhatsApp Button -->
                     <a href="https://api.whatsapp.com/send/?phone=5592992552746" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 px-6 py-4 sm:px-8 sm:py-5 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-emerald-500/50 backdrop-blur-md text-base sm:text-lg font-semibold text-white transition-all duration-300 hover:scale-105 shadow-lg group">
-                        <svg class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition-transform shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        <i data-lucide="phone" class="w-6 h-6 text-emerald-400 group-hover:scale-110 transition-transform"></i>
                         <span>WhatsApp</span>
                     </a>
                 </div>
 
                 <!-- Footer details -->
-                <div class="pt-16 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-slate-400 w-full">
-                    <div class="flex items-center gap-3 text-center sm:text-left">
+                <div class="pt-16 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-slate-400">
+                    <div class="flex items-center gap-3">
                         <span class="font-heading font-bold text-white text-base">DL.</span>
                         <span>Todos os direitos reservados. &copy; 2026 Daniel Leite.</span>
                     </div>
