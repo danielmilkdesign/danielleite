@@ -1,0 +1,9 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/danielleitedesign/(.*)",
+      "destination": "/$1"
+    }
+  ]
+}
