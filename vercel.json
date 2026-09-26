@@ -4,6 +4,14 @@
     {
       "source": "/danielleitedesign/(.*)",
       "destination": "/$1"
+    },
+    {
+      "source": "/(.*)favicon(.*)",
+      "destination": "/favicon$2"
+    },
+    {
+      "source": "/(.*)apple-touch-icon(.*)",
+      "destination": "/apple-touch-icon$2"
     }
   ]
 }
