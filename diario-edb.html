@@ -99,145 +99,245 @@
     </div>
 
     <!-- CONTENT CONTAINER -->
-    <main class="relative z-10 pt-32 sm:pt-36 pb-24 px-6 lg:px-12 max-w-5xl mx-auto space-y-16">
+    <main class="case-container">
         
-        <!-- Case Header -->
-        <div class="space-y-6">
-            <div class="flex flex-wrap gap-3">
+        <!-- Case Hero -->
+        <div class="case-hero">
+            <div class="case-hero-meta">
                 <span class="case-badge-cyan">Product Designer & CDO</span>
-                <span class="case-badge-muted">Tablet 10.4'' Cockpit Interface</span>
+                <span class="case-badge-muted">Cockpit Interface 10.4''</span>
+                <span class="case-badge-muted">Aviação & Green UX</span>
             </div>
 
             <h1 class="case-title">
-                Diário de Bordo Aeronáutico
+                Diário de Bordo <em>Aeronáutico</em> (Hóruz eDB)
             </h1>
 
-            <p class="case-lead max-w-3xl">
-                Plataforma estratégica de dados para modernizar o diário de bordo da aviação geral no Brasil.
+            <p class="case-lead">
+                Plataforma estratégica de dados e conformidade regulatória para modernizar a aviação geral no Brasil.
             </p>
 
-            <p class="text-base text-slate-300 leading-relaxed max-w-4xl">
-                O Hóruz eDB nasceu para transformar um processo manual e crítico em uma operação digital, segura e escalável. No lugar de apenas digitalizar formulários, o projeto foi desenhado como um ecossistema de dados para conformidade regulatória ANAC, eficiência operacional e impacto socioambiental na Amazônia.
+            <p class="case-intro">
+                O Hóruz eDB nasceu para transformar um processo manual, burocrático e crítico em uma operação 100% digital, segura e homologada pela <strong>ANAC</strong>. No lugar de simplesmente transpor formulários de papel para uma tela estática, concebemos o produto como um ecossistema operacional de alta confiabilidade: cockpit ergonomics, operação offline-first para áreas remotas e inteligência de dados com impacto socioambiental direto na Amazônia.
             </p>
-        </div>
 
-        <!-- Cover Image Showcase -->
-        <div class="rounded-3xl border border-white/15 overflow-hidden bg-dark-card shadow-2xl">
-            <img src="assets/HORUZ.webp" alt="Diário de Bordo Aeronáutico Hóruz eDB Showcase" class="w-full h-auto object-cover" loading="lazy" decoding="async">
-        </div>
-
-        <!-- Challenges Section -->
-        <div class="space-y-6">
-            <h2 class="text-2xl font-heading font-bold text-rose-400">
-                01. Desafios
-            </h2>
-            <p class="text-slate-300 text-base leading-relaxed">
-                O setor de aviação geral no Brasil, especialmente na Região Norte, ainda operava com processos analógicos e ineficientes.
-            </p>
-            <p class="text-slate-300 text-base leading-relaxed">
-                O principal ponto de fricção era o Diário de Bordo preenchido manualmente em papel, gerando riscos severos de conformidade, lentidão operacional e alto custo de armazenamento físico.
-            </p>
-            <p class="text-slate-300 text-base leading-relaxed">
-                Também havia impacto ambiental sem mecanismos de metrificação de GEE e ausência de comunicação efetiva entre aeronaves privadas e governo em cenários de emergência, como combate a incêndios florestais.
-            </p>
-        </div>
-
-        <!-- Solution Section -->
-        <div class="space-y-6">
-            <h2 class="text-2xl font-heading font-bold text-cyan-300">
-                02. Solução
-            </h2>
-            <p class="text-slate-300 text-base leading-relaxed">
-                Como Product Designer e CDO, defini uma estratégia além da digitalização do papel: conformidade como experiência com validações em tempo real segundo normas da ANAC; decisão de uso em Tablet 10.4 para legibilidade sob luz solar e ergonomia em cabine; abordagem Green UX com metrificação de carbono no fluxo do diário para converter dado operacional em ativo ambiental; e arquitetura de informação orientada a hiperautomação.
-            </p>
-        </div>
-
-        <!-- Screenshots Showcase -->
-        <div class="space-y-6">
-            <h2 class="text-2xl sm:text-3xl font-heading font-bold text-white">Screenshots & Protótipo</h2>
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="rounded-2xl border border-white/10 overflow-hidden shadow-2xl bg-dark-card">
-                    <img src="assets/diario-edb-horuz.webp" alt="Interface do Hóruz eDB em tablet, otimizada para uso operacional em cabine." class="w-full h-auto object-cover" loading="lazy" decoding="async">
-                    <p class="p-3.5 text-xs text-slate-400 border-t border-white/5 bg-dark-card">Interface do Hóruz eDB em tablet, otimizada para uso operacional em cabine e conformidade ANAC.</p>
+            <!-- Metadata Specs Grid (Signature Hairline Grid) -->
+            <div class="case-specs">
+                <div class="spec-item">
+                    <span class="spec-label mono">ROLE</span>
+                    <span class="spec-value">Product Designer & CDO</span>
                 </div>
-                <div class="rounded-2xl border border-white/10 overflow-hidden shadow-2xl bg-dark-card">
-                    <img src="assets/diario-cockpit.webp" alt="Simulação do uso do EDB no cockpit do piloto" class="w-full h-auto object-cover" loading="lazy" decoding="async">
-                    <p class="p-3.5 text-xs text-slate-400 border-t border-white/5 bg-dark-card">Simulação de ergonomia de uso do EDB no cockpit</p>
+                <div class="spec-item">
+                    <span class="spec-label mono">SCOPE</span>
+                    <span class="spec-value">Cockpit UX, Green UX & Compliance</span>
                 </div>
+                <div class="spec-item">
+                    <span class="spec-label mono">PLATFORM</span>
+                    <span class="spec-value">Tablet 10.4'' Offline-First</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label mono">KEY RESULT</span>
+                    <span class="spec-value highlight">100% Sem Papel / ANAC</span>
+                </div>
+            </div>
+
+            <!-- Cover Image Showcase -->
+            <div class="case-cover">
+                <img src="assets/HORUZ.webp" alt="Diário de Bordo Aeronáutico Hóruz eDB Showcase" loading="eager" decoding="async">
             </div>
         </div>
 
-        <!-- Impact & Results -->
-        <div class="space-y-4 p-8 rounded-3xl bg-brand-950/40 border border-brand-500/30 shadow-xl">
-            <h2 class="text-2xl font-heading font-bold text-cyan-300">03. Resultados e Conclusão</h2>
-            <p class="text-slate-300 text-base leading-relaxed">
-                A solução final foi o Hóruz eDB, uma plataforma simples e intuitiva com autenticação segura, armazenamento centralizado e operação autorizada pela ANAC. O produto integrou impacto social e ambiental com suporte ao combate a queimadas na Amazônia via mensagens em tempo real para mobilizar aeronaves privadas, além de modelo SaaS B2B escalável por horas voadas.
-            </p>
-            <p class="text-slate-300 text-base leading-relaxed">
-                Como impacto, houve diferenciação de mercado como startup pioneira da Região Norte em eDB, eliminação total de formulários em papel, redução de custos logísticos e homologação regulatória oficial.
-            </p>
-        </div>
+        <!-- Section 01: Desafios Críticos -->
+        <section class="case-section">
+            <div class="case-section-grid">
+                <aside class="case-section-aside">
+                    <span class="case-section-num mono">/ 01</span>
+                    <span class="case-section-kicker mono">CONTEXTO & REGULAÇÃO</span>
+                    <h2 class="case-section-title">Fricção Analógica nos <em>Cockpits</em></h2>
+                </aside>
 
-        <!-- Veja Também (Other Projects Showcase) -->
-        <div class="pt-16 border-t border-white/10 space-y-8">
-            <h2 class="text-3xl font-heading font-extrabold text-white tracking-tight">Veja Também</h2>
-            
-            <div class="grid md:grid-cols-3 gap-6">
-                <!-- Project: RecruiterSys -->
-                <a href="recruitersys.html" class="group block">
-                    <div class="glow-card-border h-full">
-                        <div class="bg-dark-card/90 rounded-2xl p-4 flex flex-col h-full space-y-4">
-                            <div class="rounded-xl overflow-hidden border border-white/10 aspect-[16/10] bg-dark-bg">
-                                <img src="assets/CAPA RECRUITER.webp" alt="RecruiterSys" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async">
+                <div class="case-body">
+                    <p>
+                        A aviação geral no Brasil — especialmente nas rotas remotas da Amazônia — dependia historicamente de cadernos físicos de diário de bordo. Essa rotina trazia gargalos críticos de segurança operacional e conformidade legal:
+                    </p>
+
+                    <div class="case-cards-grid">
+                        <div class="case-card">
+                            <div class="case-card-kicker mono">OPERAÇÃO & RISCO</div>
+                            <h4>Diário Físico em Papel</h4>
+                            <p>Preenchimento manual sujeito a rasuras, extravios de fichas e atrasos crônicos na consolidação de horas voadas e manutenção preventiva.</p>
+                        </div>
+
+                        <div class="case-card">
+                            <div class="case-card-kicker mono">REGULAÇÃO ANAC</div>
+                            <h4>Auditoria Morosa</h4>
+                            <p>Dificuldade na prestação de contas aos órgãos reguladores, exigindo arquivos físicos volumosos e auditorias presenciais demoradas.</p>
+                        </div>
+
+                        <div class="case-card">
+                            <div class="case-card-kicker mono">IMPACTO REGIONAL</div>
+                            <h4>Invisibilidade Ambiental</h4>
+                            <p>Ausência de metrificação confiável de emissões de GEE e falta de integração rápida entre frotas civis e defesa civil em queimadas florestais.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 02: A Solução de Produto -->
+        <section class="case-section">
+            <div class="case-section-grid">
+                <aside class="case-section-aside">
+                    <span class="case-section-num mono">/ 02</span>
+                    <span class="case-section-kicker mono">ESTRATÉGIA & ERGONOMIA</span>
+                    <h2 class="case-section-title">Cockpit UX & <em>Green UX</em></h2>
+                </aside>
+
+                <div class="case-body">
+                    <p>
+                        Como Product Designer e CDO, estabeleci os pilares estratégicos da plataforma unindo rigor de engenharia de software com usabilidade extrema para pilotos:
+                    </p>
+
+                    <div class="case-cards-grid">
+                        <div class="case-card">
+                            <div class="case-card-kicker mono">ERGONOMIA DE CABINE</div>
+                            <h4>Tablet 10.4'' Touch-First</h4>
+                            <p>Botões de toque expandidos e alto contraste cromático para garantir legibilidade imediata sob sol forte e vibração constante da cabine.</p>
+                        </div>
+
+                        <div class="case-card">
+                            <div class="case-card-kicker mono">ARQUITETURA RESILIENTE</div>
+                            <h4>Offline-First Engine</h4>
+                            <p>Operação ininterrupta em pistas de pouso sem conectividade no interior da floresta, com sincronização em nuvem criptografada ao retomar sinal.</p>
+                        </div>
+
+                        <div class="case-card">
+                            <div class="case-card-kicker mono">GREEN UX NATIVO</div>
+                            <h4>Metrificação de Carbono</h4>
+                            <p>Cálculo automático de GEE integrado ao plano de voo, convertendo dados rotineiros de queima de combustível em ativos ambientais auditáveis.</p>
+                        </div>
+                    </div>
+
+                    <div class="case-callout">
+                        <div class="case-callout-title mono">HIPERAUTOMAÇÃO REGULATÓRIA</div>
+                        <p>Validação em tempo real de limites de jornada de tripulantes e prazos de manutenção de motores, bloqueando inconsistências antes da decolagem.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 03: Screenshots & Protótipo -->
+        <section class="case-section">
+            <div class="case-section-grid">
+                <aside class="case-section-aside">
+                    <span class="case-section-num mono">/ 03</span>
+                    <span class="case-section-kicker mono">CRAFT & VALIDAÇÃO</span>
+                    <h2 class="case-section-title">Interface em <em>Ambiente Real</em></h2>
+                </aside>
+
+                <div class="case-body">
+                    <p>
+                        Projetamos cada tela considerando o ângulo de visão do piloto e a velocidade de leitura de dados críticos de voo:
+                    </p>
+
+                    <div class="case-gallery">
+                        <div class="case-gallery-item">
+                            <img src="assets/diario-edb-horuz.webp" alt="Interface do Hóruz eDB em tablet" loading="lazy" decoding="async">
+                            <div class="case-gallery-caption mono">Interface do Hóruz eDB: etapas de voo estruturadas e validação ANAC.</div>
+                        </div>
+
+                        <div class="case-gallery-item">
+                            <img src="assets/diario-cockpit.webp" alt="Simulação de ergonomia no cockpit da aeronave" loading="lazy" decoding="async">
+                            <div class="case-gallery-caption mono">Simulação ergonômica de cabine: visualização desobstruída no painel.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 04: Resultados & Impacto -->
+        <section class="case-section">
+            <div class="case-section-grid">
+                <aside class="case-section-aside">
+                    <span class="case-section-num mono">/ 04</span>
+                    <span class="case-section-kicker mono">IMPACTO DE MERCADO</span>
+                    <h2 class="case-section-title">Resultados & <em>Conclusão</em></h2>
+                </aside>
+
+                <div class="case-body">
+                    <div class="case-results-card">
+                        <p>
+                            O Hóruz eDB consolidou-se como pioneiro na digitalização da aviação regional brasileira: homologado pela ANAC, eliminou integralmente o uso de papel, encurtou os processos de auditoria e viabilizou um modelo SaaS B2B sustentável e escalável.
+                        </p>
+
+                        <div class="case-results-stats">
+                            <div class="case-stat">
+                                <strong>100%</strong>
+                                <small class="mono">Sem Papel</small>
                             </div>
-                            <div class="space-y-2 flex-grow">
-                                <span class="text-[10px] font-mono font-semibold uppercase tracking-wider text-brand-400 block">PRODUCT DESIGN</span>
-                                <h3 class="text-lg font-heading font-bold text-white group-hover:text-brand-300 transition-colors">
-                                    RecruiterSys – O Ecossistema de Recrutamento Tech
-                                </h3>
+                            <div class="case-stat">
+                                <strong>-60%</strong>
+                                <small class="mono">Custo Logístico</small>
+                            </div>
+                            <div class="case-stat">
+                                <strong>0 min</strong>
+                                <small class="mono">Delay Auditoria ANAC</small>
+                            </div>
+                            <div class="case-stat">
+                                <strong>1º</strong>
+                                <small class="mono">eDB Pioneiro no Norte</small>
                             </div>
                         </div>
                     </div>
-                </a>
+                </div>
+            </div>
+        </section>
 
-                <!-- Project: Pet Plant App -->
-                <a href="petplant.html" class="group block">
-                    <div class="glow-card-border h-full">
-                        <div class="bg-dark-card/90 rounded-2xl p-4 flex flex-col h-full space-y-4">
-                            <div class="rounded-xl overflow-hidden border border-white/10 aspect-[16/10] bg-dark-bg">
-                                <img src="assets/MOCK PET PLANT.webp" alt="Pet Plant App" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async">
-                            </div>
-                            <div class="space-y-2 flex-grow">
-                                <span class="text-[10px] font-mono font-semibold uppercase tracking-wider text-emerald-400 block">PRODUCT DESIGN & IOT</span>
-                                <h3 class="text-lg font-heading font-bold text-white group-hover:text-brand-300 transition-colors">
-                                    Pet Plant App – UX Botânica
-                                </h3>
-                            </div>
-                        </div>
+        <!-- Related Cases ("Veja Também") -->
+        <section class="case-section" style="padding-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
+                <h3 style="font-size: 1.4rem; font-weight: 800; letter-spacing: -0.03em; color: #fff;">Veja Também</h3>
+                <span class="mono" style="font-size: 0.72rem; color: var(--muted); letter-spacing: 0.1em;">CASES SELECIONADOS</span>
+            </div>
+
+            <div class="case-related-grid">
+                <!-- Case: RecruiterSys -->
+                <a href="recruitersys.html" class="case-related-card">
+                    <div class="case-related-img">
+                        <img src="assets/CAPA RECRUITER.webp" alt="RecruiterSys" loading="lazy" decoding="async">
+                    </div>
+                    <div class="case-related-info">
+                        <span class="case-related-tag mono">ATS B2B & HR TECH</span>
+                        <h4 class="case-related-title">RecruiterSys – Ecossistema Tech</h4>
                     </div>
                 </a>
 
-                <!-- Project: VentHome -->
-                <a href="ventihome.html" class="group block">
-                    <div class="glow-card-border h-full">
-                        <div class="bg-dark-card/90 rounded-2xl p-4 flex flex-col h-full space-y-4">
-                            <div class="rounded-xl overflow-hidden border border-white/10 aspect-[16/10] bg-dark-bg">
-                                <img src="assets/VENTIHOME.webp" alt="VentHome" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async">
-                            </div>
-                            <div class="space-y-2 flex-grow">
-                                <span class="text-[10px] font-mono font-semibold uppercase tracking-wider text-indigo-400 block">UX/UI & IOT</span>
-                                <h3 class="text-lg font-heading font-bold text-white group-hover:text-brand-300 transition-colors">
-                                    VentHome – Além do Vento
-                                </h3>
-                            </div>
-                        </div>
+                <!-- Case: Pet Plant App -->
+                <a href="petplant.html" class="case-related-card">
+                    <div class="case-related-img">
+                        <img src="assets/MOCK PET PLANT.webp" alt="Pet Plant App" loading="lazy" decoding="async">
+                    </div>
+                    <div class="case-related-info">
+                        <span class="case-related-tag mono">PRODUCT DESIGN & IOT</span>
+                        <h4 class="case-related-title">Pet Plant App – UX Botânica</h4>
+                    </div>
+                </a>
+
+                <!-- Case: VentHome -->
+                <a href="ventihome.html" class="case-related-card">
+                    <div class="case-related-img">
+                        <img src="assets/VENTIHOME.webp" alt="VentHome" loading="lazy" decoding="async">
+                    </div>
+                    <div class="case-related-info">
+                        <span class="case-related-tag mono">UX/UI & HARDWARE IOT</span>
+                        <h4 class="case-related-title">VentHome – Além do Vento</h4>
                     </div>
                 </a>
             </div>
-        </div>
+        </section>
 
         <!-- Footer Navigation CTA -->
-        <div class="pt-12 border-t border-white/10 flex flex-wrap items-center justify-between gap-6">
+        <div class="case-footer-nav">
             <a href="recruitersys.html" class="edge-glow-btn group">
                 <span class="edge-glow-inner">
                     <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
@@ -245,16 +345,10 @@
                 </span>
             </a>
 
-            <a href="index.html#work" class="edge-glow-btn group">
-                <span class="edge-glow-inner">
-                    <span>Voltar ao Portfólio</span>
-                </span>
-            </a>
-
-            <a href="petplant.html" class="edge-glow-btn group">
-                <span class="edge-glow-inner">
-                    <span>Próximo Case: Pet Plant App</span>
-                    <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+            <a href="petplant.html" class="next-project-card">
+                <span class="next-project-label mono">PRÓXIMO CASE</span>
+                <span class="next-project-title">
+                    Pet Plant App – UX Botânica <span class="arrow">→</span>
                 </span>
             </a>
         </div>

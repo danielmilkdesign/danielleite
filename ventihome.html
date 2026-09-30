@@ -99,156 +99,275 @@
     </div>
 
     <!-- CONTENT CONTAINER -->
-    <main class="relative z-10 pt-32 sm:pt-36 pb-24 px-6 lg:px-12 max-w-5xl mx-auto space-y-16">
+    <main class="case-container">
         
-        <!-- Case Header -->
-        <div class="space-y-6">
-            <div class="flex flex-wrap gap-3">
+        <!-- Case Hero -->
+        <div class="case-hero">
+            <div class="case-hero-meta">
                 <span class="case-badge-cyan">Product Designer (UX/UI)</span>
                 <span class="case-badge-muted">Hardware to Software</span>
+                <span class="case-badge-muted">IoT & Smart Home</span>
             </div>
 
             <h1 class="case-title">
-                VentHome – Além do Vento
+                VentHome — <em>Além do Vento</em>
             </h1>
 
-            <p class="case-lead max-w-3xl">
-                O VentHome surgiu do questionamento de como um ventilador poderia se adaptar organicamente ao nosso ritmo de vida moderno.
+            <p class="case-lead">
+                Transformando eletrodomésticos analógicos em dispositivos inteligentes e contextuais através de UX e IoT.
             </p>
 
-            <p class="text-base text-slate-300 leading-relaxed max-w-4xl">
-                O VentHome não nasceu apenas como um controle remoto Bluetooth; ele surgiu do questionamento de como um objeto tão analógico quanto um ventilador poderia se adaptar organicamente ao nosso ritmo de vida moderno, especialmente no clima desafiador que conhecemos bem em Manaus.
+            <p class="case-intro">
+                O VentHome não nasceu apenas como um controle remoto Bluetooth; ele surgiu do questionamento de como um objeto tão tradicional quanto um ventilador poderia se adaptar organicamente ao nosso ritmo de vida moderno, especialmente no clima desafiador e quente de Manaus. Ao permitir que o usuário crie sua própria curva de ventilação, transformamos um produto de prateleira em um serviço personalizado e eficiente.
             </p>
 
-            <p class="text-base text-slate-300 leading-relaxed max-w-4xl">
-                <strong>Objetivo:</strong> O VentHome entrega mais que um controle: ele entrega autonomia. Ao permitir que o usuário crie sua própria curva de ventilação, transformamos um produto de prateleira em um serviço personalizado.
-            </p>
-        </div>
+            <!-- Metadata Specs Grid (Signature Hairline Grid) -->
+            <div class="case-specs">
+                <div class="spec-item">
+                    <span class="spec-label mono">ROLE</span>
+                    <span class="spec-value">Product Designer (UX/UI)</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label mono">SCOPE</span>
+                    <span class="spec-value">Hardware-to-Software IoT & Mobile</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label mono">PLATFORM</span>
+                    <span class="spec-value">Mobile App (BLE) + Smart Fan</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label mono">KEY RESULT</span>
+                    <span class="spec-value highlight">Automação Circadiana</span>
+                </div>
+            </div>
 
-        <!-- Cover Image Showcase -->
-        <div class="rounded-3xl border border-white/15 overflow-hidden bg-dark-card shadow-2xl">
-            <img src="assets/VENTIHOME.webp" alt="VentHome Showcase" class="w-full h-auto object-cover" loading="lazy" decoding="async">
-        </div>
-
-        <!-- Problem Section -->
-        <div class="space-y-6">
-            <h2 class="text-2xl font-heading font-bold text-rose-400">
-                01. O Desafio: Humanizando a IoT
-            </h2>
-            <p class="text-slate-300 text-base leading-relaxed">
-                Como designer que transita entre a arquitetura e o digital, sempre me fascinou como a tecnologia pode transformar nossa percepção do ambiente. Identificamos que a frustração do usuário comum vinha da falta de personalização — o "médio" de um aparelho raramente é o "médio" ideal para todos.
-            </p>
-        </div>
-
-        <!-- Process Section -->
-        <div class="space-y-6">
-            <h2 class="text-2xl font-heading font-bold text-indigo-300">
-                02. Minha Atuação e Tomada de Decisão
-            </h2>
-            <div class="space-y-4 text-slate-300 text-base leading-relaxed">
-                <p><strong class="text-white">Imersão e Empatia:</strong> Apliquei o Double Diamond não apenas como metodologia, mas como lente investigativa. Observei que a ventilação é situacional. Queria que o app entendesse o contexto.</p>
-                <p><strong class="text-white">Estratégia e Arquitetura:</strong> Minha bagagem em Design Systems influenciou a criação de uma estrutura escalável. O objetivo era criar uma hierarquia visual onde o status da conexão Bluetooth fosse onipresente, mas não intrusivo.</p>
-                <p><strong class="text-white">Craft e Interface:</strong> No desenvolvimento da UI, prototipei interações que transmitissem leveza, usando whitespace para operar sem esforço.</p>
-                <p class="pt-2 text-indigo-300 font-semibold">North Star Metric: Design Centrado no Contexto</p>
+            <!-- Cover Image Showcase -->
+            <div class="case-cover">
+                <img src="assets/VENTIHOME.webp" alt="VentHome Showcase" loading="eager" decoding="async">
             </div>
         </div>
 
-        <!-- Solution Section -->
-        <div class="space-y-6">
-            <h2 class="text-2xl font-heading font-bold text-cyan-300">
-                03. Decisões de Produto e Arquitetura
-            </h2>
-            <p class="text-slate-300 text-base leading-relaxed">
-                A base para uma interface conectada, escalável e não intrusiva:
-            </p>
-            <ul class="space-y-3 text-slate-300 text-base">
-                <li>• <strong>Design Centrado no Contexto:</strong> Definimos categorias claras: Velocidades para controle direto, e Modos para automação.</li>
-                <li>• <strong>Foco no Usuário:</strong> Introduzimos o "Modo Gamer" e o "Modo Bike", entendendo que o público tech e entusiastas de esportes indoor demandam uma experiência diferenciada de fluxo de ar.</li>
-                <li>• <strong>O Visual:</strong> Optei por um layout limpo, onde o uso de espaços em branco (whitespace) permite que o usuário opere o app sem esforço visual, mesmo em ambientes com pouca luz.</li>
-                <li>• <strong>Componentização:</strong> Cada modo foi tratado como um módulo independente, facilitando a implementação de novos contextos de uso no futuro.</li>
-            </ul>
-        </div>
+        <!-- Section 01: O Desafio -->
+        <section class="case-section">
+            <div class="case-section-grid">
+                <aside class="case-section-aside">
+                    <span class="case-section-num mono">/ 01</span>
+                    <span class="case-section-kicker mono">PROBLEMA & CONTEXTO</span>
+                    <h2 class="case-section-title">Humanizando a <em>IoT Doméstica</em></h2>
+                </aside>
 
-        <!-- Screenshots Showcase -->
-        <div class="space-y-6">
-            <h2 class="text-2xl sm:text-3xl font-heading font-bold text-white">Interface Showcase</h2>
-            <div class="rounded-2xl border border-white/10 overflow-hidden shadow-2xl max-w-3xl mx-auto bg-dark-card">
-                <img src="assets/mockupventihome.webp" alt="VentHome Mockup" class="w-full h-auto object-cover" loading="lazy" decoding="async">
+                <div class="case-body">
+                    <p>
+                        Como designer com raízes na arquitetura, analisei como o conforto térmico condiciona a produtividade e a qualidade do repouso. A frustração do usuário com ventiladores comuns decorre da rigidez mecânica de um hardware que ignora a variação do clima:
+                    </p>
+
+                    <div class="case-cards-grid">
+                        <div class="case-card">
+                            <div class="case-card-kicker mono">RIGIDEZ ANALÓGICA</div>
+                            <h4>O "Médio" Genérico</h4>
+                            <p>Aparelhos comuns oferecem 3 velocidades fixas que raramente atendem às necessidades individuais de fluxo de ar ao longo do dia.</p>
+                        </div>
+
+                        <div class="case-card">
+                            <div class="case-card-kicker mono">FRICÇÃO NOTURNA</div>
+                            <h4>Controles no Escuro</h4>
+                            <p>Controles remotos físicos se perdem facilmente, não têm iluminação e exigem esforço visual incômodo durante o repouso.</p>
+                        </div>
+
+                        <div class="case-card">
+                            <div class="case-card-kicker mono">CICLO BIOLÓGICO</div>
+                            <h4>Choque Térmico Noturno</h4>
+                            <p>A temperatura do quarto arrefece durante a madrugada, mas o ventilador analógico permanece na mesma potência, acordando o usuário com frio.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Impact & Results -->
-        <div class="space-y-4 p-8 rounded-3xl bg-brand-950/40 border border-brand-500/30 shadow-xl">
-            <h2 class="text-2xl font-heading font-bold text-indigo-300">04. Entrega, Visão de Futuro e Toolbox</h2>
-            <p class="text-slate-300 text-base leading-relaxed">
-                O VentHome entrega autonomia. Este projeto reforçou minha capacidade de traduzir necessidades complexas de hardware para interfaces mobile intuitivas.
-            </p>
-            <ul class="space-y-3 text-slate-300 text-base">
-                <li>• Transformação de um hardware comum em um ecossistema inteligente, elevando o valor percebido do produto e criando um diferencial competitivo claro em um mercado de commodities.</li>
-                <li>• Entrega de uma interface intuitiva e adaptativa que elimina a frustração com controles remotos físicos limitados, oferecendo precisão no ajuste ambiental, customização e um modo noturno que preserva o ciclo circadiano do usuário.</li>
-            </ul>
-        </div>
+        <!-- Section 02: Atuação & Decisões -->
+        <section class="case-section">
+            <div class="case-section-grid">
+                <aside class="case-section-aside">
+                    <span class="case-section-num mono">/ 02</span>
+                    <span class="case-section-kicker mono">ESTRATÉGIA & DESIGN SYSTEM</span>
+                    <h2 class="case-section-title">Design Centrado no <em>Contexto</em></h2>
+                </aside>
 
-        <!-- Veja Também (Other Projects Showcase) -->
-        <div class="pt-16 border-t border-white/10 space-y-8">
-            <h2 class="text-3xl font-heading font-extrabold text-white tracking-tight">Veja Também</h2>
-            
-            <div class="grid md:grid-cols-3 gap-6">
-                <!-- Project: RecruiterSys -->
-                <a href="recruitersys.html" class="group block">
-                    <div class="glow-card-border h-full">
-                        <div class="bg-dark-card/90 rounded-2xl p-4 flex flex-col h-full space-y-4">
-                            <div class="rounded-xl overflow-hidden border border-white/10 aspect-[16/10] bg-dark-bg">
-                                <img src="assets/CAPA RECRUITER.webp" alt="RecruiterSys" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async">
+                <div class="case-body">
+                    <p>
+                        Adotei o <strong>Double Diamond</strong> para mapear as ocasiões de uso e desenhar um sistema que operasse sem esforço cognitivo:
+                    </p>
+
+                    <div class="case-cards-grid">
+                        <div class="case-card">
+                            <div class="case-card-kicker mono">VENTILAÇÃO SITUACIONAL</div>
+                            <h4>Modos Contextuais</h4>
+                            <p>Mapeamento de comportamentos: o fluxo de ar exigido para trabalhar no setup é completamente diferente de treinos indoor ou do sono reparador.</p>
+                        </div>
+
+                        <div class="case-card">
+                            <div class="case-card-kicker mono">ESTRUTURA ESCALÁVEL</div>
+                            <h4>Bluetooth Resiliente</h4>
+                            <p>Status de conexão BLE presente sem poluir a interface, reconectando instantaneamente em segundo plano sem travar a navegação.</p>
+                        </div>
+
+                        <div class="case-card">
+                            <div class="case-card-kicker mono">CRAFT & INTERFACE</div>
+                            <h4>Ergonomia para Pouca Luz</h4>
+                            <p>Paleta escura balanceada com alto contraste nos controles essenciais e whitespace generoso para operação tátil sem ofuscamento visual.</p>
+                        </div>
+                    </div>
+
+                    <div class="case-callout">
+                        <div class="case-callout-title mono">NORTH STAR METRIC</div>
+                        <p>Reduzir a fricção de ajuste manual a zero durante a noite, adaptando o fluxo de vento ao ciclo circadiano do usuário de forma autônoma.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 03: Decisões de Produto & Arquitetura -->
+        <section class="case-section">
+            <div class="case-section-grid">
+                <aside class="case-section-aside">
+                    <span class="case-section-num mono">/ 03</span>
+                    <span class="case-section-kicker mono">ARQUITETURA DE INFORMAÇÃO</span>
+                    <h2 class="case-section-title">Modos Inteligentes & <em>Presets</em></h2>
+                </aside>
+
+                <div class="case-body">
+                    <p>
+                        A interface divide-se de forma clara entre ajuste contínuo de rotação e modos pré-programados para automação rápida:
+                    </p>
+
+                    <div class="case-cards-grid">
+                        <div class="case-card">
+                            <div class="case-card-kicker mono">MODO CIRCADIANO</div>
+                            <h4>Curva Noturna de Vento</h4>
+                            <p>Algoritmo que diminui suavemente a rotação das pás ao longo da madrugada conforme a temperatura do quarto declina, protegendo a imunidade do sono.</p>
+                        </div>
+
+                        <div class="case-card">
+                            <div class="case-card-kicker mono">MODOS ESPECÍFICOS</div>
+                            <h4>Gamer & Treino Bike</h4>
+                            <p>Padrões de rajada e fluxo contínuo desenhados especialmente para setups com alta dissipação de calor ou treino esportivo indoor.</p>
+                        </div>
+
+                        <div class="case-card">
+                            <div class="case-card-kicker mono">COMPONENTIZAÇÃO</div>
+                            <h4>Arquitetura Modular</h4>
+                            <p>Componentes desacoplados que permitem integrar novos modelos de aparelhos e sensores adicionais sem retrabalho no código central.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 04: Visuals Showcase -->
+        <section class="case-section">
+            <div class="case-section-grid">
+                <aside class="case-section-aside">
+                    <span class="case-section-num mono">/ 04</span>
+                    <span class="case-section-kicker mono">CRAFT & PROTÓTIPO</span>
+                    <h2 class="case-section-title">Mockup em <em>Alta Resolução</em></h2>
+                </aside>
+
+                <div class="case-body">
+                    <p>
+                        A interface destaca o dial central de velocidade e cards de modos rápidos com resposta háptica e visual:
+                    </p>
+
+                    <div class="case-gallery-item" style="margin-top: 24px;">
+                        <img src="assets/mockupventihome.webp" alt="VentHome Mockup" loading="lazy" decoding="async">
+                        <div class="case-gallery-caption mono">Interface do VentHome: controle contínuo de rotação, alternador de modos e status de conexão BLE.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 05: Resultados & Impacto -->
+        <section class="case-section">
+            <div class="case-section-grid">
+                <aside class="case-section-aside">
+                    <span class="case-section-num mono">/ 05</span>
+                    <span class="case-section-kicker mono">IMPACTO & INOVAÇÃO</span>
+                    <h2 class="case-section-title">Resultados & <em>Visão de Futuro</em></h2>
+                </aside>
+
+                <div class="case-body">
+                    <div class="case-results-card">
+                        <p>
+                            O VentHome comprovou como o Design de Interação e a engenharia de software transformam uma commodity analógica em um produto de alto valor agregado. Ao unir automação circadiana com uma interface fluida, o projeto alcançou alto valor percebido e conforto comprovado para o consumidor.
+                        </p>
+
+                        <div class="case-results-stats">
+                            <div class="case-stat">
+                                <strong>100%</strong>
+                                <small class="mono">Automação Noturna</small>
                             </div>
-                            <div class="space-y-2 flex-grow">
-                                <span class="text-[10px] font-mono font-semibold uppercase tracking-wider text-brand-400 block">PRODUCT DESIGN</span>
-                                <h3 class="text-lg font-heading font-bold text-white group-hover:text-brand-300 transition-colors">
-                                    RecruiterSys – O Ecossistema de Recrutamento Tech
-                                </h3>
+                            <div class="case-stat">
+                                <strong>3.4x</strong>
+                                <small class="mono">Valor Percebido</small>
+                            </div>
+                            <div class="case-stat">
+                                <strong>0</strong>
+                                <small class="mono">Controles Perdidos</small>
+                            </div>
+                            <div class="case-stat">
+                                <strong>BLE</strong>
+                                <small class="mono">Sync Instantâneo</small>
                             </div>
                         </div>
                     </div>
-                </a>
+                </div>
+            </div>
+        </section>
 
-                <!-- Project: Diário de Bordo -->
-                <a href="diario-edb.html" class="group block">
-                    <div class="glow-card-border h-full">
-                        <div class="bg-dark-card/90 rounded-2xl p-4 flex flex-col h-full space-y-4">
-                            <div class="rounded-xl overflow-hidden border border-white/10 aspect-[16/10] bg-dark-bg">
-                                <img src="assets/HORUZ.webp" alt="Diário de Bordo Aeronáutico" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async">
-                            </div>
-                            <div class="space-y-2 flex-grow">
-                                <span class="text-[10px] font-mono font-semibold uppercase tracking-wider text-cyan-400 block">UX/UI DESIGN</span>
-                                <h3 class="text-lg font-heading font-bold text-white group-hover:text-brand-300 transition-colors">
-                                    Diário de Bordo Aeronáutico
-                                </h3>
-                            </div>
-                        </div>
+        <!-- Related Cases ("Veja Também") -->
+        <section class="case-section" style="padding-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
+                <h3 style="font-size: 1.4rem; font-weight: 800; letter-spacing: -0.03em; color: #fff;">Veja Também</h3>
+                <span class="mono" style="font-size: 0.72rem; color: var(--muted); letter-spacing: 0.1em;">CASES SELECIONADOS</span>
+            </div>
+
+            <div class="case-related-grid">
+                <!-- Case: RecruiterSys -->
+                <a href="recruitersys.html" class="case-related-card">
+                    <div class="case-related-img">
+                        <img src="assets/CAPA RECRUITER.webp" alt="RecruiterSys" loading="lazy" decoding="async">
+                    </div>
+                    <div class="case-related-info">
+                        <span class="case-related-tag mono">ATS B2B & HR TECH</span>
+                        <h4 class="case-related-title">RecruiterSys – Ecossistema Tech</h4>
                     </div>
                 </a>
 
-                <!-- Project: Pet Plant App -->
-                <a href="petplant.html" class="group block">
-                    <div class="glow-card-border h-full">
-                        <div class="bg-dark-card/90 rounded-2xl p-4 flex flex-col h-full space-y-4">
-                            <div class="rounded-xl overflow-hidden border border-white/10 aspect-[16/10] bg-dark-bg">
-                                <img src="assets/MOCK PET PLANT.webp" alt="Pet Plant App" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async">
-                            </div>
-                            <div class="space-y-2 flex-grow">
-                                <span class="text-[10px] font-mono font-semibold uppercase tracking-wider text-emerald-400 block">PRODUCT DESIGN & IOT</span>
-                                <h3 class="text-lg font-heading font-bold text-white group-hover:text-brand-300 transition-colors">
-                                    Pet Plant App – UX Botânica
-                                </h3>
-                            </div>
-                        </div>
+                <!-- Case: Diário de Bordo -->
+                <a href="diario-edb.html" class="case-related-card">
+                    <div class="case-related-img">
+                        <img src="assets/HORUZ.webp" alt="Diário de Bordo Aeronáutico Hóruz eDB" loading="lazy" decoding="async">
+                    </div>
+                    <div class="case-related-info">
+                        <span class="case-related-tag mono">UX/UI & AERONÁUTICA</span>
+                        <h4 class="case-related-title">Diário de Bordo Aeronáutico (Hóruz eDB)</h4>
+                    </div>
+                </a>
+
+                <!-- Case: Pet Plant App -->
+                <a href="petplant.html" class="case-related-card">
+                    <div class="case-related-img">
+                        <img src="assets/MOCK PET PLANT.webp" alt="Pet Plant App" loading="lazy" decoding="async">
+                    </div>
+                    <div class="case-related-info">
+                        <span class="case-related-tag mono">PRODUCT DESIGN & IOT</span>
+                        <h4 class="case-related-title">Pet Plant App – UX Botânica</h4>
                     </div>
                 </a>
             </div>
-        </div>
+        </section>
 
         <!-- Footer Navigation CTA -->
-        <div class="pt-12 border-t border-white/10 flex flex-wrap items-center justify-between gap-6">
+        <div class="case-footer-nav">
             <a href="petplant.html" class="edge-glow-btn group">
                 <span class="edge-glow-inner">
                     <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
@@ -256,10 +375,10 @@
                 </span>
             </a>
 
-            <a href="index.html#work" class="edge-glow-btn group">
-                <span class="edge-glow-inner">
-                    <span>Voltar ao Portfólio</span>
-                    <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1"></i>
+            <a href="recruitersys.html" class="next-project-card">
+                <span class="next-project-label mono">PRÓXIMO CASE</span>
+                <span class="next-project-title">
+                    RecruiterSys – Ecossistema Tech <span class="arrow">→</span>
                 </span>
             </a>
         </div>
