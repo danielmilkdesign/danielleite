@@ -484,11 +484,13 @@ body.menu-open .menu-icon i:last-child {
   position: relative;
   overflow: hidden;
   padding-block: 65px;
-  transition: padding-inline 0.4s ease, background 0.4s ease;
+  padding-inline: 16px;
+  border-radius: 8px;
+  transition: background 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
 }
 .project:hover {
-  padding-inline: 24px;
-  background: rgba(14, 18, 23, 0.4);
+  background: rgba(14, 18, 23, 0.45);
+  border-color: rgba(6, 182, 212, 0.25);
 }
 .project-num {
   align-self: start;
@@ -1722,9 +1724,14 @@ document.querySelectorAll('[data-cursor]').forEach(el => {
     cursorLabel.classList.add('active');
     cursorLabel.textContent = el.dataset.cursor;
   });
-  el.addEventListener('mouseleave', () => {
-    cursor.classList.remove('active');
-    cursorLabel.classList.remove('active');
+  el.addEventListener('mouseleave', (e) => {
+    const nextEl = e.relatedTarget && e.relatedTarget.closest ? e.relatedTarget.closest('[data-cursor]') : null;
+    if (nextEl) {
+      cursorLabel.textContent = nextEl.dataset.cursor;
+    } else {
+      cursor.classList.remove('active');
+      cursorLabel.classList.remove('active');
+    }
   });
 });
 
@@ -1770,20 +1777,29 @@ window.addEventListener('scroll', () => {
   });
 }, { passive: true });
 
-// 3D Card Tilt on Project Visuals
-document.querySelectorAll('.project').forEach(project => {
-  const visual = project.querySelector('.project-visual');
-  if (!visual) return;
+// 3D Card Tilt on Project Visuals (Optimized: attached directly to visual, cached rect)
+document.querySelectorAll('.project-visual').forEach(visual => {
+  let rect = null;
+  let rafId = null;
 
-  project.addEventListener('mousemove', (e) => {
-    const rect = visual.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    visual.style.transform = `perspective(1000px) scale(1) rotateX(${y * -4}deg) rotateY(${x * 4}deg)`;
-  });
+  visual.addEventListener('mouseenter', () => {
+    rect = visual.getBoundingClientRect();
+  }, { passive: true });
 
-  project.addEventListener('mouseleave', () => {
-    visual.style.transform = 'perspective(1000px) scale(0.97) rotateX(0deg) rotateY(0deg)';
+  visual.addEventListener('mousemove', (e) => {
+    if (!rect) rect = visual.getBoundingClientRect();
+    if (rafId) cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(() => {
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      visual.style.transform = `perspective(1000px) scale(1.01) rotateX(${y * -4}deg) rotateY(${x * 4}deg)`;
+    });
+  }, { passive: true });
+
+  visual.addEventListener('mouseleave', () => {
+    rect = null;
+    if (rafId) cancelAnimationFrame(rafId);
+    visual.style.transform = '';
   });
 });
 
