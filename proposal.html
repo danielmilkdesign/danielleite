@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daniel Leite — Senior Product Designer & Design Engineer | Portfolio & Interactive Stage</title>
+    
+    <!-- SEO & GEO Meta Tags -->
+    <meta name="description" content="Portfólio interativo de Daniel Leite, Senior Product Designer & Design Engineer. Especialista em Design Systems, B2B SaaS, IoT, UX Strategy e IA.">
+    <meta name="keywords" content="Senior Product Designer, Design Engineer, UX Strategy, Design Systems, B2B SaaS, IoT, IA, ANAC, Manaus, Tech Lead UX">
+    <meta name="author" content="Daniel Leite">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <link rel="canonical" href="https://danielleite.design/proposal.html">
+
+    <!-- Open Graph / Facebook / LinkedIn -->
+    <meta property="og:type" content="profile">
+    <meta property="og:title" content="Daniel Leite — Senior Product Designer & Design Engineer">
+    <meta property="og:description" content="Projetando ecossistemas digitais de alta complexidade: UX Strategy, B2B SaaS, Green UX e Design Engineering.">
+    <meta property="og:url" content="https://danielleite.design/proposal.html">
+    <meta property="og:image" content="assets/avatarnovo.webp">
+    <meta property="og:site_name" content="Daniel Leite Portfolio">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Daniel Leite — Senior Product Designer & Design Engineer">
+    <meta name="twitter:description" content="Design estratégico de nível global, interfaces escaláveis e prototipação de alto impacto.">
+    <meta name="twitter:image" content="assets/avatarnovo.webp">
+
+    <!-- Structured Data (JSON-LD) for SEO / GEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfilePage",
+      "mainEntity": {
+        "@type": "Person",
+        "name": "Daniel Leite",
+        "jobTitle": "Senior Product Designer & Design Engineer",
+        "url": "https://danielleite.design",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Manaus",
+          "addressRegion": "AM",
+          "addressCountry": "BR"
+        },
+        "knowsAbout": [
+          "Product Design",
+          "UX Strategy",
+          "Design Systems",
+          "B2B SaaS",
+          "IoT Interfaces",
+          "Design Engineering",
+          "Generative AI UX",
+          "Information Architecture"
+        ],
+        "alumniOf": "ULBRA",
+        "hasOccupation": {
+          "@type": "Occupation",
+          "name": "Senior Product Designer",
+          "occupationalCategory": "27-1024.00",
+          "skills": "Design Systems, User Research, Prototyping, Frontend Architecture, Green UX"
+        }
+      }
+    }
+    </script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon-dl.svg">
+    <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+
+    <!-- Fonts: Syne (Ultra-luxury display) + Plus Jakarta Sans + Space Grotesk / JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Syne:wght@700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN with Custom Extended Configuration -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        display: ['"Syne"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            cyan: '#06B6D4',
+                            cyanLight: '#22D3EE',
+                            cyanGlow: 'rgba(6, 182, 212, 0.4)',
+                            dark: '#030509',
+                            card: '#080C14',
+                            surface: '#0E1422',
+                            border: '#1E293B',
+                            borderBright: '#334155',
+                            emerald: '#10B981',
+                            amber: '#F59E0B'
+                        }
+                    },
+                    animation: {
+                        'spin-slow': 'spin 20s linear infinite',
+                        'pulse-glow': 'pulseGlow 3s ease-in-out infinite',
+                        'marquee': 'marquee 30s linear infinite',
+                        'marquee-reverse': 'marqueeRev 30s linear infinite',
+                        'radar': 'radarSweep 4s linear infinite',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },
+                            '50%': { opacity: '0.8', transform: 'scale(1.05)' },
+                        },
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-50%)' },
+                        },
+                        marqueeRev: {
+                            '0%': { transform: 'translateX(-50%)' },
+                            '100%': { transform: 'translateX(0%)' },
+                        },
+                        radarSweep: {
+                            '0%': { transform: 'rotate(0deg)' },
+                            '100%': { transform: 'rotate(360deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- GSAP, ScrollTrigger, Flip & Lenis for ultra-fluid interactions -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.9/dist/lenis.css">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Custom Ultra-Luxury $50k Design System Styles */
+        :root {
+            --cyan-primary: #06B6D4;
+            --cyan-glow: rgba(6, 182, 212, 0.35);
+            --bg-deep: #030509;
+            --surface-glass: rgba(14, 20, 34, 0.7);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #030509;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #06B6D4;
+        }
+
+        /* Selection */
+        ::selection {
+            background: rgba(6, 182, 212, 0.25);
+            color: #ffffff;
+        }
+
+        /* Precision Technical Grid Background */
+        .tech-grid-bg {
+            background-size: 60px 60px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        }
+
+        .tech-dots-bg {
+            background-image: radial-gradient(rgba(6, 182, 212, 0.15) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* Grain texture overlay */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 99;
+            opacity: 0.025;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Custom Cursor */
+        #cursor-follower {
+            pointer-events: none;
+            position: fixed;
+            z-index: 1000;
+            transition: transform 0.15s ease-out, width 0.25s ease, height 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Laser Border Effect */
+        .laser-border {
+            position: relative;
+        }
+        .laser-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.6), rgba(255, 255, 255, 0.05), rgba(6, 182, 212, 0.1));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        /* Neon Chamfer Card */
+        .chamfer-card {
+            clip-path: polygon(
+                0 0,
+                calc(100% - 16px) 0,
+                100% 16px,
+                100% 100%,
+                16px 100%,
+                0 calc(100% - 16px)
+            );
+        }
+
+        /* Stage Switcher Tabs */
+        .stage-tab.active {
+            background: rgba(6, 182, 212, 0.15);
+            color: #22D3EE;
+            border-color: rgba(6, 182, 212, 0.6);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.2);
+        }
+
+        /* Interactive Screen Switcher Frame */
+        .device-mockup {
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 40px rgba(6, 182, 212, 0.15);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Code/Design Token Inspector */
+        .token-row:hover {
+            background: rgba(6, 182, 212, 0.08);
+        }
+
+        /* Magnetic button glow */
+        .btn-magnetic {
+            transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Custom glow effects */
+        .glow-cyan {
+            filter: drop-shadow(0 0 15px rgba(6, 182, 212, 0.4));
+        }
+
+        /* Perspective 3D for interactive screen tilt */
+        .tilt-stage {
+            perspective: 1200px;
+            transform-style: preserve-3d;
+        }
+
+        /* Hide audio player visually */
+        .sr-only-sound {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+<body class="bg-brand-dark text-slate-100 font-sans antialiased overflow-x-hidden selection:bg-brand-cyan/20 selection:text-white">
+
+    <!-- Noise Texture Overlay -->
+    <div class="noise-overlay"></div>
+
+    <!-- Custom Cursor Follower (Desktop Only) -->
+    <div id="cursor-follower" class="hidden lg:flex items-center justify-center w-8 h-8 rounded-full border border-brand-cyan/60 bg-brand-cyan/10 backdrop-blur-xs">
+        <div id="cursor-core" class="w-1.5 h-1.5 rounded-full bg-brand-cyan"></div>
+        <span id="cursor-text" class="text-[9px] font-mono font-bold tracking-widest text-cyan-300 hidden px-1 uppercase"></span>
+    </div>
+
+    <!-- Fixed Ambient Glows -->
+    <div class="fixed top-0 left-1/4 w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-[140px] pointer-events-none -z-10 animate-pulse-glow"></div>
+    <div class="fixed bottom-0 right-1/4 w-[700px] h-[700px] bg-brand-cyan/5 rounded-full blur-[160px] pointer-events-none -z-10"></div>
+
+    <!-- Top Telemetry & Global Control Bar -->
+    <header class="fixed top-0 left-0 w-full z-50 p-3 sm:p-5 transition-all duration-300" id="main-header">
+        <div class="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 py-2.5 sm:py-3 rounded-2xl bg-brand-card/85 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/80">
+            
+            <!-- Brand Logo & Live Status -->
+            <div class="flex items-center gap-4">
+                <a href="#hero" class="flex items-center gap-3 group" aria-label="Daniel Leite Home">
+                    <img src="LOGO-DL.svg" alt="Daniel Leite Logo" class="h-7 sm:h-9 w-auto group-hover:scale-105 transition-transform">
+                </a>
+                
+                <div class="hidden sm:flex items-center gap-2 px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-slate-300">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span class="text-emerald-400 font-semibold">AVAILABLE FOR SENIOR ROLES</span>
+                </div>
+            </div>
+
+            <!-- Global Viewport & Interactive Stage Switcher Navigation -->
+            <nav class="hidden md:flex items-center gap-1 bg-brand-surface/90 p-1.5 rounded-xl border border-white/10 text-xs font-mono">
+                <button onclick="switchGlobalStage('stage-hero')" class="stage-tab active px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5" data-stage="stage-hero">
+                    <i data-lucide="compass" class="w-3.5 h-3.5"></i>
+                    <span>VISÃO GERAL</span>
+                </button>
+                <button onclick="switchGlobalStage('stage-workbench')" class="stage-tab px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5" data-stage="stage-workbench">
+                    <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+                    <span>STAGE DE CASES</span>
+                    <span class="px-1.5 py-0.2 text-[9px] bg-brand-cyan/20 text-cyan-300 rounded font-bold">4 CASES</span>
+                </button>
+                <button onclick="switchGlobalStage('stage-sandbox')" class="stage-tab px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5" data-stage="stage-sandbox">
+                    <i data-lucide="play-circle" class="w-3.5 h-3.5"></i>
+                    <span>PROTÓTIPOS LIVE</span>
+                </button>
+                <button onclick="switchGlobalStage('stage-matrix')" class="stage-tab px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5" data-stage="stage-matrix">
+                    <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
+                    <span>DESIGN TOKENS</span>
+                </button>
+                <button onclick="switchGlobalStage('stage-about')" class="stage-tab px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5" data-stage="stage-about">
+                    <i data-lucide="user-check" class="w-3.5 h-3.5"></i>
+                    <span>BIO & METODOLOGIA</span>
+                </button>
+            </nav>
+
+            <!-- Actions: Audio Synthesis Toggle, Proposal Switch & Contact -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                
+                <!-- Audio Feedback Toggle (Procedural Web Audio) -->
+                <button id="sound-toggle" onclick="toggleAudio()" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-white/5 border border-white/10 hover:border-brand-cyan/50 text-slate-300 hover:text-white transition-all text-xs font-mono flex items-center gap-1.5" title="Ativar Feedback Sonoro Interativo (Web Audio API)">
+                    <i data-lucide="volume-2" id="sound-icon" class="w-4 h-4 text-brand-cyan"></i>
+                    <span class="hidden sm:inline" id="sound-text">SOM ON</span>
+                </button>
+
+                <!-- Action CTA -->
+                <a href="#contact" class="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-cyan-400 hover:from-cyan-400 hover:to-cyan-300 text-brand-dark font-bold text-xs sm:text-sm flex items-center gap-2 shadow-lg shadow-cyan-500/25 transition-all hover:scale-105 active:scale-95">
+                    <span>CONTRATAR</span>
+                    <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                </a>
+
+                <!-- Mobile Menu Trigger -->
+                <button id="mobile-trigger" onclick="toggleMobileNav()" class="md:hidden p-2 rounded-xl bg-white/5 border border-white/10 text-slate-200">
+                    <i data-lucide="menu" class="w-5 h-5"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobile-nav" class="fixed inset-0 z-40 bg-brand-dark/95 backdrop-blur-2xl p-6 pt-24 flex flex-col justify-between hidden md:hidden">
+        <div class="space-y-4">
+            <span class="text-xs font-mono text-cyan-400 tracking-wider">SELECIONE UMA TELA INTERATIVA:</span>
+            <div class="flex flex-col gap-3">
+                <button onclick="switchGlobalStage('stage-hero'); toggleMobileNav();" class="p-3 text-left rounded-xl bg-white/5 border border-white/10 text-base font-bold text-white flex items-center justify-between">
+                    <span>01. Visão Geral & Hero</span>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-cyan-400"></i>
+                </button>
+                <button onclick="switchGlobalStage('stage-workbench'); toggleMobileNav();" class="p-3 text-left rounded-xl bg-white/5 border border-white/10 text-base font-bold text-white flex items-center justify-between">
+                    <span>02. Stage de Cases (Workbench)</span>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-cyan-400"></i>
+                </button>
+                <button onclick="switchGlobalStage('stage-sandbox'); toggleMobileNav();" class="p-3 text-left rounded-xl bg-white/5 border border-white/10 text-base font-bold text-white flex items-center justify-between">
+                    <span>03. Protótipos Interativos Live</span>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-cyan-400"></i>
+                </button>
+                <button onclick="switchGlobalStage('stage-matrix'); toggleMobileNav();" class="p-3 text-left rounded-xl bg-white/5 border border-white/10 text-base font-bold text-white flex items-center justify-between">
+                    <span>04. Design Tokens Matrix</span>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-cyan-400"></i>
+                </button>
+                <button onclick="switchGlobalStage('stage-about'); toggleMobileNav();" class="p-3 text-left rounded-xl bg-white/5 border border-white/10 text-base font-bold text-white flex items-center justify-between">
+                    <span>05. Trajetória & Metodologia</span>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-cyan-400"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="p-4 rounded-xl bg-brand-surface border border-white/10 text-xs font-mono text-slate-400 space-y-2">
+            <div>LOCALIZAÇÃO: Manaus, Brasil (GMT-4)</div>
+            <div>STATUS: Disponível para Contratos & Squad Lead</div>
+            <a href="index.html" class="block text-cyan-400 hover:underline pt-2">← Voltar para layout clássico</a>
+        </div>
+    </div>
+
+    <!-- MAIN APP WRAPPER -->
+    <main class="relative z-10 pt-24 sm:pt-28">
+
+        <!-- ========================================================================= -->
+        <!-- SCREEN 01: HERO STAGE & KINETIC TYPOGRAPHY (OVERVIEW)                      -->
+        <!-- ========================================================================= -->
+        <section id="stage-hero" class="stage-section min-h-screen px-4 sm:px-6 lg:px-12 flex flex-col justify-between relative tech-grid-bg pb-16">
+            
+            <!-- Floating Coordinates & Telemetry -->
+            <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-b border-white/5 pb-4 text-xs font-mono text-slate-400">
+                <div class="flex items-center gap-4">
+                    <span>LAT: -3.1190° S</span>
+                    <span>LON: -60.0217° W</span>
+                    <span class="text-cyan-400">SYS_BUILD: V2.6-PRO</span>
+                </div>
+                <div class="flex items-center gap-6">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                        <span id="live-clock">MANAUS: --:--:--</span>
+                    </div>
+                    <span class="hidden sm:inline text-slate-500">EXPERIÊNCIA: 12+ ANOS</span>
+                </div>
+            </div>
+
+            <!-- Kinetic Hero Header -->
+            <div class="max-w-6xl mx-auto w-full my-auto py-12 sm:py-20 space-y-8">
+                
+                <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-brand-cyan/10 border border-brand-cyan/30 text-cyan-300 text-xs font-mono uppercase tracking-widest backdrop-blur-md">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-cyan-400 animate-spin-slow"></i>
+                    <span>Senior Product Designer & Design Engineer</span>
+                </div>
+
+                <h1 class="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-black tracking-tight text-white uppercase leading-[0.95]">
+                    ARQUITETURA <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-white to-slate-400">DE PRODUTO</span> <br>
+                    & ENGENHARIA UX.
+                </h1>
+
+                <div class="grid md:grid-cols-12 gap-8 items-end pt-4">
+                    <p class="md:col-span-8 text-base sm:text-xl text-slate-300 font-normal leading-relaxed">
+                        Lidero o design de ponta a ponta para ecossistemas de alta complexidade: <strong class="text-white font-bold">B2B SaaS data-dense, plataformas de aviação civil reguladas pela ANAC, IoT inteligente e Design Systems corporativos.</strong> Conectando estratégia de produto, usabilidade refinada e código de produção.
+                    </p>
+
+                    <div class="md:col-span-4 flex flex-col gap-3">
+                        <button onclick="switchGlobalStage('stage-workbench')" class="w-full py-3.5 px-6 rounded-xl bg-white text-brand-dark font-display font-bold text-sm sm:text-base flex items-center justify-between group hover:bg-cyan-300 transition-all shadow-xl">
+                            <span>EXPLORAR CASES & TELAS</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 transition-transform group-hover:translate-x-1.5"></i>
+                        </button>
+                        
+                        <button onclick="switchGlobalStage('stage-sandbox')" class="w-full py-3 px-6 rounded-xl bg-brand-surface border border-white/10 hover:border-brand-cyan/40 text-slate-200 font-mono text-xs flex items-center justify-between transition-all">
+                            <span>TESTAR PROTÓTIPOS INTERATIVOS</span>
+                            <i data-lucide="cpu" class="w-3.5 h-3.5 text-cyan-400"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Metric Ticker & Quick Proofs -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-6xl mx-auto w-full pt-8 border-t border-white/10">
+                <div class="p-4 rounded-xl bg-brand-card border border-white/5 space-y-1">
+                    <span class="text-2xl sm:text-3xl font-display font-extrabold text-cyan-400">-40%</span>
+                    <span class="block text-xs font-mono text-slate-400">Time-to-Hire no RecruiterSys</span>
+                </div>
+                <div class="p-4 rounded-xl bg-brand-card border border-white/5 space-y-1">
+                    <span class="text-2xl sm:text-3xl font-display font-extrabold text-white">100%</span>
+                    <span class="block text-xs font-mono text-slate-400">Sem Papel (Conformidade ANAC)</span>
+                </div>
+                <div class="p-4 rounded-xl bg-brand-card border border-white/5 space-y-1">
+                    <span class="text-2xl sm:text-3xl font-display font-extrabold text-cyan-400">+50%</span>
+                    <span class="block text-xs font-mono text-slate-400">Velocidade Squads via Design System</span>
+                </div>
+                <div class="p-4 rounded-xl bg-brand-card border border-white/5 space-y-1">
+                    <span class="text-2xl sm:text-3xl font-display font-extrabold text-white">+25%</span>
+                    <span class="block text-xs font-mono text-slate-400">Conversão PIX em Mobilidade</span>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- ========================================================================= -->
+        <!-- SCREEN 02: THE WORKBENCH / CASE STAGE (MUDANÇAS DE TELAS & SHOWCASE 360)  -->
+        <!-- ========================================================================= -->
+        <section id="stage-workbench" class="stage-section min-h-screen px-4 sm:px-6 lg:px-12 py-12 relative bg-brand-surface/40 border-t border-white/5">
+            <div class="max-w-7xl mx-auto space-y-8">
+                
+                <!-- Stage Header -->
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                    <div class="space-y-2">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-mono uppercase">
+                            <i data-lucide="monitor" class="w-3.5 h-3.5"></i> STAGE DE CASOS & TELAS REAIS
+                        </div>
+                        <h2 class="text-3xl sm:text-5xl font-display font-extrabold text-white tracking-tight">
+                            Mesa de Trabalho Interativa
+                        </h2>
+                        <p class="text-slate-400 text-sm sm:text-base max-w-2xl">
+                            Selecione um projeto e alterne livremente entre as camadas de produto: Telas Principais, Arquitetura de Informação, Fluxos Mobile, Métricas de Impacto e Links Oficiais.
+                        </p>
+                    </div>
+
+                    <!-- Project Selector Switcher Tabs -->
+                    <div class="flex flex-wrap items-center gap-2 p-1.5 rounded-2xl bg-brand-card border border-white/10">
+                        <button onclick="loadProjectCase('recruitersys')" class="case-btn active px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all bg-brand-cyan text-brand-dark shadow-lg shadow-cyan-500/20" data-case="recruitersys">
+                            01. RECRUITERSYS
+                        </button>
+                        <button onclick="loadProjectCase('horuz')" class="case-btn px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all text-slate-300 hover:text-white" data-case="horuz">
+                            02. HÓRUZ EDB
+                        </button>
+                        <button onclick="loadProjectCase('petplant')" class="case-btn px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all text-slate-300 hover:text-white" data-case="petplant">
+                            03. PET PLANT
+                        </button>
+                        <button onclick="loadProjectCase('ventihome')" class="case-btn px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all text-slate-300 hover:text-white" data-case="ventihome">
+                            04. VENTIHOME
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Interactive Dual-Stage Inspector (Left: Screen & Viewport, Right: Deep Analysis) -->
+                <div class="grid lg:grid-cols-12 gap-8 items-start">
+                    
+                    <!-- Left Column: Interactive Screen Viewer with Device Framing & Viewport Switcher -->
+                    <div class="lg:col-span-7 space-y-4">
+                        
+                        <!-- Viewport Toolbar -->
+                        <div class="flex items-center justify-between p-3 rounded-xl bg-brand-card border border-white/10 text-xs font-mono text-slate-400">
+                            <div class="flex items-center gap-3">
+                                <span class="text-cyan-400 font-bold" id="case-screen-label">TELA ATIVA: DASHBOARD B2B</span>
+                                <span class="text-slate-600">|</span>
+                                <span id="case-fidelity-label">HIGH-FIDELITY PROTOTYPE</span>
+                            </div>
+
+                            <!-- Screen View Tabs for this case -->
+                            <div class="flex items-center gap-1.5" id="case-screen-tabs">
+                                <!-- Populated dynamically by JS -->
+                            </div>
+                        </div>
+
+                        <!-- Main Screen Display Frame with 3D Tilt and Glass Border -->
+                        <div class="laser-border rounded-2xl overflow-hidden bg-brand-dark p-2 relative group">
+                            <div class="relative rounded-xl overflow-hidden aspect-[16/10] bg-slate-950 flex items-center justify-center">
+                                <img id="case-main-image" src="assets/CAPA RECRUITER.webp" alt="Interface Principal do Projeto" class="w-full h-full object-cover transition-all duration-700 group-hover:scale-105">
+                                
+                                <!-- Screen Overlay Controls -->
+                                <div class="absolute bottom-4 left-4 right-4 p-4 rounded-xl bg-brand-card/90 backdrop-blur-md border border-white/10 flex items-center justify-between text-xs font-mono">
+                                    <div class="flex items-center gap-2 text-slate-200">
+                                        <i data-lucide="zoom-in" class="w-4 h-4 text-cyan-400"></i>
+                                        <span id="case-overlay-caption">Visão Geral da Arquitetura de Interface</span>
+                                    </div>
+                                    <a id="case-doc-link" href="recruitersys.html" class="px-3 py-1 rounded bg-brand-cyan text-brand-dark font-bold hover:bg-cyan-300 transition-colors flex items-center gap-1">
+                                        <span>CASE COMPLETO</span>
+                                        <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Secondary Screen Gallery Thumbnails (Click to change active screen) -->
+                        <div class="grid grid-cols-4 gap-3" id="case-gallery-thumbs">
+                            <!-- Populated dynamically by JS -->
+                        </div>
+
+                    </div>
+
+                    <!-- Right Column: Senior Product Designer Strategic Breakdown -->
+                    <div class="lg:col-span-5 space-y-6">
+                        
+                        <div class="p-6 sm:p-8 rounded-2xl bg-brand-card border border-white/10 space-y-6">
+                            
+                            <!-- Role & Sector Tag -->
+                            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-4">
+                                <div>
+                                    <span class="text-xs font-mono text-slate-400 block">PAPEL & ATUAÇÃO</span>
+                                    <span class="text-sm font-bold text-cyan-400" id="case-role">Senior Product Designer & Lead UX</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs font-mono text-slate-400 block">SEGMENTO</span>
+                                    <span class="text-sm font-bold text-slate-200" id="case-sector">B2B SaaS & Tech Recruitment</span>
+                                </div>
+                            </div>
+
+                            <!-- Case Title & Problem Statement -->
+                            <div class="space-y-2">
+                                <h3 class="text-2xl font-display font-bold text-white" id="case-title">
+                                    RecruiterSys – O Ecossistema de Recrutamento Tech
+                                </h3>
+                                <p class="text-slate-300 text-sm leading-relaxed" id="case-description">
+                                    Eliminando o gap de comunicação técnica entre recrutadores de RH e líderes de engenharia. Criação de um ecossistema dual integrando dashboard analítico B2B para empresas e aplicativo mobile B2C para candidatos com testes interativos.
+                                </p>
+                            </div>
+
+                            <!-- Strategic UX Pillars -->
+                            <div class="space-y-3">
+                                <span class="text-xs font-mono text-cyan-400 tracking-wider uppercase block">DECISÕES ESTRATÉGICAS DE DESIGN:</span>
+                                <div class="space-y-2.5" id="case-pillars">
+                                    <div class="p-3 rounded-xl bg-white/5 border border-white/5 flex items-start gap-3">
+                                        <i data-lucide="check-circle" class="w-4 h-4 text-cyan-400 shrink-0 mt-0.5"></i>
+                                        <div class="text-xs text-slate-300">
+                                            <strong class="text-white block font-semibold">Triagem de Habilidades por IA:</strong>
+                                            Algoritmo visual de compatibilidade técnica eliminando 40% das horas de triagem manual.
+                                        </div>
+                                    </div>
+                                    <div class="p-3 rounded-xl bg-white/5 border border-white/5 flex items-start gap-3">
+                                        <i data-lucide="check-circle" class="w-4 h-4 text-cyan-400 shrink-0 mt-0.5"></i>
+                                        <div class="text-xs text-slate-300">
+                                            <strong class="text-white block font-semibold">Design System Componentizado:</strong>
+                                            Padronização de 120+ tokens e componentes compartilhados entre Web e Mobile.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Impact Metrics Grid -->
+                            <div class="grid grid-cols-3 gap-3 pt-4 border-t border-white/10" id="case-metrics">
+                                <div class="p-3 rounded-xl bg-brand-surface border border-white/5 text-center">
+                                    <span class="text-lg font-display font-bold text-cyan-400 block">-40%</span>
+                                    <span class="text-[10px] font-mono text-slate-400">Time-to-Hire</span>
+                                </div>
+                                <div class="p-3 rounded-xl bg-brand-surface border border-white/5 text-center">
+                                    <span class="text-lg font-display font-bold text-white block">Dual</span>
+                                    <span class="text-[10px] font-mono text-slate-400">Web + Mobile</span>
+                                </div>
+                                <div class="p-3 rounded-xl bg-brand-surface border border-white/5 text-center">
+                                    <span class="text-lg font-display font-bold text-emerald-400 block">4.9/5</span>
+                                    <span class="text-[10px] font-mono text-slate-400">CSAT Score</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ========================================================================= -->
+        <!-- SCREEN 03: INTERACTIVE PROTOTYPE SANDBOX (LIVE SIMULATION OF UX CONCEPTS)  -->
+        <!-- ========================================================================= -->
+        <section id="stage-sandbox" class="stage-section min-h-screen px-4 sm:px-6 lg:px-12 py-12 relative bg-brand-dark border-t border-white/5">
+            <div class="max-w-7xl mx-auto space-y-10">
+                
+                <div class="space-y-2 max-w-3xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono uppercase">
+                        <i data-lucide="play" class="w-3.5 h-3.5"></i> PROTOTIPAGEM FUNCIONAL EM CÓDIGO
+                    </div>
+                    <h2 class="text-3xl sm:text-5xl font-display font-extrabold text-white tracking-tight">
+                        Sandbox de Interatividade Live
+                    </h2>
+                    <p class="text-slate-400 text-sm sm:text-base">
+                        Como Design Engineer, eu não entrego apenas telas estáticas no Figma. Experimente os mini-motores interativos concebidos para os projetos reais abaixo:
+                    </p>
+                </div>
+
+                <!-- Interactive Widget Grid -->
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Sandbox Widget 1: Horuz eDB Green UX Carbon Offset Calculator -->
+                    <div class="p-6 rounded-2xl bg-brand-card border border-white/10 space-y-5 relative overflow-hidden">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-1 rounded bg-cyan-500/10 text-cyan-400 text-xs font-mono font-bold">HÓRUZ eDB</span>
+                            <span class="text-xs font-mono text-slate-400">GREEN UX CALCULATOR</span>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-bold text-white">Calculador de Emissão Aeronáutica</h4>
+                            <p class="text-xs text-slate-400 mt-1">Simule o tempo de voo e veja a telemetria regulatória em tempo real:</p>
+                        </div>
+
+                        <!-- Interactive Range Slider -->
+                        <div class="space-y-3 p-4 rounded-xl bg-brand-surface border border-white/5">
+                            <div class="flex justify-between text-xs font-mono">
+                                <span class="text-slate-400">TEMPO DE VOO:</span>
+                                <span id="flight-hours-display" class="text-cyan-400 font-bold">2.5 HORAS</span>
+                            </div>
+                            <input type="range" id="flight-range" min="0.5" max="10" step="0.5" value="2.5" oninput="updateHoruzCalc(this.value)" class="w-full accent-cyan-400 cursor-pointer">
+                            
+                            <div class="grid grid-cols-2 gap-2 pt-2 border-t border-white/5 text-center">
+                                <div>
+                                    <span class="text-[10px] font-mono text-slate-500 block">COMBUSTÍVEL (L)</span>
+                                    <span id="fuel-display" class="text-sm font-mono font-bold text-white">187.5 L</span>
+                                </div>
+                                <div>
+                                    <span class="text-[10px] font-mono text-slate-500 block">PEGADA CO₂ REDUZIDA</span>
+                                    <span id="co2-display" class="text-sm font-mono font-bold text-emerald-400">-468.7 kg</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-[11px] font-mono text-slate-400 flex items-center gap-1.5">
+                            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+                            <span>Conformidade ANAC RBAC 91 & Green UX</span>
+                        </div>
+                    </div>
+
+                    <!-- Sandbox Widget 2: PetPlant Vital Plant Telemetry Simulator -->
+                    <div class="p-6 rounded-2xl bg-brand-card border border-white/10 space-y-5 relative overflow-hidden">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-400 text-xs font-mono font-bold">PET PLANT</span>
+                            <span class="text-xs font-mono text-slate-400">IOT TELEMETRY</span>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-bold text-white">Monitor Vital de Sensores Botânicos</h4>
+                            <p class="text-xs text-slate-400 mt-1">Alterne o tipo de planta para observar a adaptação dinâmica da UI:</p>
+                        </div>
+
+                        <!-- Plant Selector Buttons -->
+                        <div class="grid grid-cols-3 gap-1.5 p-1 rounded-xl bg-brand-surface border border-white/5">
+                            <button onclick="setPlantMode('monstera')" id="plant-btn-monstera" class="p-2 rounded-lg text-xs font-mono font-bold bg-emerald-500 text-brand-dark transition-all">
+                                MONSTERA
+                            </button>
+                            <button onclick="setPlantMode('succulent')" id="plant-btn-succulent" class="p-2 rounded-lg text-xs font-mono font-bold text-slate-300 hover:text-white transition-all">
+                                SUCULENTA
+                            </button>
+                            <button onclick="setPlantMode('orchid')" id="plant-btn-orchid" class="p-2 rounded-lg text-xs font-mono font-bold text-slate-300 hover:text-white transition-all">
+                                ORQUÍDEA
+                            </button>
+                        </div>
+
+                        <!-- Vital Gauge Readout -->
+                        <div class="p-4 rounded-xl bg-brand-surface border border-white/5 space-y-2">
+                            <div class="flex justify-between text-xs font-mono">
+                                <span class="text-slate-400">UMIDADE DO SOLO:</span>
+                                <span id="soil-moisture-val" class="text-emerald-400 font-bold">78% (Ideal)</span>
+                            </div>
+                            <div class="w-full h-2 rounded-full bg-white/10 overflow-hidden">
+                                <div id="soil-bar" class="h-full bg-emerald-400 transition-all duration-500" style="width: 78%;"></div>
+                            </div>
+                            <div class="flex justify-between text-[11px] font-mono text-slate-400 pt-1">
+                                <span>LUZ: <strong class="text-white" id="light-val">650 Lux</strong></span>
+                                <span>STATUS: <strong class="text-emerald-400" id="health-val">SAUDÁVEL</strong></span>
+                            </div>
+                        </div>
+
+                        <div class="text-[11px] font-mono text-slate-400 flex items-center gap-1.5">
+                            <i data-lucide="cpu" class="w-4 h-4 text-cyan-400"></i>
+                            <span>Conexão BLE com hardware IoT real</span>
+                        </div>
+                    </div>
+
+                    <!-- Sandbox Widget 3: VentHome Circadian Mood Controller -->
+                    <div class="p-6 rounded-2xl bg-brand-card border border-white/10 space-y-5 relative overflow-hidden">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-1 rounded bg-indigo-500/10 text-indigo-400 text-xs font-mono font-bold">VENTIHOME</span>
+                            <span class="text-xs font-mono text-slate-400">SMART FAN PRESET</span>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-bold text-white">Controle de Fluxo Circadiano</h4>
+                            <p class="text-xs text-slate-400 mt-1">Interação tátil com modos inteligentes de climatização:</p>
+                        </div>
+
+                        <!-- Contextual Mode Grid -->
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="setFanMode('sleep')" id="fan-mode-sleep" class="p-3 rounded-xl bg-indigo-500/20 border border-indigo-500/40 text-left transition-all">
+                                <span class="text-xs font-mono font-bold text-indigo-300 block">MODO SLEEP</span>
+                                <span class="text-[10px] text-slate-400">Curva de desaceleração</span>
+                            </button>
+                            <button onclick="setFanMode('gamer')" id="fan-mode-gamer" class="p-3 rounded-xl bg-white/5 border border-white/5 text-left transition-all hover:border-cyan-400/40">
+                                <span class="text-xs font-mono font-bold text-slate-300 block">MODO GAMER</span>
+                                <span class="text-[10px] text-slate-400">Fluxo focado 100%</span>
+                            </button>
+                        </div>
+
+                        <!-- Live RPM Gauges -->
+                        <div class="p-4 rounded-xl bg-brand-surface border border-white/5 flex items-center justify-between text-xs font-mono">
+                            <div>
+                                <span class="text-slate-500 block text-[10px]">ROTAÇÃO ATUAL</span>
+                                <span id="fan-rpm" class="text-base font-bold text-white">420 RPM (Silencioso)</span>
+                            </div>
+                            <div class="w-8 h-8 rounded-full border border-indigo-400/40 flex items-center justify-center animate-spin-slow">
+                                <i data-lucide="wind" class="w-4 h-4 text-indigo-400"></i>
+                            </div>
+                        </div>
+
+                        <div class="text-[11px] font-mono text-slate-400 flex items-center gap-1.5">
+                            <i data-lucide="moon" class="w-4 h-4 text-indigo-400"></i>
+                            <span>Preservação do sono e eficiência energética</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ========================================================================= -->
+        <!-- SCREEN 04: DESIGN SYSTEM MATRIX & TOKENS INSPECTOR                         -->
+        <!-- ========================================================================= -->
+        <section id="stage-matrix" class="stage-section min-h-screen px-4 sm:px-6 lg:px-12 py-12 relative bg-brand-surface/60 border-t border-white/5">
+            <div class="max-w-7xl mx-auto space-y-10">
+                
+                <div class="space-y-2 max-w-3xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-mono uppercase">
+                        <i data-lucide="code" class="w-3.5 h-3.5"></i> SISTEMA DE DESIGN & ENGENHARIA DE COMPONENTES
+                    </div>
+                    <h2 class="text-3xl sm:text-5xl font-display font-extrabold text-white tracking-tight">
+                        Design System & Matriz de Tokens
+                    </h2>
+                    <p class="text-slate-400 text-sm sm:text-base">
+                        Como estruturo tokens, tipografia e acessibilidade para escalar produtos digitais e acelerar squads em mais de 50%.
+                    </p>
+                </div>
+
+                <!-- Matrix Columns: Color Tokens, Typography Scale, UI Components -->
+                <div class="grid lg:grid-cols-12 gap-8">
+                    
+                    <!-- Left: Palette Tokens -->
+                    <div class="lg:col-span-4 p-6 rounded-2xl bg-brand-card border border-white/10 space-y-6">
+                        <h4 class="text-base font-mono font-bold text-white flex items-center gap-2">
+                            <i data-lucide="palette" class="w-4 h-4 text-cyan-400"></i>
+                            <span>PALETA DE TOKENS (CSS VARS)</span>
+                        </h4>
+
+                        <div class="space-y-3 text-xs font-mono">
+                            <div class="p-3 rounded-xl bg-brand-dark border border-white/5 flex items-center justify-between token-row transition-all">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-6 h-6 rounded bg-[#06B6D4] border border-white/20"></div>
+                                    <div>
+                                        <span class="text-white font-bold block">--brand-cyan</span>
+                                        <span class="text-slate-500 text-[10px]">#06B6D4 (Logo Brand)</span>
+                                    </div>
+                                </div>
+                                <span class="text-cyan-400 font-bold">100% Match</span>
+                            </div>
+
+                            <div class="p-3 rounded-xl bg-brand-dark border border-white/5 flex items-center justify-between token-row transition-all">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-6 h-6 rounded bg-[#030509] border border-white/20"></div>
+                                    <div>
+                                        <span class="text-white font-bold block">--bg-obsidian</span>
+                                        <span class="text-slate-500 text-[10px]">#030509 (Deep Dark)</span>
+                                    </div>
+                                </div>
+                                <span class="text-slate-400">OLED Dark</span>
+                            </div>
+
+                            <div class="p-3 rounded-xl bg-brand-dark border border-white/5 flex items-center justify-between token-row transition-all">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-6 h-6 rounded bg-[#10B981] border border-white/20"></div>
+                                    <div>
+                                        <span class="text-white font-bold block">--status-success</span>
+                                        <span class="text-slate-500 text-[10px]">#10B981 (WCAG AA Pass)</span>
+                                    </div>
+                                </div>
+                                <span class="text-emerald-400">Contrast 7.1:1</span>
+                            </div>
+
+                            <div class="p-3 rounded-xl bg-brand-dark border border-white/5 flex items-center justify-between token-row transition-all">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-6 h-6 rounded bg-[#F59E0B] border border-white/20"></div>
+                                    <div>
+                                        <span class="text-white font-bold block">--status-warning</span>
+                                        <span class="text-slate-500 text-[10px]">#F59E0B (Telemetry Alert)</span>
+                                    </div>
+                                </div>
+                                <span class="text-amber-400">ANAC Spec</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Center: Typographic Scale -->
+                    <div class="lg:col-span-4 p-6 rounded-2xl bg-brand-card border border-white/10 space-y-6">
+                        <h4 class="text-base font-mono font-bold text-white flex items-center gap-2">
+                            <i data-lucide="type" class="w-4 h-4 text-cyan-400"></i>
+                            <span>HIERARQUIA TIPOGRÁFICA</span>
+                        </h4>
+
+                        <div class="space-y-4">
+                            <div class="p-3 rounded-xl bg-brand-dark border border-white/5 space-y-1">
+                                <span class="text-[10px] font-mono text-cyan-400">DISPLAY / HEADINGS (SYNE & SPACE GROTESK)</span>
+                                <div class="text-2xl font-display font-extrabold text-white">Headline Display Bold</div>
+                            </div>
+
+                            <div class="p-3 rounded-xl bg-brand-dark border border-white/5 space-y-1">
+                                <span class="text-[10px] font-mono text-cyan-400">BODY COPY (PLUS JAKARTA SANS)</span>
+                                <div class="text-sm text-slate-300">Construído para máxima legibilidade e conforto em interfaces densas de dados.</div>
+                            </div>
+
+                            <div class="p-3 rounded-xl bg-brand-dark border border-white/5 space-y-1">
+                                <span class="text-[10px] font-mono text-cyan-400">DATA & TELEMETRY (JETBRAINS MONO)</span>
+                                <div class="text-xs font-mono text-cyan-300">01001010 // LAT: -3.1190 // 120+ TOKENS</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Reusable Component Showcase -->
+                    <div class="lg:col-span-4 p-6 rounded-2xl bg-brand-card border border-white/10 space-y-6">
+                        <h4 class="text-base font-mono font-bold text-white flex items-center gap-2">
+                            <i data-lucide="layers" class="w-4 h-4 text-cyan-400"></i>
+                            <span>COMPONENTES ATÔMICOS</span>
+                        </h4>
+
+                        <div class="space-y-3">
+                            <div class="p-3 rounded-xl bg-brand-dark border border-white/5 space-y-2">
+                                <span class="text-[10px] font-mono text-slate-400">BUTTONS & MICROINTERAÇÕES</span>
+                                <div class="flex flex-wrap gap-2">
+                                    <button class="px-3 py-1.5 rounded-lg bg-cyan-400 text-brand-dark font-bold text-xs hover:bg-cyan-300 transition-all">Primary Action</button>
+                                    <button class="px-3 py-1.5 rounded-lg bg-white/10 text-white font-medium text-xs hover:bg-white/20 transition-all">Secondary Ghost</button>
+                                    <button class="px-3 py-1.5 rounded-lg border border-cyan-400/50 text-cyan-400 text-xs font-mono">Outlined</button>
+                                </div>
+                            </div>
+
+                            <div class="p-3 rounded-xl bg-brand-dark border border-white/5 space-y-2">
+                                <span class="text-[10px] font-mono text-slate-400">STATUS BADGES</span>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-[10px] font-mono">LIVE PRODUCTION</span>
+                                    <span class="px-2.5 py-1 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-[10px] font-mono">ANAC RBAC 91</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ========================================================================= -->
+        <!-- SCREEN 05: ABOUT, TRAJECTORY, TIMELINE & METHODOLOGY                       -->
+        <!-- ========================================================================= -->
+        <section id="stage-about" class="stage-section min-h-screen px-4 sm:px-6 lg:px-12 py-16 relative bg-brand-dark border-t border-white/5">
+            <div class="max-w-7xl mx-auto space-y-16">
+                
+                <!-- Profile & Core Value Proposition -->
+                <div class="grid lg:grid-cols-12 gap-12 items-center">
+                    <div class="lg:col-span-5 relative group">
+                        <div class="laser-border p-2 rounded-3xl bg-brand-card">
+                            <div class="relative rounded-2xl overflow-hidden aspect-[4/5] bg-slate-950">
+                                <img src="assets/avatarnovo.webp" alt="Daniel Leite — Senior Product Designer" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700">
+                                <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-transparent to-transparent opacity-80"></div>
+                                
+                                <div class="absolute bottom-5 left-5 right-5 p-4 rounded-xl bg-brand-surface/90 border border-white/10 backdrop-blur-md">
+                                    <span class="text-xs font-mono text-cyan-400 block font-bold">MANAUS, BRASIL</span>
+                                    <h3 class="text-lg font-display font-bold text-white">Daniel Leite</h3>
+                                    <span class="text-xs text-slate-300">Senior Product Designer, Design Engineer & Mentor</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-7 space-y-6">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-mono uppercase">
+                            <i data-lucide="user" class="w-3.5 h-3.5"></i> BIOGRAFIA & VISÃO ESTRATÉGICA
+                        </div>
+
+                        <h2 class="text-3xl sm:text-5xl font-display font-extrabold text-white tracking-tight leading-tight">
+                            Design não é decoração. É arquitetura de soluções e impacto de negócio.
+                        </h2>
+
+                        <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
+                            Com mais de 12 anos de atuação multidisciplinar em tecnologia e direção de arte, combino <strong class="text-cyan-300 font-semibold">User Research profundo, Arquitetura de Informação, Design Systems de nível empresarial e Prototipagem Funcional em Código</strong>.
+                        </p>
+
+                        <p class="text-slate-300 text-base leading-relaxed">
+                            Minha missão é eliminar a fricção entre Produto, Design e Engenharia, entregando experiências que encantam usuários finais enquanto reduzem custos operacionais e aceleram métricas chave da empresa.
+                        </p>
+
+                        <!-- Highlights Pills -->
+                        <div class="flex flex-wrap gap-2.5 pt-2">
+                            <span class="px-3.5 py-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-200 text-xs font-mono">B2B SaaS Data-Dense</span>
+                            <span class="px-3.5 py-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-200 text-xs font-mono">Conformidade Regulatória (ANAC)</span>
+                            <span class="px-3.5 py-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-200 text-xs font-mono">Design Systems & Tokens</span>
+                            <span class="px-3.5 py-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-200 text-xs font-mono">Green UX & Carbon Accounting</span>
+                            <span class="px-3.5 py-1.5 rounded-xl bg-white/5 border border-white/10 text-slate-200 text-xs font-mono">Mentoria em Hackathons</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Career Timeline -->
+                <div class="space-y-6 pt-12 border-t border-white/10">
+                    <div class="space-y-2">
+                        <span class="text-xs font-mono text-cyan-400">TRAJETÓRIA PROFISSIONAL</span>
+                        <h3 class="text-2xl sm:text-4xl font-display font-bold text-white">Experiência Consolidada</h3>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="p-6 rounded-2xl bg-brand-card border border-white/10 space-y-3">
+                            <span class="text-xs font-mono text-cyan-400 block font-bold">2024 – 2026</span>
+                            <h4 class="text-lg font-bold text-white">Designer de Interfaces (B2B SaaS)</h4>
+                            <span class="text-xs text-slate-400 block font-semibold">Agência Digi (Incentify)</span>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Plataforma B2B de incentivos e gamificação para 10+ grandes clientes corporativos. Redução de 30% no tempo de navegação de fluxos críticos.
+                            </p>
+                        </div>
+
+                        <div class="p-6 rounded-2xl bg-brand-card border border-white/10 space-y-3">
+                            <span class="text-xs font-mono text-cyan-400 block font-bold">2023 – 2024</span>
+                            <h4 class="text-lg font-bold text-white">UX/UI Designer</h4>
+                            <span class="text-xs text-slate-400 block font-semibold">Garupa Mobilidade</span>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Product Discovery no Portal do Motorista (-40% tempo de cadastro), +25% conversão de pagamentos PIX e projeto de NFC embarcado.
+                            </p>
+                        </div>
+
+                        <div class="p-6 rounded-2xl bg-brand-card border border-white/10 space-y-3">
+                            <span class="text-xs font-mono text-cyan-400 block font-bold">2021 – 2023</span>
+                            <h4 class="text-lg font-bold text-white">Product Designer</h4>
+                            <span class="text-xs text-slate-400 block font-semibold">Aliare — Hub Conexa</span>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Estruturação do Design System Aliare (+50% velocidade frontend) e redução de 60% na fricção do fluxo de assinatura eletrônica.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact & Hiring CTA -->
+                <div id="contact" class="p-8 sm:p-12 rounded-3xl bg-gradient-to-r from-brand-card via-brand-surface to-brand-card border border-brand-cyan/30 text-center space-y-6 shadow-2xl relative overflow-hidden">
+                    <div class="max-w-2xl mx-auto space-y-3">
+                        <span class="text-xs font-mono text-cyan-400 uppercase tracking-widest block font-bold">VAMOS CONSTRUIR PRODUTOS EXTRAORDINÁRIOS?</span>
+                        <h3 class="text-3xl sm:text-5xl font-display font-extrabold text-white">
+                            Disponível para Liderança de UX & Contratos Globais
+                        </h3>
+                        <p class="text-slate-300 text-sm sm:text-base">
+                            Seja para liderar o design do seu próximo SaaS, estruturar seu Design System ou criar produtos de ponta a ponta com rigor e velocidade.
+                        </p>
+                    </div>
+
+                    <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+                        <a href="mailto:danielleite.designer@gmail.com" class="px-6 py-3.5 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-brand-dark font-display font-bold text-sm sm:text-base flex items-center gap-2 shadow-xl shadow-cyan-400/20 transition-all hover:scale-105">
+                            <i data-lucide="mail" class="w-4 h-4"></i>
+                            <span>danielleite.designer@gmail.com</span>
+                        </a>
+
+                        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="px-6 py-3.5 rounded-xl bg-white/5 border border-white/10 hover:border-brand-cyan/40 text-white font-mono text-xs sm:text-sm flex items-center gap-2 transition-all">
+                            <i data-lucide="linkedin" class="w-4 h-4 text-cyan-400"></i>
+                            <span>LINKEDIN</span>
+                        </a>
+                        
+                        <a href="index.html" class="px-6 py-3.5 rounded-xl bg-white/5 border border-white/10 text-slate-300 font-mono text-xs sm:text-sm flex items-center gap-2 hover:text-white transition-all">
+                            <span>VER SITE CLÁSSICO</span>
+                            <i data-lucide="external-link" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-brand-dark py-8 px-6 text-center text-xs font-mono text-slate-500">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <img src="LOGO-DL.svg" alt="Daniel Leite Logo" class="h-5 w-auto">
+                <span>DANIEL LEITE &copy; 2026 — SENIOR PRODUCT DESIGNER</span>
+            </div>
+            <div class="flex items-center gap-4 text-slate-400">
+                <a href="#hero" class="hover:text-cyan-400 transition-colors">TOPO</a>
+                <span>•</span>
+                <a href="index.html" class="hover:text-cyan-400 transition-colors">PORTFÓLIO PRINCIPAL</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE APP LOGIC & SOUND ENGINE (JAVASCRIPT) -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Lenis Smooth Scroll Setup
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            smooth: true,
+            smoothTouch: false
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // Web Audio API Synthesized UI Feedback (Subtle $50k micro-soundscapes)
+        let audioContext = null;
+        let soundEnabled = true;
+
+        function getAudioContext() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            return audioContext;
+        }
+
+        function playUiSound(type = 'click') {
+            if (!soundEnabled) return;
+            try {
+                const ctx = getAudioContext();
+                const now = ctx.currentTime;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                if (type === 'click') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(800, now);
+                    osc.frequency.exponentialRampToValueAtTime(400, now + 0.05);
+                    gain.gain.setValueAtTime(0.04, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } else if (type === 'switch') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(520, now);
+                    osc.frequency.exponentialRampToValueAtTime(1040, now + 0.08);
+                    gain.gain.setValueAtTime(0.05, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+                    osc.start(now);
+                    osc.stop(now + 0.08);
+                } else if (type === 'hover') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(320, now);
+                    gain.gain.setValueAtTime(0.015, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+                    osc.start(now);
+                    osc.stop(now + 0.03);
+                }
+            } catch (e) {
+                // Audio not allowed or failed silently
+            }
+        }
+
+        function toggleAudio() {
+            soundEnabled = !soundEnabled;
+            const soundIcon = document.getElementById('sound-icon');
+            const soundText = document.getElementById('sound-text');
+            if (soundEnabled) {
+                soundIcon.setAttribute('data-lucide', 'volume-2');
+                soundText.textContent = 'SOM ON';
+                playUiSound('switch');
+            } else {
+                soundIcon.setAttribute('data-lucide', 'volume-x');
+                soundText.textContent = 'SOM OFF';
+            }
+            lucide.createIcons();
+        }
+
+        // Live Clock in Manaus (GMT-4)
+        function updateLiveClock() {
+            const clockEl = document.getElementById('live-clock');
+            if (!clockEl) return;
+            const now = new Date();
+            const options = { timeZone: 'America/Manaus', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            clockEl.textContent = 'MANAUS: ' + new Intl.DateTimeFormat([], options).format(now);
+        }
+        setInterval(updateLiveClock, 1000);
+        updateLiveClock();
+
+        // Custom Magnetic Cursor Follower
+        const cursor = document.getElementById('cursor-follower');
+        const cursorText = document.getElementById('cursor-text');
+        const cursorCore = document.getElementById('cursor-core');
+
+        if (cursor) {
+            window.addEventListener('mousemove', (e) => {
+                cursor.style.left = `${e.clientX}px`;
+                cursor.style.top = `${e.clientY}px`;
+            });
+
+            // Hover effects on interactive elements
+            document.querySelectorAll('button, a, input, .token-row').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    cursor.classList.add('scale-150', 'border-cyan-300', 'bg-cyan-400/20');
+                    playUiSound('hover');
+                });
+                el.addEventListener('mouseleave', () => {
+                    cursor.classList.remove('scale-150', 'border-cyan-300', 'bg-cyan-400/20');
+                });
+                el.addEventListener('click', () => {
+                    playUiSound('click');
+                });
+            });
+        }
+
+        // Mobile Nav Toggle
+        function toggleMobileNav() {
+            const nav = document.getElementById('mobile-nav');
+            if (nav) {
+                nav.classList.toggle('hidden');
+            }
+        }
+
+        // Global Stage Switcher (Smooth Screen Navigation)
+        function switchGlobalStage(targetStageId) {
+            playUiSound('switch');
+            
+            // Update Top Header Tabs
+            document.querySelectorAll('.stage-tab').forEach(tab => {
+                if (tab.getAttribute('data-stage') === targetStageId) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+
+            // Scroll to the stage
+            const targetEl = document.getElementById(targetStageId);
+            if (targetEl) {
+                lenis.scrollTo(targetEl, { offset: -80, duration: 1.2 });
+            }
+        }
+
+        // =========================================================================
+        // CASE STUDY DATABASE & DYNAMIC STAGE ENGINE (WORKBENCH)
+        // =========================================================================
+        const projectCases = {
+            recruitersys: {
+                title: "RecruiterSys – O Ecossistema de Recrutamento Tech",
+                sector: "B2B SaaS & Tech Recruitment",
+                role: "Senior Product Designer & Lead UX",
+                description: "Eliminando o gap de comunicação técnica entre recrutadores de RH e líderes de engenharia. Criação de um ecossistema dual integrando dashboard analítico B2B para empresas e aplicativo mobile B2C para candidatos com testes interativos.",
+                docLink: "recruitersys.html",
+                mainImage: "assets/CAPA RECRUITER.webp",
+                screens: [
+                    { id: 'dashboard', name: 'Dashboard B2B', img: 'assets/CAPA RECRUITER.webp', caption: 'Visão Geral do Funil de Recrutamento e Match por IA' },
+                    { id: 'mobile', name: 'App Mobile B2C', img: 'assets/mock 1.webp', caption: 'Interface Mobile do Candidato com Testes Práticos' },
+                    { id: 'design-system', name: 'Tokens & UI', img: 'assets/Group 22 1.webp', caption: 'Arquitetura de Tokens e Componentes do RecruiterSys' },
+                    { id: 'flow', name: 'Mapeamento UX', img: 'assets/Group 24.webp', caption: 'Jornada de Contratação e Redução do Time-to-Hire' }
+                ],
+                pillars: [
+                    { title: "Triagem Técnica por IA", desc: "Algoritmo visual de compatibilidade técnica eliminando 40% das horas de triagem manual." },
+                    { title: "Design System Componentizado", desc: "Padronização de 120+ tokens e componentes compartilhados entre Web e Mobile." },
+                    { title: "Ecossistema Dual Conectado", desc: "Sincronização em tempo real entre avaliações de código dos devs e feedback dos recrutadores." }
+                ],
+                metrics: [
+                    { val: "-40%", label: "Time-to-Hire" },
+                    { val: "Dual", label: "Web + Mobile" },
+                    { val: "4.9/5", label: "CSAT Score" }
+                ]
+            },
+            horuz: {
+                title: "Diário de Bordo Aeronáutico (Hóruz eDB)",
+                sector: "Aviação Geral & ANAC Regulated",
+                role: "Product Designer & CDO",
+                description: "Plataforma de dados e telemetria para modernizar o diário de bordo da aviação civil no Brasil. Substituição integral do livro de papel por sistema homologado pela ANAC para tablets com suporte a cálculo automático de Green UX e combate a queimadas na Amazônia.",
+                docLink: "diario-edb.html",
+                mainImage: "assets/HORUZ.webp",
+                screens: [
+                    { id: 'cockpit', name: 'Tablet Cockpit', img: 'assets/HORUZ.webp', caption: 'Interface de Cockpit com Modo Noturno e Alto Contraste' },
+                    { id: 'anac-form', name: 'Registro ANAC', img: 'assets/diario-edb-horuz.webp', caption: 'Formulário Regulatório Inteligente com Validação Offline' },
+                    { id: 'telemetry', name: 'Green UX & GEE', img: 'assets/cockpit copiar.webp', caption: 'Dashboard de Emissão de Carbono e Consumo de Combustível' },
+                    { id: 'arch', name: 'Arquitetura de Dados', img: 'assets/diario-cockpit.webp', caption: 'Sincronização de Voos em Áreas Remotas da Amazônia' }
+                ],
+                pillars: [
+                    { title: "100% Paperless & ANAC Compliance", desc: "Substituição completa do livro físico de bordo garantindo validade jurídica e auditoria." },
+                    { title: "Green UX & Metrificação GEE", desc: "Cálculo em tempo real de pegada de carbono e suporte a missões de combate a queimadas." },
+                    { title: "Ergonomia de Cockpit", desc: "Tipografia com alvo de toque expandido de 48px para turbulências e modo noite sem ofuscamento." }
+                ],
+                metrics: [
+                    { val: "100%", label: "Sem Papel" },
+                    { val: "ANAC", label: "RBAC 91" },
+                    { val: "-65%", label: "Erros de Log" }
+                ]
+            },
+            petplant: {
+                title: "Pet Plant App – UX Botânica & IoT",
+                sector: "IoT, Hardware & Consumer App",
+                role: "Senior Product Designer",
+                description: "Consolidação de tecnologia de sensores de solo e luz com uma interface de gestão emocional botânica. Monitoramento em tempo real de saúde vegetal que traduz dados agronômicos complexos em ações simples e afetivas.",
+                docLink: "petplant.html",
+                mainImage: "assets/MOCK PET PLANT.webp",
+                screens: [
+                    { id: 'overview', name: 'App Overview', img: 'assets/MOCK PET PLANT.webp', caption: 'Dashboard Vital da Planta com Indicadores de Umidade e Luz' },
+                    { id: 'dashboard', name: 'Telemetry Screen', img: 'assets/PETPLANT.webp', caption: 'Histórico de Regas e Curva de Absorção de Nutrientes' },
+                    { id: 'plants', name: 'Catálogo de Espécies', img: 'assets/petplant1.webp', caption: 'Biblioteca com Parâmetros Específicos para 200+ Plantas' },
+                    { id: 'care', name: 'Rotina de Cuidados', img: 'assets/petplant2.webp', caption: 'Alertas Preditivos via Conexão Bluetooth BLE' }
+                ],
+                pillars: [
+                    { title: "Tradução de Dados Agronômicos", desc: "Transformação de volts e umidade relativa em estados de humor compreensíveis da planta." },
+                    { title: "Design Emocional & Gamificação", desc: "Engajamento contínuo através de avatares botânicos que expressam sede ou conforto." },
+                    { title: "Conectividade BLE Resiliente", desc: "Sincronização instantânea com hardware sem necessidade de pareamento manual complexo." }
+                ],
+                metrics: [
+                    { val: "200+", label: "Espécies" },
+                    { val: "BLE 5.0", label: "IoT Link" },
+                    { val: "94%", label: "Retenção D30" }
+                ]
+            },
+            ventihome: {
+                title: "VentHome – Além do Vento (Smart IoT)",
+                sector: "Smart Home & Hardware Innovation",
+                role: "Product Designer (UX/UI)",
+                description: "Transformação de um eletrodoméstico analógico tradicional em um serviço conectado de bem-estar e conforto térmico circadiano. Modos inteligentes para Sono, Foco Gamer e Treino Bike integrados via aplicativo.",
+                docLink: "ventihome.html",
+                mainImage: "assets/VENTIHOME.webp",
+                screens: [
+                    { id: 'overview', name: 'Smart Fan Hub', img: 'assets/VENTIHOME.webp', caption: 'Interface Principal com Seleção de Modos Contextuais' },
+                    { id: 'mockup', name: 'App UI & Presets', img: 'assets/mockupventihome.webp', caption: 'Curvas de Ventilação Noturna para Preservação do Sono' },
+                    { id: 'flow', name: 'Jornada do Usuário', img: 'assets/Group 32.webp', caption: 'Arquitetura de Conexão Rápida e Controle de Temperatura' }
+                ],
+                pillars: [
+                    { title: "Design Contextual Circadiano", desc: "Algoritmo de desaceleração automática da ventilação alinhado ao ciclo de sono." },
+                    { title: "Presets Específicos por Atividade", desc: "Modos customizados para gamers, ciclistas indoor e descanso silencioso." },
+                    { title: "Interface Tátil & Minimalista", desc: "Controle de rotação circular inspirado em mostradores de precisão de alta fidelidade." }
+                ],
+                metrics: [
+                    { val: "Smart", label: "Circadiano" },
+                    { val: "BLE", label: "Instant Sync" },
+                    { val: "0 dB", label: "Modo Silencioso" }
+                ]
+            }
+        };
+
+        let currentActiveCase = 'recruitersys';
+
+        function loadProjectCase(caseKey) {
+            const data = projectCases[caseKey];
+            if (!data) return;
+            currentActiveCase = caseKey;
+            playUiSound('switch');
+
+            // Update case selector buttons
+            document.querySelectorAll('.case-btn').forEach(btn => {
+                if (btn.getAttribute('data-case') === caseKey) {
+                    btn.className = "case-btn active px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all bg-brand-cyan text-brand-dark shadow-lg shadow-cyan-500/20";
+                } else {
+                    btn.className = "case-btn px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all text-slate-300 hover:text-white";
+                }
+            });
+
+            // Update text content with GSAP fade
+            gsap.to('#case-title, #case-description, #case-role, #case-sector', {
+                opacity: 0,
+                duration: 0.15,
+                onComplete: () => {
+                    document.getElementById('case-title').textContent = data.title;
+                    document.getElementById('case-description').textContent = data.description;
+                    document.getElementById('case-role').textContent = data.role;
+                    document.getElementById('case-sector').textContent = data.sector;
+                    document.getElementById('case-doc-link').href = data.docLink;
+
+                    gsap.to('#case-title, #case-description, #case-role, #case-sector', { opacity: 1, duration: 0.25 });
+                }
+            });
+
+            // Update main image
+            const mainImg = document.getElementById('case-main-image');
+            gsap.to(mainImg, {
+                opacity: 0,
+                scale: 0.98,
+                duration: 0.2,
+                onComplete: () => {
+                    mainImg.src = data.mainImage;
+                    document.getElementById('case-overlay-caption').textContent = data.screens[0]?.caption || 'Visão Geral do Projeto';
+                    document.getElementById('case-screen-label').textContent = 'TELA ATIVA: ' + (data.screens[0]?.name.toUpperCase() || 'SHOWCASE');
+                    gsap.to(mainImg, { opacity: 1, scale: 1, duration: 0.35 });
+                }
+            });
+
+            // Update screen tabs
+            const tabsContainer = document.getElementById('case-screen-tabs');
+            tabsContainer.innerHTML = '';
+            data.screens.forEach((screen, idx) => {
+                const btn = document.createElement('button');
+                btn.className = `px-2.5 py-1 rounded text-[11px] font-mono transition-all ${idx === 0 ? 'bg-brand-cyan/20 text-cyan-300 border border-cyan-400/40 font-bold' : 'text-slate-400 hover:text-white'}`;
+                btn.textContent = screen.name;
+                btn.onclick = () => switchCaseScreen(screen);
+                tabsContainer.appendChild(btn);
+            });
+
+            // Update thumbnails
+            const thumbsContainer = document.getElementById('case-gallery-thumbs');
+            thumbsContainer.innerHTML = '';
+            data.screens.forEach((screen, idx) => {
+                const thumb = document.createElement('div');
+                thumb.className = `cursor-pointer rounded-lg overflow-hidden border ${idx === 0 ? 'border-cyan-400 ring-2 ring-cyan-400/30' : 'border-white/10 hover:border-white/30'} bg-brand-dark aspect-video transition-all`;
+                thumb.innerHTML = `<img src="${screen.img}" alt="${screen.name}" class="w-full h-full object-cover">`;
+                thumb.onclick = () => {
+                    switchCaseScreen(screen);
+                    document.querySelectorAll('#case-gallery-thumbs > div').forEach(t => t.className = 'cursor-pointer rounded-lg overflow-hidden border border-white/10 hover:border-white/30 bg-brand-dark aspect-video transition-all');
+                    thumb.className = 'cursor-pointer rounded-lg overflow-hidden border border-cyan-400 ring-2 ring-cyan-400/30 bg-brand-dark aspect-video transition-all';
+                };
+                thumbsContainer.appendChild(thumb);
+            });
+
+            // Update pillars
+            const pillarsContainer = document.getElementById('case-pillars');
+            pillarsContainer.innerHTML = '';
+            data.pillars.forEach(p => {
+                const div = document.createElement('div');
+                div.className = 'p-3 rounded-xl bg-white/5 border border-white/5 flex items-start gap-3';
+                div.innerHTML = `
+                    <i data-lucide="check-circle" class="w-4 h-4 text-cyan-400 shrink-0 mt-0.5"></i>
+                    <div class="text-xs text-slate-300">
+                        <strong class="text-white block font-semibold">${p.title}</strong>
+                        ${p.desc}
+                    </div>
+                `;
+                pillarsContainer.appendChild(div);
+            });
+
+            // Update metrics
+            const metricsContainer = document.getElementById('case-metrics');
+            metricsContainer.innerHTML = '';
+            data.metrics.forEach(m => {
+                const div = document.createElement('div');
+                div.className = 'p-3 rounded-xl bg-brand-surface border border-white/5 text-center';
+                div.innerHTML = `
+                    <span class="text-lg font-display font-bold text-cyan-400 block">${m.val}</span>
+                    <span class="text-[10px] font-mono text-slate-400">${m.label}</span>
+                `;
+                metricsContainer.appendChild(div);
+            });
+
+            lucide.createIcons();
+        }
+
+        function switchCaseScreen(screen) {
+            playUiSound('switch');
+            const mainImg = document.getElementById('case-main-image');
+            gsap.to(mainImg, {
+                opacity: 0,
+                duration: 0.15,
+                onComplete: () => {
+                    mainImg.src = screen.img;
+                    document.getElementById('case-overlay-caption').textContent = screen.caption;
+                    document.getElementById('case-screen-label').textContent = 'TELA ATIVA: ' + screen.name.toUpperCase();
+                    gsap.to(mainImg, { opacity: 1, duration: 0.25 });
+                }
+            });
+        }
+
+        // Initialize default case
+        loadProjectCase('recruitersys');
+
+        // =========================================================================
+        // SANDBOX MINI-ENGINES LOGIC (PROTÓTIPOS LIVE)
+        // =========================================================================
+        function updateHoruzCalc(hours) {
+            const h = parseFloat(hours);
+            document.getElementById('flight-hours-display').textContent = `${h.toFixed(1)} HORAS`;
+            const fuel = (h * 75).toFixed(1);
+            document.getElementById('fuel-display').textContent = `${fuel} L`;
+            const co2 = (h * 187.5).toFixed(1);
+            document.getElementById('co2-display').textContent = `-${co2} kg`;
+        }
+
+        const plantData = {
+            monstera: { soil: '78%', width: '78%', light: '650 Lux', health: 'SAUDÁVEL' },
+            succulent: { soil: '22%', width: '22%', light: '1400 Lux', health: 'SOL PLENO' },
+            orchid: { soil: '55%', width: '55%', light: '850 Lux', health: 'VENTILADA' }
+        };
+
+        function setPlantMode(plant) {
+            playUiSound('click');
+            const data = plantData[plant];
+            if (!data) return;
+
+            ['monstera', 'succulent', 'orchid'].forEach(p => {
+                const btn = document.getElementById(`plant-btn-${p}`);
+                if (p === plant) {
+                    btn.className = "p-2 rounded-lg text-xs font-mono font-bold bg-emerald-500 text-brand-dark transition-all";
+                } else {
+                    btn.className = "p-2 rounded-lg text-xs font-mono font-bold text-slate-300 hover:text-white transition-all";
+                }
+            });
+
+            document.getElementById('soil-moisture-val').textContent = `${data.soil} (${data.health})`;
+            document.getElementById('soil-bar').style.width = data.width;
+            document.getElementById('light-val').textContent = data.light;
+            document.getElementById('health-val').textContent = data.health;
+        }
+
+        function setFanMode(mode) {
+            playUiSound('click');
+            const sleepBtn = document.getElementById('fan-mode-sleep');
+            const gamerBtn = document.getElementById('fan-mode-gamer');
+            const rpmEl = document.getElementById('fan-rpm');
+
+            if (mode === 'sleep') {
+                sleepBtn.className = "p-3 rounded-xl bg-indigo-500/20 border border-indigo-500/40 text-left transition-all";
+                gamerBtn.className = "p-3 rounded-xl bg-white/5 border border-white/5 text-left transition-all hover:border-cyan-400/40";
+                rpmEl.textContent = "420 RPM (Silencioso)";
+            } else {
+                gamerBtn.className = "p-3 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-left transition-all";
+                sleepBtn.className = "p-3 rounded-xl bg-white/5 border border-white/5 text-left transition-all hover:border-cyan-400/40";
+                rpmEl.textContent = "1200 RPM (Turbo Foco)";
+            }
+        }
+    </script>
+</body>
+</html>

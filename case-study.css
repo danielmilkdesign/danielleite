@@ -1,0 +1,368 @@
+/* ========================================================
+   Daniel Leite Portfolio — Case Study Shared Styles (v2)
+   Matches the design system of daniel-leite-v2.html
+   ======================================================== */
+
+:root {
+  --bg: #070707;
+  --surface: #0e1217;
+  --surface-hover: #141b24;
+  --text: #ffffff;
+  --text-dim: #cbd5e1;
+  --muted: #828c9b;
+  --line: #1c2430;
+  --line-strong: #2c384a;
+  
+  --accent: #06B6D4;
+  --accent-hover: #22d3ee;
+  --accent-dim: rgba(6, 182, 212, 0.12);
+  --accent-glow: rgba(6, 182, 212, 0.35);
+  
+  --pad: clamp(20px, 4.5vw, 64px);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background-color: var(--bg) !important;
+  color: var(--text) !important;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+body.menu-open {
+  overflow: hidden;
+}
+
+.mono {
+  font-family: 'DM Mono', monospace !important;
+}
+
+/* Header */
+header.case-header {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px var(--pad);
+  background: rgba(7, 7, 7, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(28, 36, 48, 0.7);
+  transition: padding 0.3s, background 0.3s;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+.logo-img {
+  height: 28px;
+  width: auto;
+  display: block;
+  transition: transform 0.3s ease;
+}
+.logo-wrap:hover .logo-img {
+  transform: scale(1.04);
+}
+
+.header-back-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--line);
+  color: var(--text-dim);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+.header-back-pill:hover {
+  background: var(--accent-dim);
+  border-color: rgba(6, 182, 212, 0.4);
+  color: #ffffff;
+  transform: translateX(-2px);
+}
+.header-back-pill svg {
+  color: var(--accent);
+  transition: transform 0.2s ease;
+}
+.header-back-pill:hover svg {
+  transform: translateX(-3px);
+}
+
+/* Desktop Header Navigation */
+.header-nav {
+  display: none;
+  align-items: center;
+  gap: 28px;
+}
+.header-link {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.25s ease;
+  position: relative;
+  padding-block: 6px;
+}
+.header-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  transition: width 0.25s ease;
+}
+.header-link:hover, .header-link.active {
+  color: #fff;
+}
+.header-link:hover::after, .header-link.active::after {
+  width: 100%;
+}
+.header-link-cta {
+  color: #070707 !important;
+  background: #ffffff;
+  padding: 8px 18px;
+  border-radius: 100px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  transition: background 0.25s ease, transform 0.2s ease !important;
+}
+.header-link-cta::after {
+  display: none;
+}
+.header-link-cta:hover {
+  background: var(--accent);
+  color: #000 !important;
+  transform: scale(1.04);
+}
+
+@media (min-width: 960px) {
+  .header-nav {
+    display: flex;
+  }
+  .menu-btn {
+    display: none !important;
+  }
+}
+
+/* Mobile Hamburger Button */
+.menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--line);
+  color: #ffffff;
+  cursor: pointer;
+  transition: border-color 0.25s ease;
+}
+.menu-btn:hover {
+  border-color: var(--accent);
+}
+.menu-icon {
+  width: 18px;
+  height: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.menu-icon i {
+  display: block;
+  height: 1.5px;
+  width: 100%;
+  background: #ffffff;
+  transition: transform 0.3s ease;
+}
+
+/* Fullscreen Sliding Mobile Menu */
+.menu {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 7, 7, 0.97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--pad);
+  transform: translateY(-100%);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+.menu.open {
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.menu nav {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+  width: 100%;
+}
+.menu nav a {
+  font-size: clamp(1.8rem, 5vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--text-dim);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  transition: color 0.25s ease, transform 0.25s ease;
+}
+.menu nav a:hover {
+  color: var(--accent);
+  transform: translateX(10px);
+}
+.menu-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 1rem;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+/* Badges & Tags */
+.case-badge-cyan {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent-dim);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  color: var(--accent);
+  padding: 5px 12px;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.case-badge-muted {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line);
+  color: var(--text-dim);
+  padding: 5px 12px;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: 0.06em;
+}
+
+.case-title {
+  font-size: clamp(2.4rem, 5vw, 4.2rem);
+  line-height: 1.05;
+  letter-spacing: -0.055em;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.case-lead {
+  font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+  color: var(--accent-hover);
+  font-weight: 500;
+  line-height: 1.55;
+  letter-spacing: -0.02em;
+}
+
+.case-card-accent {
+  background: rgba(14, 18, 23, 0.75);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  border-left: 4px solid var(--accent);
+  border-radius: 16px;
+  padding: 32px;
+}
+
+.case-visual-frame {
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  overflow: hidden;
+  background: #090c11;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8);
+}
+
+/* Edge Glow Buttons for Case Study Navigation */
+.edge-glow-btn {
+  --x: 50%;
+  --y: 50%;
+  position: relative;
+  border-radius: 9999px;
+  padding: 1.5px;
+  background: radial-gradient(130px circle at var(--x, 50%) var(--y, 50%), rgba(6, 182, 212, 0.95), rgba(34, 211, 238, 0.45), rgba(255, 255, 255, 0.12) 80%);
+  box-shadow: 0 0 15px -3px rgba(6, 182, 212, 0.2);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+  isolation: isolate;
+  display: inline-flex;
+  text-decoration: none;
+  cursor: pointer;
+}
+.edge-glow-btn::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: radial-gradient(140px circle at var(--x, 50%) var(--y, 50%), rgba(6, 182, 212, 0.45), rgba(34, 211, 238, 0.25), transparent 75%);
+  opacity: 0.3;
+  transition: opacity 0.25s ease;
+  z-index: -1;
+  pointer-events: none;
+}
+.edge-glow-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(6, 182, 212, 0.35);
+}
+.edge-glow-btn:hover::before {
+  opacity: 1;
+}
+.edge-glow-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: rgba(11, 15, 25, 0.96);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.65rem;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.88rem;
+  letter-spacing: -0.01em;
+  gap: 0.65rem;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.edge-glow-btn:hover .edge-glow-inner {
+  background: rgba(15, 23, 42, 0.96);
+  color: #22d3ee;
+}

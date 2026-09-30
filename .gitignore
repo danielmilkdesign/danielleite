@@ -1,0 +1,13 @@
+# Local dev & helper scripts
+optimize_assets.py
+/eu hero novo.png
+/eu hero novo.webp
+/eu hero.jpg
+/eu-hero-novo.webp
+/assets/eu hero novo.webp
+/assets/eu hero.jpg
+
+# Logs and system
+*.log
+.DS_Store
+Thumbs.db
