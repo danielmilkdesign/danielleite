@@ -1,9 +1,16 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark scroll-smooth">
+<html lang="pt-BR" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VentHome — Case Study | Daniel Leite</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon-dl.svg">
+    <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,7 +30,7 @@
                             400: '#7c98fb', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca',
                             800: '#3730a3', 900: '#312e81', 950: '#0c0e27',
                         },
-                        dark: { bg: '#000000', card: '#1E293B', surface: '#1E293B', border: '#334155' }
+                        dark: { bg: '#030712', card: '#0F172A', surface: '#0B0F19', border: '#1E293B' }
                     },
                     fontFamily: {
                         sans: ['Plus Jakarta Sans', 'sans-serif'],
@@ -42,34 +49,37 @@
     
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-dark-bg text-slate-100 font-sans selection:bg-purple-500/30 selection:text-purple-300 relative overflow-x-hidden min-h-screen">
+<body class="bg-dark-bg text-slate-100 font-sans selection:bg-indigo-500/30 selection:text-indigo-300 relative overflow-x-hidden min-h-screen">
+
+    <!-- GPU Fixed Background Layer -->
+    <div class="fixed-bg-layer"></div>
 
     <!-- Scroll Progress Bar -->
-    <div id="scroll-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-purple-500 via-brand-400 to-cyan-400 z-[100] transition-all duration-150"></div>
+    <div id="scroll-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-indigo-500 via-brand-400 to-cyan-400 z-[100] transition-all duration-150"></div>
 
     <!-- Background Canvas -->
     <canvas id="bg-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
 
     <!-- NAVBAR -->
-    <header class="fixed top-0 left-0 w-full z-50 px-6 lg:px-12 py-6">
-        <div id="navbar-inner" class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4 rounded-2xl bg-dark-card/70 border border-white/10 backdrop-blur-xl transition-all duration-300">
+    <header class="fixed top-0 left-0 w-full z-50 px-4 sm:px-6 lg:px-12 py-4 sm:py-6">
+        <div id="navbar-inner" class="max-w-7xl mx-auto flex items-center justify-between px-6 py-3.5 rounded-full bg-dark-card/80 border border-white/10 backdrop-blur-xl transition-all duration-300 shadow-2xl">
             <a href="index.html#portfolio" class="flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-white transition-colors group">
-                <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+                <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1 text-indigo-400"></i>
                 <span>Voltar ao Portfólio</span>
             </a>
             <div class="flex items-center gap-3">
-                <span class="px-3 py-1 rounded-full bg-purple-500/15 border border-purple-500/30 text-purple-300 text-xs font-semibold">IoT & Automação</span>
+                <span class="px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-500/30 text-indigo-300 text-xs font-semibold">IoT & Automação</span>
             </div>
         </div>
     </header>
 
     <!-- CONTENT CONTAINER -->
-    <main class="relative z-10 pt-36 pb-24 px-6 lg:px-12 max-w-5xl mx-auto space-y-16">
+    <main class="relative z-10 pt-32 sm:pt-36 pb-24 px-6 lg:px-12 max-w-5xl mx-auto space-y-16">
         
         <!-- Case Header -->
         <div class="space-y-6">
             <div class="flex flex-wrap gap-3">
-                <span class="px-3.5 py-1 rounded-full bg-purple-500/20 border border-purple-500/30 text-purple-300 text-xs font-semibold">Product Designer (UX/UI)</span>
+                <span class="px-3.5 py-1 rounded-full bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 text-xs font-semibold">Product Designer (UX/UI)</span>
                 <span class="px-3.5 py-1 rounded-full bg-white/5 border border-white/10 text-slate-400 text-xs font-semibold">Hardware to Software</span>
             </div>
 
@@ -77,7 +87,7 @@
                 VentHome – Além do Vento
             </h1>
 
-            <p class="text-xl text-purple-300 font-medium leading-relaxed max-w-3xl">
+            <p class="text-xl text-indigo-300 font-medium leading-relaxed max-w-3xl">
                 O VentHome surgiu do questionamento de como um ventilador poderia se adaptar organicamente ao nosso ritmo de vida moderno.
             </p>
 
@@ -92,7 +102,7 @@
 
         <!-- Cover Image Showcase -->
         <div class="rounded-3xl border border-white/15 overflow-hidden bg-dark-card shadow-2xl">
-            <img src="assets/VENTIHOME.png" alt="VentHome Showcase" class="w-full h-auto object-cover">
+            <img src="assets/VENTIHOME.webp" alt="VentHome Showcase" class="w-full h-auto object-cover" loading="lazy" decoding="async">
         </div>
 
         <!-- Problem Section -->
@@ -107,14 +117,14 @@
 
         <!-- Process Section -->
         <div class="space-y-6">
-            <h2 class="text-2xl font-heading font-bold text-purple-300">
+            <h2 class="text-2xl font-heading font-bold text-indigo-300">
                 02. Minha Atuação e Tomada de Decisão
             </h2>
             <div class="space-y-4 text-slate-300 text-base leading-relaxed">
                 <p><strong class="text-white">Imersão e Empatia:</strong> Apliquei o Double Diamond não apenas como metodologia, mas como lente investigativa. Observei que a ventilação é situacional. Queria que o app entendesse o contexto.</p>
                 <p><strong class="text-white">Estratégia e Arquitetura:</strong> Minha bagagem em Design Systems influenciou a criação de uma estrutura escalável. O objetivo era criar uma hierarquia visual onde o status da conexão Bluetooth fosse onipresente, mas não intrusivo.</p>
-                <p><strong class="text-white">Craft e Interface:</strong> No desenvolvimento da UI, utilizei o Figma para prototipar interações que transmitissem leveza, usando whitespace para operar sem esforço.</p>
-                <p class="pt-2 text-purple-300 font-semibold">North Star Metric: Design Centrado no Contexto</p>
+                <p><strong class="text-white">Craft e Interface:</strong> No desenvolvimento da UI, prototipei interações que transmitissem leveza, usando whitespace para operar sem esforço.</p>
+                <p class="pt-2 text-indigo-300 font-semibold">North Star Metric: Design Centrado no Contexto</p>
             </div>
         </div>
 
@@ -137,19 +147,19 @@
         <!-- Screenshots Showcase -->
         <div class="space-y-6">
             <h2 class="text-2xl sm:text-3xl font-heading font-bold text-white">Interface Showcase</h2>
-            <div class="rounded-2xl border border-white/10 overflow-hidden shadow-2xl max-w-3xl mx-auto">
-                <img src="assets/mockupventihome.png" alt="VentHome Mockup" class="w-full h-auto object-cover">
+            <div class="rounded-2xl border border-white/10 overflow-hidden shadow-2xl max-w-3xl mx-auto bg-dark-card">
+                <img src="assets/mockupventihome.webp" alt="VentHome Mockup" class="w-full h-auto object-cover" loading="lazy" decoding="async">
             </div>
         </div>
 
         <!-- Impact & Results -->
-        <div class="space-y-4">
-            <h2 class="text-2xl font-heading font-bold text-purple-300">04. Entrega, Visão de Futuro e Toolbox</h2>
+        <div class="space-y-4 p-8 rounded-3xl bg-brand-950/40 border border-brand-500/30 shadow-xl">
+            <h2 class="text-2xl font-heading font-bold text-indigo-300">04. Entrega, Visão de Futuro e Toolbox</h2>
             <p class="text-slate-300 text-base leading-relaxed">
                 O VentHome entrega autonomia. Este projeto reforçou minha capacidade de traduzir necessidades complexas de hardware para interfaces mobile intuitivas.
             </p>
             <ul class="space-y-3 text-slate-300 text-base">
-                <li>• Transformação de um hardware comum em um ecossistema inteligente, elevando o valor percebido do produto e criando um diferencial competitivo claro em um mercado de commodities (ventiladores convencionais).</li>
+                <li>• Transformação de um hardware comum em um ecossistema inteligente, elevando o valor percebido do produto e criando um diferencial competitivo claro em um mercado de commodities.</li>
                 <li>• Entrega de uma interface intuitiva e adaptativa que elimina a frustração com controles remotos físicos limitados, oferecendo precisão no ajuste ambiental, customização e um modo noturno que preserva o ciclo circadiano do usuário.</li>
             </ul>
         </div>
@@ -164,7 +174,7 @@
                     <div class="glow-card-border h-full">
                         <div class="bg-dark-card/90 rounded-2xl p-4 flex flex-col h-full space-y-4">
                             <div class="rounded-xl overflow-hidden border border-white/10 aspect-[16/10] bg-dark-bg">
-                                <img src="assets/CAPA RECRUITER.png" alt="RecruiterSys" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <img src="assets/CAPA RECRUITER.webp" alt="RecruiterSys" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async">
                             </div>
                             <div class="space-y-2 flex-grow">
                                 <span class="text-[10px] font-mono font-semibold uppercase tracking-wider text-brand-400 block">PRODUCT DESIGN</span>
@@ -181,7 +191,7 @@
                     <div class="glow-card-border h-full">
                         <div class="bg-dark-card/90 rounded-2xl p-4 flex flex-col h-full space-y-4">
                             <div class="rounded-xl overflow-hidden border border-white/10 aspect-[16/10] bg-dark-bg">
-                                <img src="assets/HORUZ.png" alt="Diário de Bordo Aeronáutico" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <img src="assets/HORUZ.webp" alt="Diário de Bordo Aeronáutico" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async">
                             </div>
                             <div class="space-y-2 flex-grow">
                                 <span class="text-[10px] font-mono font-semibold uppercase tracking-wider text-cyan-400 block">UX/UI DESIGN</span>
@@ -198,7 +208,7 @@
                     <div class="glow-card-border h-full">
                         <div class="bg-dark-card/90 rounded-2xl p-4 flex flex-col h-full space-y-4">
                             <div class="rounded-xl overflow-hidden border border-white/10 aspect-[16/10] bg-dark-bg">
-                                <img src="assets/MOCK PET PLANT.png" alt="Pet Plant App" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <img src="assets/MOCK PET PLANT.webp" alt="Pet Plant App" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async">
                             </div>
                             <div class="space-y-2 flex-grow">
                                 <span class="text-[10px] font-mono font-semibold uppercase tracking-wider text-emerald-400 block">PRODUCT DESIGN & IOT</span>

@@ -1,9 +1,16 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark scroll-smooth">
+<html lang="pt-BR" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pet Plant App — Case Study | Daniel Leite</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon-dl.svg">
+    <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,7 +30,7 @@
                             400: '#7c98fb', 500: '#6366f1', 600: '#4f46e5', 700: '#4338ca',
                             800: '#3730a3', 900: '#312e81', 950: '#0c0e27',
                         },
-                        dark: { bg: '#000000', card: '#1E293B', surface: '#1E293B', border: '#334155' }
+                        dark: { bg: '#030712', card: '#0F172A', surface: '#0B0F19', border: '#1E293B' }
                     },
                     fontFamily: {
                         sans: ['Plus Jakarta Sans', 'sans-serif'],
@@ -44,6 +51,9 @@
 </head>
 <body class="bg-dark-bg text-slate-100 font-sans selection:bg-emerald-500/30 selection:text-emerald-300 relative overflow-x-hidden min-h-screen">
 
+    <!-- GPU Fixed Background Layer -->
+    <div class="fixed-bg-layer"></div>
+
     <!-- Scroll Progress Bar -->
     <div id="scroll-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-emerald-500 via-cyan-400 to-brand-500 z-[100] transition-all duration-150"></div>
 
@@ -51,10 +61,10 @@
     <canvas id="bg-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-40"></canvas>
 
     <!-- NAVBAR -->
-    <header class="fixed top-0 left-0 w-full z-50 px-6 lg:px-12 py-6">
-        <div id="navbar-inner" class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4 rounded-2xl bg-dark-card/70 border border-white/10 backdrop-blur-xl transition-all duration-300">
+    <header class="fixed top-0 left-0 w-full z-50 px-4 sm:px-6 lg:px-12 py-4 sm:py-6">
+        <div id="navbar-inner" class="max-w-7xl mx-auto flex items-center justify-between px-6 py-3.5 rounded-full bg-dark-card/80 border border-white/10 backdrop-blur-xl transition-all duration-300 shadow-2xl">
             <a href="index.html#portfolio" class="flex items-center gap-2 text-sm font-semibold text-slate-300 hover:text-white transition-colors group">
-                <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+                <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1 text-emerald-400"></i>
                 <span>Voltar ao Portfólio</span>
             </a>
             <div class="flex items-center gap-3">
@@ -64,7 +74,7 @@
     </header>
 
     <!-- CONTENT CONTAINER -->
-    <main class="relative z-10 pt-36 pb-24 px-6 lg:px-12 max-w-5xl mx-auto space-y-16">
+    <main class="relative z-10 pt-32 sm:pt-36 pb-24 px-6 lg:px-12 max-w-5xl mx-auto space-y-16">
         
         <!-- Case Header -->
         <div class="space-y-6">
@@ -82,13 +92,13 @@
             </p>
 
             <p class="text-base text-slate-300 leading-relaxed max-w-4xl">
-                <strong>Objetivo:</strong> Criar uma interface que elimine a adivinhação, centralizando o controle biológico em um ecossistema digital.
+                <strong>Objetivo:</strong> Criar uma interface que elimine a adivinhação no cultivo doméstico, centralizando o controle biológico em um ecossistema digital intuitivo e envolvente.
             </p>
         </div>
 
         <!-- Cover Image Showcase -->
         <div class="rounded-3xl border border-white/15 overflow-hidden bg-dark-card shadow-2xl">
-            <img src="assets/MOCK PET PLANT.png" alt="Pet Plant App Showcase" class="w-full h-auto object-cover">
+            <img src="assets/MOCK PET PLANT.webp" alt="Pet Plant App Showcase" class="w-full h-auto object-cover" loading="lazy" decoding="async">
         </div>
 
         <!-- Problem Section -->
@@ -135,19 +145,19 @@
         <div class="space-y-6">
             <h2 class="text-2xl sm:text-3xl font-heading font-bold text-white">Interface Showcase</h2>
             <div class="grid md:grid-cols-2 gap-6">
-                <div class="rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
-                    <img src="assets/petplant1.png" alt="Telas do Pet Plant App: Login, Dashboard e Adicionar Planta" class="w-full h-auto object-cover">
-                    <p class="p-3 text-xs text-slate-400 border-t border-white/5 bg-dark-card">Telas do Pet Plant App: Login, Dashboard e Adicionar Planta</p>
+                <div class="rounded-2xl border border-white/10 overflow-hidden shadow-2xl bg-dark-card">
+                    <img src="assets/petplant1.webp" alt="Telas do Pet Plant App: Login, Dashboard e Adicionar Planta" class="w-full h-auto object-cover" loading="lazy" decoding="async">
+                    <p class="p-3.5 text-xs text-slate-400 border-t border-white/5 bg-dark-card">Telas do Pet Plant App: Login, Dashboard e Adicionar Planta</p>
                 </div>
-                <div class="rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
-                    <img src="assets/petplant2.png" alt="Variações de status da planta baseadas nos sensores (Feliz, Com Sede, Morto, Com Medo)" class="w-full h-auto object-cover">
-                    <p class="p-3 text-xs text-slate-400 border-t border-white/5 bg-dark-card">Variações de status da planta baseadas nos sensores (Feliz, Com Sede, Morto, Com Medo)</p>
+                <div class="rounded-2xl border border-white/10 overflow-hidden shadow-2xl bg-dark-card">
+                    <img src="assets/petplant2.webp" alt="Variações de status da planta baseadas nos sensores" class="w-full h-auto object-cover" loading="lazy" decoding="async">
+                    <p class="p-3.5 text-xs text-slate-400 border-t border-white/5 bg-dark-card">Variações de status da planta baseadas nos sensores</p>
                 </div>
             </div>
         </div>
 
         <!-- Impact & Results -->
-        <div class="space-y-4">
+        <div class="space-y-4 p-8 rounded-3xl bg-brand-950/40 border border-brand-500/30 shadow-xl">
             <h2 class="text-2xl font-heading font-bold text-emerald-300">04. Resultados e Impacto</h2>
             <p class="text-slate-300 text-base leading-relaxed">
                 O design incentiva o aprendizado sobre botânica através da interação direta com os dados, elevando a confiança do utilizador.
@@ -155,7 +165,7 @@
             <ul class="space-y-3 text-slate-300 text-base">
                 <li>• <strong>Eficiência Operacional Doméstica:</strong> Redução do desperdício de água e insumos através de uma rotina de cuidados baseada em métricas precisas.</li>
                 <li>• <strong>Melhoria na Taxa de Sobrevivência:</strong> Acompanhamento contínuo que permite identificar problemas ambientais antes que se tornem letais para a planta.</li>
-                <li>• <strong>Experiência Educativa:</strong> O design incentiva o aprendizado sobre botânica através da interação direta com os dados, elevando a confiança do utilizador.</li>
+                <li>• <strong>Experiência Educativa:</strong> O design incentiva o aprendizado sobre botânica através da interação direta com os dados.</li>
             </ul>
         </div>
 
@@ -169,7 +179,7 @@
                     <div class="glow-card-border h-full">
                         <div class="bg-dark-card/90 rounded-2xl p-4 flex flex-col h-full space-y-4">
                             <div class="rounded-xl overflow-hidden border border-white/10 aspect-[16/10] bg-dark-bg">
-                                <img src="assets/CAPA RECRUITER.png" alt="RecruiterSys" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <img src="assets/CAPA RECRUITER.webp" alt="RecruiterSys" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async">
                             </div>
                             <div class="space-y-2 flex-grow">
                                 <span class="text-[10px] font-mono font-semibold uppercase tracking-wider text-brand-400 block">PRODUCT DESIGN</span>
@@ -186,7 +196,7 @@
                     <div class="glow-card-border h-full">
                         <div class="bg-dark-card/90 rounded-2xl p-4 flex flex-col h-full space-y-4">
                             <div class="rounded-xl overflow-hidden border border-white/10 aspect-[16/10] bg-dark-bg">
-                                <img src="assets/HORUZ.png" alt="Diário de Bordo Aeronáutico" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <img src="assets/HORUZ.webp" alt="Diário de Bordo Aeronáutico" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async">
                             </div>
                             <div class="space-y-2 flex-grow">
                                 <span class="text-[10px] font-mono font-semibold uppercase tracking-wider text-cyan-400 block">UX/UI DESIGN</span>
@@ -203,7 +213,7 @@
                     <div class="glow-card-border h-full">
                         <div class="bg-dark-card/90 rounded-2xl p-4 flex flex-col h-full space-y-4">
                             <div class="rounded-xl overflow-hidden border border-white/10 aspect-[16/10] bg-dark-bg">
-                                <img src="assets/VENTIHOME.png" alt="VentHome" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <img src="assets/VENTIHOME.webp" alt="VentHome" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" decoding="async">
                             </div>
                             <div class="space-y-2 flex-grow">
                                 <span class="text-[10px] font-mono font-semibold uppercase tracking-wider text-purple-400 block">UX/UI & IOT</span>

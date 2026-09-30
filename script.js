@@ -1,6 +1,6 @@
 /* ========================================================
-   Daniel Leite Portfolio - GSAP, Lenis & Cursor Glow Engine
-   "No AI Slop" - Authentic Portfolio Showcase
+   Daniel Leite Portfolio - Zero-Jank 120FPS Interaction Engine
+   GSAP, Lenis Smooth Scroll, Project Filters & Micro-Interactions
    ======================================================== */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -8,40 +8,360 @@ document.addEventListener('DOMContentLoaded', () => {
         lucide.createIcons();
     }
     initLenis();
+    initHeroVideoObserver();
     initCursor();
     initEdgeGlowButtons();
     initCanvasBg();
     initGSAPAnimations();
+    initProjectFilters();
+    initNumberCounters();
     initScrollToTop();
     initMobileMenu();
     initTimelineScroll();
 });
 
 /* --------------------------------------------------------
-   Timeline Wheel Scroll Handler
+   1. Lenis Smooth Scroll Engine (1:1 Frame Sync, 0 Stutter)
+   -------------------------------------------------------- */
+let lenis;
+
+function initLenis() {
+    if (typeof Lenis === 'undefined') return;
+
+    lenis = new Lenis({
+        duration: 0.9,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        wheelMultiplier: 1.0,
+        touchMultiplier: 1.0,
+    });
+
+    const progressBar = document.getElementById('scroll-progress');
+    const navbar = document.getElementById('navbar-inner');
+
+    lenis.on('scroll', (e) => {
+        if (typeof ScrollTrigger !== 'undefined') {
+            ScrollTrigger.update();
+        }
+        
+        if (progressBar) {
+            const progress = (e.scroll / (e.limit || 1)) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        if (navbar && window.innerWidth >= 768) {
+            if (e.scroll > 40) {
+                navbar.classList.add('bg-dark-card/95', 'shadow-2xl', 'border-white/15');
+                navbar.classList.remove('bg-dark-card/80', 'border-white/10');
+            } else {
+                navbar.classList.remove('bg-dark-card/95', 'shadow-2xl', 'border-white/15');
+                navbar.classList.add('bg-dark-card/80', 'border-white/10');
+            }
+        }
+    });
+
+    if (typeof gsap !== 'undefined') {
+        gsap.ticker.add((time) => {
+            lenis.raf(time * 1000);
+        });
+        gsap.ticker.lagSmoothing(0);
+    }
+}
+
+/* --------------------------------------------------------
+   2. Hero Video Auto-Pause Observer (Frees GPU on Scroll)
+   -------------------------------------------------------- */
+function initHeroVideoObserver() {
+    const video = document.querySelector('#hero video');
+    const heroSection = document.getElementById('hero');
+    if (!video || !heroSection || !('IntersectionObserver' in window)) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                video.play().catch(() => {});
+            } else {
+                video.pause();
+            }
+        });
+    }, { threshold: 0.1 });
+
+    observer.observe(heroSection);
+}
+
+/* --------------------------------------------------------
+   3. Interactive Follower Cursor (GPU Accelerated)
+   -------------------------------------------------------- */
+function initCursor() {
+    const dot = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+
+    if (!dot || !ring || window.innerWidth < 1024) return;
+
+    let mouseX = -100, mouseY = -100;
+    let ringX = -100, ringY = -100;
+    let isMoving = false;
+
+    window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        if (!isMoving) {
+            ringX = mouseX;
+            ringY = mouseY;
+            isMoving = true;
+        }
+        dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+    }, { passive: true });
+
+    function renderCursor() {
+        if (isMoving) {
+            const dx = mouseX - ringX;
+            const dy = mouseY - ringY;
+            ringX += dx * 0.2;
+            ringY += dy * 0.2;
+            ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;
+        }
+        requestAnimationFrame(renderCursor);
+    }
+    renderCursor();
+
+    const interactives = document.querySelectorAll('a, button, input, textarea, .filter-tab, .edge-glow-btn, .edge-glow-btn-sm');
+    interactives.forEach(el => {
+        el.addEventListener('mouseenter', () => document.body.classList.add('hovering-interactive'));
+        el.addEventListener('mouseleave', () => document.body.classList.remove('hovering-interactive'));
+    });
+
+    const projectCards = document.querySelectorAll('.project-card');
+    projectCards.forEach(card => {
+        card.addEventListener('mouseenter', () => document.body.classList.add('hovering-case'));
+        card.addEventListener('mouseleave', () => document.body.classList.remove('hovering-case'));
+    });
+}
+
+/* --------------------------------------------------------
+   4. Edge Glow Button Light Tracking (No Layout Thrashing)
+   -------------------------------------------------------- */
+function initEdgeGlowButtons() {
+    const glowElements = document.querySelectorAll('.edge-glow-btn, .edge-glow-btn-sm, .glow-card-border');
+    
+    glowElements.forEach(el => {
+        let rect = null;
+
+        el.addEventListener('mouseenter', () => {
+            rect = el.getBoundingClientRect();
+        }, { passive: true });
+
+        el.addEventListener('mousemove', (e) => {
+            if (!rect) rect = el.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            el.style.setProperty('--x', `${x}px`);
+            el.style.setProperty('--y', `${y}px`);
+        }, { passive: true });
+
+        el.addEventListener('mouseleave', () => {
+            rect = null;
+            el.style.setProperty('--x', `50%`);
+            el.style.setProperty('--y', `50%`);
+        });
+    });
+}
+
+/* --------------------------------------------------------
+   5. Ambient Background Canvas (Zero-Allocation Loop)
+   -------------------------------------------------------- */
+function initCanvasBg() {
+    const canvas = document.getElementById('bg-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d', { alpha: true });
+
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }, 250);
+    }, { passive: true });
+
+    const particles = Array.from({ length: 10 }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        radius: Math.random() * 1.5 + 0.5,
+        vx: (Math.random() - 0.5) * 0.15,
+        vy: (Math.random() - 0.5) * 0.15,
+        alpha: Math.random() * 0.2 + 0.05
+    }));
+
+    let isDocumentVisible = true;
+    document.addEventListener('visibilitychange', () => {
+        isDocumentVisible = !document.hidden;
+    });
+
+    function draw() {
+        if (!isDocumentVisible) {
+            requestAnimationFrame(draw);
+            return;
+        }
+
+        ctx.clearRect(0, 0, width, height);
+
+        for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+
+            if (p.x < 0) p.x = width;
+            if (p.x > width) p.x = 0;
+            if (p.y < 0) p.y = height;
+            if (p.y > height) p.y = 0;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, 6.283185307179586);
+            ctx.fillStyle = `rgba(56, 189, 248, ${p.alpha})`;
+            ctx.fill();
+        }
+
+        requestAnimationFrame(draw);
+    }
+    draw();
+}
+
+/* --------------------------------------------------------
+   6. Interactive Project Filtering
+   -------------------------------------------------------- */
+function initProjectFilters() {
+    const filterTabs = document.querySelectorAll('.filter-tab');
+    const projectCards = document.querySelectorAll('.project-card');
+
+    if (!filterTabs.length || !projectCards.length) return;
+
+    filterTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const filter = tab.getAttribute('data-filter');
+
+            filterTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            projectCards.forEach(card => {
+                const category = card.getAttribute('data-category') || '';
+                const categories = category.split(' ');
+
+                if (filter === 'all' || categories.includes(filter)) {
+                    card.style.display = 'block';
+                    if (typeof gsap !== 'undefined') {
+                        gsap.fromTo(card, 
+                            { opacity: 0, y: 15 }, 
+                            { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' }
+                        );
+                    }
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            if (typeof ScrollTrigger !== 'undefined') {
+                ScrollTrigger.refresh();
+            }
+        });
+    });
+}
+
+/* --------------------------------------------------------
+   7. Animated Numerical Counters
+   -------------------------------------------------------- */
+function initNumberCounters() {
+    const counters = document.querySelectorAll('.metric-counter');
+    if (!counters.length || typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+    counters.forEach(counter => {
+        const target = parseFloat(counter.getAttribute('data-target')) || 0;
+        const prefix = counter.getAttribute('data-prefix') || '';
+        const suffix = counter.getAttribute('data-suffix') || '';
+
+        gsap.to(counter, {
+            scrollTrigger: {
+                trigger: counter,
+                start: 'top 90%',
+                once: true
+            },
+            innerHTML: target,
+            duration: 1.2,
+            ease: 'power2.out',
+            snap: { innerHTML: 1 },
+            onUpdate: function() {
+                counter.innerHTML = `${prefix}${Math.round(this.targets()[0].innerHTML)}${suffix}`;
+            }
+        });
+    });
+}
+
+/* --------------------------------------------------------
+   8. GSAP Scroll Entrance
+   -------------------------------------------------------- */
+function initGSAPAnimations() {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.from('.hero-reveal', {
+        y: 20,
+        opacity: 0,
+        duration: 0.8,
+        stagger: 0.08,
+        ease: 'power3.out',
+        delay: 0.05
+    });
+
+    const headers = document.querySelectorAll('.section-header');
+    headers.forEach(header => {
+        gsap.from(header, {
+            y: 20,
+            opacity: 0,
+            duration: 0.7,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: header,
+                start: 'top 85%'
+            }
+        });
+    });
+
+    const stepCards = document.querySelectorAll('.process-step');
+    if (stepCards.length) {
+        gsap.from(stepCards, {
+            y: 20,
+            opacity: 0,
+            duration: 0.5,
+            stagger: 0.06,
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: '#process-grid',
+                start: 'top 85%'
+            }
+        });
+    }
+}
+
+/* --------------------------------------------------------
+   9. Timeline Horizontal Scroll
    -------------------------------------------------------- */
 function initTimelineScroll() {
     const container = document.getElementById('timeline-container');
     const section = document.getElementById('experience');
     if (!container || !section) return;
 
-    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' && window.innerWidth >= 1024) {
         gsap.registerPlugin(ScrollTrigger);
-
-        const cards = gsap.utils.toArray('.timeline-card');
-        if (!cards.length) return;
-
-        // Limpa instâncias antigas se houver
-        ScrollTrigger.getAll().forEach(st => {
-            if (st.vars && st.vars.trigger === section) st.kill();
-        });
 
         const getScrollAmount = () => {
             const containerWidth = container.scrollWidth;
             const windowWidth = window.innerWidth;
-            // Garante margem de respiro suficiente para que o último card fique 100% visível na tela antes de soltar a trava de pin
-            const extraPadding = windowWidth < 768 ? 40 : 250;
-            return Math.max(0, containerWidth - windowWidth + extraPadding);
+            return Math.max(0, containerWidth - windowWidth + 120);
         };
 
         gsap.to(container, {
@@ -52,273 +372,15 @@ function initTimelineScroll() {
                 pin: true,
                 scrub: 0.6,
                 start: "top top",
-                end: () => "+=" + (getScrollAmount() + 500),
-                invalidateOnRefresh: true,
-                anticipatePin: 1
-            }
-        });
-    } else {
-        container.addEventListener('wheel', (e) => {
-            if (e.deltaY !== 0) {
-                const maxScrollLeft = container.scrollWidth - container.clientWidth;
-                if ((container.scrollLeft < maxScrollLeft && e.deltaY > 0) || (container.scrollLeft > 0 && e.deltaY < 0)) {
-                    e.preventDefault();
-                    container.scrollLeft += e.deltaY;
-                }
-            }
-        }, { passive: false });
-    }
-}
-
-/* --------------------------------------------------------
-   1. Lenis Smooth Scroll Setup
-   -------------------------------------------------------- */
-let lenis;
-
-function initLenis() {
-    if (typeof Lenis === 'undefined') return;
-
-    lenis = new Lenis({
-        duration: 1.0,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        smoothWheel: true,
-        wheelMultiplier: 0.9,
-        touchMultiplier: 1.5,
-    });
-
-    lenis.on('scroll', (e) => {
-        if (typeof ScrollTrigger !== 'undefined') {
-            ScrollTrigger.update();
-        }
-        
-        // Scroll Progress Bar
-        const progress = (e.scroll / (e.limit || 1)) * 100;
-        const progressBar = document.getElementById('scroll-progress');
-        if (progressBar) {
-            progressBar.style.width = `${progress}%`;
-        }
-
-        // Header Background state (Apenas Desktop >= 768px)
-        const navbar = document.getElementById('navbar-inner');
-        if (navbar && window.innerWidth >= 768) {
-            if (e.scroll > 40) {
-                navbar.classList.add('bg-dark-card/90', 'shadow-2xl', 'shadow-black/50', 'border-white/15');
-                navbar.classList.remove('bg-dark-card/70', 'border-white/10');
-            } else {
-                navbar.classList.remove('bg-dark-card/90', 'shadow-2xl', 'shadow-black/50', 'border-white/15');
-                navbar.classList.add('bg-dark-card/70', 'border-white/10');
-            }
-        }
-    });
-
-    gsap.ticker.add((time) => {
-        lenis.raf(time * 1000);
-    });
-
-    gsap.ticker.lagSmoothing(0);
-}
-
-/* --------------------------------------------------------
-   2. Microkit Cursor Edge Glow Button Pattern
-   (microkit.co/components/cursor-edge-glow-button)
-   -------------------------------------------------------- */
-function initEdgeGlowButtons() {
-    const glowElements = document.querySelectorAll('.edge-glow-btn, .edge-glow-btn-sm, .glow-card-border');
-    
-    glowElements.forEach(btn => {
-        btn.addEventListener('mousemove', (e) => {
-            const rect = btn.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            btn.style.setProperty('--x', `${x}px`);
-            btn.style.setProperty('--y', `${y}px`);
-        });
-
-        btn.addEventListener('mouseleave', () => {
-            btn.style.setProperty('--x', `50%`);
-            btn.style.setProperty('--y', `50%`);
-        });
-    });
-}
-
-/* --------------------------------------------------------
-   3. Custom Follower Cursor
-   -------------------------------------------------------- */
-function initCursor() {
-    const dot = document.getElementById('cursor-dot');
-    const ring = document.getElementById('cursor-ring');
-
-    if (!dot || !ring) return;
-
-    let mouseX = -100, mouseY = -100;
-    let ringX = -100, ringY = -100;
-
-    window.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        dot.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%, -50%)`;
-    });
-
-    function renderCursor() {
-        ringX += (mouseX - ringX) * 0.15;
-        ringY += (mouseY - ringY) * 0.15;
-        ring.style.transform = `translate(${ringX}px, ${ringY}px) translate(-50%, -50%)`;
-        requestAnimationFrame(renderCursor);
-    }
-    renderCursor();
-
-    const interactives = document.querySelectorAll('a, button, input, textarea, .edge-glow-btn, .edge-glow-btn-sm, .glow-card-border');
-    interactives.forEach(el => {
-        el.addEventListener('mouseenter', () => document.body.classList.add('hovering-interactive'));
-        el.addEventListener('mouseleave', () => document.body.classList.remove('hovering-interactive'));
-    });
-}
-
-/* --------------------------------------------------------
-   4. Ambient Grid Canvas
-   -------------------------------------------------------- */
-function initCanvasBg() {
-    const canvas = document.getElementById('bg-canvas');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
-
-    window.addEventListener('resize', () => {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-    });
-
-    const particles = Array.from({ length: 30 }, () => ({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        radius: Math.random() * 1.5 + 0.5,
-        vx: (Math.random() - 0.5) * 0.25,
-        vy: (Math.random() - 0.5) * 0.25,
-        alpha: Math.random() * 0.35 + 0.1
-    }));
-
-    function draw() {
-        ctx.clearRect(0, 0, width, height);
-
-        particles.forEach((p, i) => {
-            p.x += p.vx;
-            p.y += p.vy;
-
-            if (p.x < 0 || p.x > width) p.vx *= -1;
-            if (p.y < 0 || p.y > height) p.vy *= -1;
-
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(139, 92, 246, ${p.alpha})`;
-            ctx.fill();
-
-            for (let j = i + 1; j < particles.length; j++) {
-                const p2 = particles[j];
-                const dx = p.x - p2.x;
-                const dy = p.y - p2.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-
-                if (dist < 100) {
-                    ctx.beginPath();
-                    ctx.moveTo(p.x, p.y);
-                    ctx.lineTo(p2.x, p2.y);
-                    ctx.strokeStyle = `rgba(6, 182, 212, ${0.1 * (1 - dist / 100)})`;
-                    ctx.lineWidth = 0.5;
-                    ctx.stroke();
-                }
-            }
-        });
-
-        requestAnimationFrame(draw);
-    }
-    draw();
-}
-
-/* --------------------------------------------------------
-   5. GSAP Scroll Animations
-   -------------------------------------------------------- */
-function initGSAPAnimations() {
-    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Hero Reveal Stagger
-    gsap.from('.hero-reveal', {
-        y: 35,
-        opacity: 0,
-        duration: 1.1,
-        stagger: 0.12,
-        ease: 'power3.out',
-        delay: 0.1
-    });
-
-    // Hero Scroll Parallax Effect desativado para garantir a execução contínua do vídeo sem interrupções da GPU
-    /*
-    if (document.querySelector('#hero')) {
-        gsap.to('#hero video', {
-            y: 50,
-            ease: 'none',
-            force3D: true,
-            scrollTrigger: {
-                trigger: '#hero',
-                start: 'top top',
-                end: 'bottom top',
-                scrub: true
+                end: () => "+=" + (getScrollAmount() + 300),
+                invalidateOnRefresh: true
             }
         });
     }
-    */
-
-    // Section Headers
-    const headers = document.querySelectorAll('.section-header');
-    headers.forEach(header => {
-        gsap.from(header, {
-            y: 30,
-            opacity: 0,
-            duration: 0.9,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: header,
-                start: 'top 85%'
-            }
-        });
-    });
-
-    // Project Cards Entrance
-    const projectCards = document.querySelectorAll('.project-card');
-    projectCards.forEach((card) => {
-        gsap.from(card, {
-            y: 45,
-            opacity: 0,
-            duration: 0.85,
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: card,
-                start: 'top 85%'
-            }
-        });
-    });
-
-    // Process Step Cards
-    const stepCards = document.querySelectorAll('.process-step');
-    gsap.from(stepCards, {
-        y: 30,
-        opacity: 0,
-        duration: 0.7,
-        stagger: 0.1,
-        ease: 'power3.out',
-        scrollTrigger: {
-            trigger: '#process-grid',
-            start: 'top 85%'
-        }
-    });
 }
 
 /* --------------------------------------------------------
-   6. Scroll To Top Engine
+   10. Scroll To Top Engine
    -------------------------------------------------------- */
 function initScrollToTop() {
     const scrollTopBtn = document.getElementById('scroll-to-top');
@@ -332,22 +394,19 @@ function initScrollToTop() {
             scrollTopBtn.classList.add('opacity-0', 'pointer-events-none');
             scrollTopBtn.classList.remove('opacity-100', 'pointer-events-auto');
         }
-    });
+    }, { passive: true });
 
     scrollTopBtn.addEventListener('click', () => {
         if (lenis) {
-            lenis.scrollTo(0, { duration: 1.2 });
+            lenis.scrollTo(0, { duration: 0.8 });
         } else {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     });
 }
 
 /* --------------------------------------------------------
-   6. Mobile Menu
+   11. Mobile Menu Engine
    -------------------------------------------------------- */
 function initMobileMenu() {
     const btn = document.getElementById('mobile-menu-btn');
@@ -360,13 +419,13 @@ function initMobileMenu() {
     const openMenu = () => {
         menu.classList.remove('translate-x-full');
         document.body.classList.add('overflow-hidden');
-        if (typeof lenis !== 'undefined' && lenis) lenis.stop();
+        if (lenis) lenis.stop();
     };
 
     const closeMenu = () => {
         menu.classList.add('translate-x-full');
         document.body.classList.remove('overflow-hidden');
-        if (typeof lenis !== 'undefined' && lenis) lenis.start();
+        if (lenis) lenis.start();
     };
 
     btn.addEventListener('click', openMenu);
@@ -378,7 +437,7 @@ function initMobileMenu() {
 }
 
 /* --------------------------------------------------------
-   7. Authentic Portfolio Projects Data & Case Study Modal
+   12. Case Study Modal System
    -------------------------------------------------------- */
 const projectsData = {
     recruitersys: {
@@ -386,8 +445,8 @@ const projectsData = {
         title: "RecruiterSys – O Ecossistema de Recrutamento Tech",
         subtitle: "Eliminando o gap de comunicação e a ineficiência técnica no recrutamento de profissionais de TI",
         role: "Senior Product Designer & Lead de UX/UI",
-        coverImage: "assets/CAPA RECRUITER.png",
-        gallery: ["assets/mock 1.png"],
+        coverImage: "assets/CAPA RECRUITER.webp",
+        gallery: ["assets/mock 1.webp"],
         problem: {
             title: "01. O Problema: O Abismo no Recrutamento Tech",
             items: [
@@ -421,8 +480,8 @@ const projectsData = {
         title: "Diário de Bordo Aeronáutico (Hóruz eDB)",
         subtitle: "Plataforma estratégica de dados para modernizar o diário de bordo da aviação geral no Brasil",
         role: "Product Designer & CDO",
-        coverImage: "assets/HORUZ.png",
-        gallery: ["assets/diario-edb-horuz.png", "assets/diario-cockpit.png"],
+        coverImage: "assets/HORUZ.webp",
+        gallery: ["assets/diario-edb-horuz.webp", "assets/diario-cockpit.webp"],
         problem: {
             title: "01. O Desafio Operacional e Regulatório",
             items: [
@@ -455,8 +514,8 @@ const projectsData = {
         title: "Pet Plant App – UX Botânica e Monitoramento Inteligente",
         subtitle: "Consolidação de tecnologia IoT com uma interface de gestão biológica completa",
         role: "Product Designer Sênior",
-        coverImage: "assets/MOCK PET PLANT.png",
-        gallery: ["assets/petplant1.png", "assets/petplant2.png"],
+        coverImage: "assets/MOCK PET PLANT.webp",
+        gallery: ["assets/petplant1.webp", "assets/petplant2.webp"],
         problem: {
             title: "01. O Desafio: A Natureza 'Invisível' das Plantas",
             items: [
@@ -484,8 +543,8 @@ const projectsData = {
         title: "VentHome – Além do Vento",
         subtitle: "Transformando um eletrodoméstico analógico em um serviço personalizado de ventilação inteligente",
         role: "Product Designer (UX/UI)",
-        coverImage: "assets/VENTIHOME.png",
-        gallery: ["assets/mockupventihome.png"],
+        coverImage: "assets/VENTIHOME.webp",
+        gallery: ["assets/mockupventihome.webp"],
         problem: {
             title: "01. O Desafio: Humanizando a IoT",
             items: [
@@ -533,7 +592,7 @@ function openCaseModal(id) {
 
     let galleryHTML = data.gallery ? data.gallery.map(imgSrc => `
         <div class="rounded-xl overflow-hidden border border-white/10 shadow-lg">
-            <img src="${imgSrc}" alt="Interface Showcase" class="w-full h-auto object-cover">
+            <img src="${imgSrc}" alt="Interface Showcase" class="w-full h-auto object-cover" loading="lazy">
         </div>
     `).join('') : '';
 
@@ -550,7 +609,7 @@ function openCaseModal(id) {
             </div>
 
             <div class="rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
-                <img src="${data.coverImage}" alt="${data.title}" class="w-full h-auto object-cover">
+                <img src="${data.coverImage}" alt="${data.title}" class="w-full h-auto object-cover" loading="lazy">
             </div>
 
             <div class="h-px bg-white/10 w-full"></div>
@@ -610,25 +669,7 @@ function closeCaseModal() {
     if (!modal) return;
 
     modal.classList.remove('active');
-    setTimeout(() => modal.classList.add('hidden'), 300);
+    setTimeout(() => modal.classList.add('hidden'), 250);
 
     if (lenis) lenis.start();
-}
-
-function handleFormSubmit(e) {
-    e.preventDefault();
-    const form = e.target;
-    const name = form.querySelector('input[type="text"]')?.value || '';
-    const email = form.querySelector('input[type="email"]')?.value || '';
-    const message = form.querySelector('textarea')?.value || '';
-
-    const subject = encodeURIComponent(`Contato de ${name} via Portfólio`);
-    const body = encodeURIComponent(`Nome: ${name}\nE-mail: ${email}\n\nMensagem:\n${message}`);
-
-    window.location.href = `mailto:danielleitedesign@gmail.com?subject=${subject}&body=${body}`;
-
-    const feedback = document.getElementById('form-feedback');
-    if (feedback) {
-        feedback.classList.remove('hidden');
-    }
 }
