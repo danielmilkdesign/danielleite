@@ -1,0 +1,2647 @@
+/* glance.js — Alpine app, fetch helpers, log streaming, navigation */
+function glance() {
+  return {
+    // ─── State ───
+    // kind restored from localStorage (quick win: remembers the section between reloads).
+    kind: (typeof localStorage !== 'undefined' && localStorage.getItem('glance.kind')) || 'squads',
+    kinds: [
+      { id: 'agents', label: 'Agents', icon: 'activity' },
+      { id: 'runs', label: 'Runs', icon: 'play' },
+      { id: 'squads', label: 'Squads', icon: 'users' },
+      { id: 'businesses', label: 'Businesses', icon: 'building-2' },
+      { id: 'projects', label: 'Projects', icon: 'folder-kanban' },
+      { id: 'mind-clones', label: 'Mind-clones', icon: 'brain' },
+      { id: 'memory', label: 'Memory', icon: 'database' },
+      { id: 'graph', label: 'Graph', icon: 'share-2' },
+      { id: 'cost', label: 'Cost', icon: 'dollar-sign' },
+    ],
+    // Stacked sidebar navigation. LIST_KINDS have a side list and enter
+    // Level 2 (the list takes the whole aside); the rest are full pages
+    // and stay on Level 1 (type cards). navLevel derives from kind+kindEntered.
+    LIST_KINDS: ['squads', 'businesses', 'projects', 'mind-clones'],
+    kindEntered: false,   // true = Level 2 (list) for a LIST_KIND
+    kindMenuOpen: false,  // quick type-switch popover in the Level 2 header
+    // A count is `null` when the API could not determine it, and the view renders
+    // `—`. It is a number only when something was actually measured. The rule and
+    // the helpers live in absence.js, exposed by the index.html module adapter.
+    counts: {},
+    get absence() {
+      return window.NirvanaAbsence || {
+        UNKNOWN_LABEL: '—',
+        isUnknown: (v) => v === null || v === undefined,
+        countLabel: (v) => (v === null || v === undefined ? '—' : String(v)),
+        listLength: (v) => (v === null || v === undefined ? null : v.length),
+        listItems: (v) => (v === null || v === undefined ? [] : v),
+      };
+    },
+    /** The text a count cell shows: the number, or `—` when it was never measured. */
+    countText(value) { return this.absence.countLabel(value); },
+    // The engine subsystem strip. `null` until /api/subsystems answers.
+    subsystems: null,
+    get subsystemRow() {
+      const row = window.NirvanaSubsystemRow;
+      if (!row || !this.subsystems) return { cells: [], up: 0, down: 0, unknown: 0 };
+      return row.buildSubsystemRow({ subsystems: this.subsystems });
+    },
+    get subsystemSummary() {
+      const row = window.NirvanaSubsystemRow;
+      return row ? row.rowSummary(this.subsystemRow) : '';
+    },
+    // Per-list loading/error state — distinguishes "carregando" from "vazio"
+    // from "falhou" (the catch used to be silent and everything became empty-state).
+    listLoading: { squads: false, businesses: false, projects: false, 'mind-clones': false },
+    listError: { squads: null, businesses: null, projects: null, 'mind-clones': null },
+
+    // ── Live Agents tab state ──
+    agents: [],                    // AgentState[] from /api/agents/live SSE
+    agentsSummary: null,
+    agentsViewMode: 'swimlane',    // 'swimlane' | 'workspace'
+    suspiciousFilterOn: false,     // when true, filter agents to is_suspicious_dispatch only
+    agentsES: null,                // EventSource handle
+    selectedAgent: null,           // detail modal
+    _agentsTickerHandle: null,     // status_since_ms ticker
+    squads: [],
+    businesses: [],
+    projects: [],
+    runs: [],                      // audit-derived runs grouped by trace_id
+    runsFilter: 'recent',          // recent | running | delivered | failed
+    runsAutoRefresh: null,         // setInterval handle
+    selectedRun: null,             // full run detail (events timeline)
+    // Runs rail: searchable, collapsible 280px ⇄ 56px (page-layout-redesign.md
+    // §1.3). Named runsListQuery (not runsFilter, above) to keep the two apart —
+    // runsFilter is an existing recent|running|delivered|failed status enum,
+    // this is free-text search against brief/business/squad.
+    runsRailCollapsed: (typeof localStorage !== 'undefined' && localStorage.getItem('glance.runsRailCollapsed') === '1'),
+    runsListQuery: '',
+    // "Atividade relacionada" strip inside run-detail — one collapsible flag
+    // shared by whichever run is open, same pattern as the Trajectory Card's
+    // own judgement-strip toggle.
+    relatedActivityOpen: true,
+    mindClones: [],
+    // Memory layer (state.db) — populated lazily when kind === 'memory'
+    memorySubTab: 'decisions',  // decisions | gates | audit
+    memoryStats: null,
+    decisions: [],
+    gates: [],
+    auditEvents: [],
+    memoryFilters: { project_id: '', phase: '', verdict: '', event: '' },
+    memoryExpanded: {},        // { 'decision:D-01': true, 'gate:42': true, ... }
+    memoryAddOpen: false,
+    memoryAddDraft: { decision_id: '', text: '', source: 'manual', rationale: '' },
+    // Graph view
+    graph: null,
+    graphScope: 'topology',    // topology (global capability map, ignores the All/Project toggle) | activity (per-project artifact/decision trail)
+    graphFilter: 'capabilities', // all | capabilities | created | squads | businesses | mind-clones | red-yellow — default matches graphScope: 'topology'
+    graphTimeline: null,       // { range: [iso,iso], minMs, maxMs }
+    graphTimeMs: null,         // current slider value (epoch ms)
+    graphTimeISO: null,
+    graphFilteredCount: 0,
+    graphPlaying: false,
+    graphPlayInterval: null,
+    graphLegendOpen: false,    // toggle legend panel under header
+    graphSettingsOpen: false,
+    graphFullscreen: false,
+    graphSelectedNode: null,
+    graphSelectedNeighbors: [],
+    graphCtrl: null,           // controller returned by renderGraph
+    graphPhysics: (() => {
+      const def = { linkDistance: 36, charge: -120, collide: 3, alphaDecay: 0.02, nodeScale: 1.0, labelOpacity: 0.7 };
+      try {
+        const saved = JSON.parse(localStorage.getItem('glance.graphPhysics') || 'null');
+        return saved ? Object.assign(def, saved) : def;
+      } catch { return def; }
+    })(),
+    graphColors: (() => {
+      const def = {
+        squad: '#2563eb', business: '#a855f7', 'mind-clone': '#10b981', capability: '#f59e0b',
+        project: '#dc2626', brief: '#fb923c', plan: '#eab308', dag: '#84cc16',
+        handoff: '#06b6d4', audit_run: '#8b5cf6', output: '#14b8a6', decision: '#ec4899',
+      };
+      try {
+        const saved = JSON.parse(localStorage.getItem('glance.graphColors') || 'null');
+        return saved ? Object.assign(def, saved) : def;
+      } catch { return def; }
+    })(),
+    graphTypeKeys: ['squad', 'business', 'mind-clone', 'capability', 'project', 'brief', 'plan', 'dag', 'handoff', 'audit_run', 'output', 'decision'],
+    // Cost dashboard
+    cost: null,
+    costPeriod: '7d',          // 7d | 30d | all
+    // Activity feed — on-demand overlay (bell in topnav), not a permanent
+    // rail (page-layout-redesign.md §1.3). activityUnseenCount resets to 0
+    // whenever the overlay opens.
+    activityOverlayOpen: false,
+    activityUnseenCount: 0,
+    activityEvents: [],
+    activityStream: null,
+    // Layout chrome — collapsible sidebars + agents fullscreen
+    sidebarOpen: (typeof localStorage !== 'undefined' && localStorage.getItem('glance.sidebarOpen') !== '0'),
+    rightPaneOpen: (typeof localStorage !== 'undefined' && localStorage.getItem('glance.rightPaneOpen') !== '0'),
+    // Sidebar auto-collapses to a 64px icon rail whenever a run is open in
+    // detail, unless pinned full (page-layout-redesign.md §1.3). The hint
+    // toast is intentionally session-only (not persisted) — it fires once
+    // per page load, the first time the auto-collapse actually happens.
+    sidebarPinnedFull: (typeof localStorage !== 'undefined' && localStorage.getItem('glance.sidebarPinnedFull') === '1'),
+    sidebarHintShown: false,
+    showSidebarHint: false,
+    sidebarLiveMessage: '',
+    agentsFullscreen: false,
+    // Scope filter: 'all' = entire machine, 'project' = only events whose cwd
+    // starts with scope.projectRoot. Disabled when no projectRoot is detected.
+    projectFilter: (typeof localStorage !== 'undefined' && localStorage.getItem('glance.projectFilter')) || '',  // '' = not decided yet; fetchScope picks project-first
+    // ── Project switcher (topnav) — rebinds this Glance instance to a DIFFERENT
+    // project (distinct from projectFilter above, which only filters WITHIN the
+    // one bound project). Requires --allow-actions: it's a mutating action.
+    // Dropdown open/close and the free-text path live in the control's own
+    // local x-data (index.html), same convention as the existing actions menu.
+    knownProjects: [],
+    projectSwitching: false,
+    // Setup mode (project scaffolding via Glance)
+    // Setup mode (project scaffolding via Glance)
+    setupMode: false,
+    setupSelected: { squads: {}, businesses: {}, "mind-clones": {} },
+    setupStatus: null,
+    setupApplying: false,
+    // Global source lists (always read from ~/squads, ~/businesses, ~/.../dna)
+    // regardless of the active scope — used by Setup mode to pick what to copy.
+    setupGlobalSquads: [],
+    setupGlobalBusinesses: [],
+    setupGlobalMindClones: [],
+    // Settings modal state (env editor)
+    settingsOpen: false,
+    settingsData: null,
+    // 'engine:<section>' for the engine settings (nrv config), a .env group id, or '__rules__'.
+    // Empty until the modal opens: the first engine group becomes the default then.
+    settingsActiveGroup: '',
+    settingsScopePicker: 'project',  // 'project' | 'global' (the .env section)
+    settingsDraft: {},
+    settingsDeletes: {},
+    settingsSaving: false,
+    settingsRestartRequired: false,
+    // ── Engine settings (nrv config) over /api/v1/settings; logic in settings-panel.js ──
+    engineSettings: null,      // the GET payload
+    engineGroups: [],          // buildSettingsPanel(payload).groups
+    engineDraft: {},           // key → control input (a boolean for a switch, text otherwise)
+    engineScope: {},           // key → 'project' | 'global'
+    engineErrors: {},          // key → refusal shown inline
+    engineNotice: {},          // key → what the last write did
+    engineSaving: {},          // key → true while a write is in flight
+    engineError: null,         // the whole section failed to load (a config file the resolver refuses)
+    selected: null,
+    detail: null,
+    mindCloneContent: null,
+    mindCloneDetail: null,         // { files: [...], file_count, total_bytes, format, dir }
+    mindCloneActiveFile: null,     // path string of file currently shown
+    tab: 'overview',
+    orgView: 'tree',
+    // Org-chart card editor (Glance actions — gated by health.allow_actions)
+    orgEditOpen: false,
+    orgEditMode: 'edit',       // 'edit' | 'add'
+    orgEditTargetSlug: null,   // edit: the employee being edited. add: the parent it reports to.
+    orgEditDraft: { role: '', description: '', reportsTo: '', assignedMindClones: '', squadsAuthorized: '' },
+    orgEditSaving: false,
+    orgEditError: null,
+    squadTabs: ['overview', 'manifest', 'capabilities', 'state', 'files'],
+    businessTabs: ['org-chart', 'overview', 'manifest', 'routing', 'memory'],
+    filterQuery: '',
+    filterSource: '',
+    searchQuery: '',
+    searchResults: [],
+    searchDone: false,   // true after a search with ≥2 chars returns (for "no results")
+    scope: null,
+    health: { ok: false, uptime: '' },
+    logs: [],
+    logType: 'harness',
+    logStream: null,
+    showHero: false,
+    toast: { visible: false, message: '' },
+    // Actions / Console drawer state
+    consoleOpen: false,
+    activeJobId: null,
+    jobs: [],
+    jobOutputs: {},
+    jobStreams: {},
+    // Per-kind audit scores: { squads: { slug: {tier, score} }, businesses: ..., 'mind-clones': ... }
+    auditScores: { squads: {}, businesses: {}, 'mind-clones': {} },
+    // Admission gate (nrv validate) — one report at a time, keyed "<kind>:<slug>"
+    // so a stale verdict never shows under a different entity.
+    verifyKey: null,
+    verifyReport: null,
+    verifyBusy: false,
+
+    // ─── Computed ───
+    get currentList() {
+      // Setup mode: list assets from the GLOBAL library (independent of NIRVANA_SCOPE)
+      // so the user can see everything available to copy into the project.
+      if (this.setupMode) {
+        if (this.kind === 'squads') return this.setupGlobalSquads;
+        if (this.kind === 'businesses') return this.setupGlobalBusinesses;
+        if (this.kind === 'mind-clones') return this.setupGlobalMindClones.map(m => ({
+          slug: `${m.category}/${m.slug}`, source: m.source, category: m.category, _mc: m
+        }));
+      }
+      if (this.kind === 'squads') return this.squads;
+      if (this.kind === 'businesses') return this.businesses;
+      if (this.kind === 'projects') return this.projects;
+      if (this.kind === 'mind-clones') return this.mindClones.map(m => ({
+        // Display slug: canonical persona name only; the category appears as subtitle.
+        // For top-level personas (category === '_root') we drop the synthetic prefix.
+        slug: m.slug,
+        // Unique key across categories — used by isSelected / filter
+        id: `${m.category}/${m.slug}`,
+        source: m.source,
+        category: m.category === '_root' ? null : m.category,
+        format: m.format,
+        _mc: m,
+      }));
+      return [];
+    },
+    get filteredList() {
+      const q = this.filterQuery.toLowerCase();
+      const src = this.filterSource;
+      return this.currentList.filter(item => {
+        const slugStr = (item.slug || item.id || '').toLowerCase();
+        if (q && !slugStr.includes(q) && !(item.domains || []).some(d => d.toLowerCase().includes(q))) return false;
+        if (src && item.source !== src) return false;
+        return true;
+      });
+    },
+    get kindLabel() {
+      return (this.kinds.find(k => k.id === this.kind) || {}).label?.toLowerCase() || 'item';
+    },
+
+    // ─── Boot ───
+    async boot() {
+      // Restore Level 2 if the reload caught the user browsing a list.
+      try {
+        if (this.isListKind(this.kind) && localStorage.getItem('glance.kindEntered') === '1') {
+          this.kindEntered = true;
+        }
+      } catch {}
+      // Chat history + hash router (deep-link).
+      await this.loadChatHistory();
+      this.applyHash();
+      window.addEventListener('hashchange', () => this.applyHash());
+      // Awwwards hero only on awwwards theme
+      const theme = document.documentElement.dataset.theme;
+      if (theme === 'awwwards') {
+        this.showHero = true;
+        setTimeout(() => { this.showHero = false; }, 1800);
+      }
+
+      // Global hotkeys: Esc exits agents fullscreen; ⌘\ / Ctrl+\ toggles sidebar; ⌘. / Ctrl+. toggles right pane
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && this.agentsFullscreen) {
+          this.agentsFullscreen = false;
+          this.$nextTick(() => { try { window.lucide?.createIcons(); } catch {} });
+        }
+        if (e.key === 'Escape' && this.graphFullscreen) {
+          this.graphFullscreen = false;
+          this.$nextTick(() => { try { window.lucide?.createIcons(); } catch {} this.renderGraphNow({ autoFit: true }); });
+        }
+        if (e.key === 'Escape' && this.graphSettingsOpen) {
+          this.graphSettingsOpen = false;
+        }
+        if ((e.metaKey || e.ctrlKey) && e.key === '\\') { e.preventDefault(); this.toggleSidebar(); }
+        if ((e.metaKey || e.ctrlKey) && e.key === '.') { e.preventDefault(); this.toggleRightPane(); }
+      });
+
+      // Lucide icons are auto-rendered by the inline initLucide IIFE in index.html.
+      // No additional observer needed here — that one handles initial + new <i> stubs.
+
+      // When setup mode toggles on, always refresh both status and global sources.
+      // This is a safety net in case toggleSetupMode is bypassed (e.g. state restored).
+      this.$watch('setupMode', (v) => {
+        if (v) {
+          this.fetchSetupStatus();
+          this.fetchSetupSources();
+        }
+      });
+      // When switching project↔global in settings, reload that scope's rules.
+      this.$watch('settingsScopePicker', () => { if (this.settingsOpen && this.rulesData) this.loadRulesDraft(); });
+
+      await this.refreshAll();
+
+      // Cmd-K focuses search · ESC navigates back from detail
+      window.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+          e.preventDefault();
+          document.querySelector('input[placeholder*="Search"]')?.focus();
+          return;
+        }
+        if (e.key === 'Escape') {
+          // Don't fight inputs/textareas where ESC has its own meaning
+          const t = e.target;
+          if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+          // Close search dropdown first if open
+          if (this.searchResults.length > 0 || this.searchDone) { this.searchResults = []; this.searchDone = false; return; }
+          // Then close console drawer if open
+          if (this.consoleOpen) { this.consoleOpen = false; return; }
+          // Then close memory add modal if open
+          if (this.memoryAddOpen) { this.memoryAddOpen = false; return; }
+          // Navigation stack: detail → list → type cards
+          if (this.selected) { this.goBack(); return; }
+          if (this.navLevel === 'list') { this.backToKinds(); return; }
+        }
+      });
+
+      // Health refresh every 30s
+      setInterval(() => this.fetchHealth(), 30_000);
+
+      // Logs SSE
+      this.startLogStream();
+
+      // Activity feed SSE (right sidebar)
+      try { this.startActivityStream(); } catch {}
+
+      // Watch kind changes to load lazy data for memory/graph/cost views
+      this.$watch?.('kind', (k) => {
+        if (k === 'memory' && this.decisions.length === 0) this.refreshMemory();
+        else if (k === 'graph' && !this.graph) this.fetchGraph();
+        else if (k === 'cost' && !this.cost) this.fetchCost();
+        else if (k === 'agents') this.startAgentsStream();
+        // close agents SSE when leaving (saves resources)
+        if (k !== 'agents') this.stopAgentsStream();
+      });
+      this.$watch?.('memorySubTab', () => {
+        if (this.kind === 'memory') {
+          if (this.memorySubTab === 'gates') this.fetchGates();
+          if (this.memorySubTab === 'audit') this.fetchAuditEvents();
+          if (this.memorySubTab === 'decisions') this.fetchDecisions();
+        }
+      });
+      this.$watch?.('memoryFilters.project_id', () => { if (this.kind === 'memory') this.refreshMemory(); });
+
+      // Re-render charts when tab changes (their containers are created
+      // lazily by x-if; we have to wait for the DOM to mount).
+      this.$watch('tab', (next) => this.renderActiveChart(next));
+
+      // Periodically refresh job list when actions are enabled
+      setInterval(() => { if (this.health.allow_actions) this.refreshJobs(); }, 5000);
+    },
+
+    renderActiveChart(tab) {
+      if (!tab) tab = this.tab;
+      this.$nextTick(() => {
+        if (this.kind === 'businesses' && tab === 'org-chart' && this.detail?.org_chart_raw && window.renderOrgChart) {
+          window.renderOrgChart('#org-chart-canvas', this.detail, {
+            allowActions: !!this.health.allow_actions,
+            onEdit: (slug) => this.openEmployeeEdit(slug),
+            onAddBelow: (parentSlug) => this.openAddEmployeeBelow(parentSlug),
+          });
+        }
+        if (this.kind === 'projects' && tab === 'dag' && this.detail?.dag && window.renderDag) {
+          window.renderDag('#dag-canvas', this.detail.dag);
+        }
+      });
+    },
+
+    // ─── Org-chart card editor ───
+    openEmployeeEdit(slug) {
+      const raw = this.detail?.employees_md?.[slug] || '';
+      const m = /^---\r?\n([\s\S]*?)\r?\n---/.exec(raw);
+      let fm = {};
+      try { fm = (m && window.jsyaml?.load(m[1])) || {}; } catch { fm = {}; }
+      this.orgEditMode = 'edit';
+      this.orgEditTargetSlug = slug;
+      this.orgEditDraft = {
+        role: fm.role || '',
+        description: fm.description || '',
+        reportsTo: fm.reports_to || '',
+        assignedMindClones: (fm.assigned_mind_clones || []).join(', '),
+        squadsAuthorized: (fm.squads_authorized || []).join(', '),
+      };
+      this.orgEditError = null;
+      this.orgEditOpen = true;
+    },
+    openAddEmployeeBelow(parentSlug) {
+      this.orgEditMode = 'add';
+      this.orgEditTargetSlug = parentSlug;
+      this.orgEditDraft = { role: '', description: '', reportsTo: '', assignedMindClones: '', squadsAuthorized: '' };
+      this.orgEditError = null;
+      this.orgEditOpen = true;
+    },
+    closeOrgEdit() {
+      this.orgEditOpen = false;
+      this.orgEditError = null;
+    },
+    async saveOrgEdit() {
+      const bizSlug = this.selected?.slug;
+      if (!bizSlug) return;
+      const toList = (s) => String(s || '').split(',').map((x) => x.trim()).filter(Boolean);
+      this.orgEditSaving = true;
+      this.orgEditError = null;
+      try {
+        const url = this.orgEditMode === 'add'
+          ? `/api/businesses/${encodeURIComponent(bizSlug)}/employees`
+          : `/api/businesses/${encodeURIComponent(bizSlug)}/employees/${encodeURIComponent(this.orgEditTargetSlug)}`;
+        const body = this.orgEditMode === 'add'
+          ? {
+              role: this.orgEditDraft.role.trim(),
+              description: this.orgEditDraft.description.trim() || undefined,
+              reportsTo: this.orgEditTargetSlug,
+            }
+          : {
+              role: this.orgEditDraft.role.trim(),
+              description: this.orgEditDraft.description.trim(),
+              reportsTo: this.orgEditDraft.reportsTo.trim() || undefined,
+              assignedMindClones: toList(this.orgEditDraft.assignedMindClones),
+              squadsAuthorized: toList(this.orgEditDraft.squadsAuthorized),
+            };
+        if (this.orgEditMode === 'add' && !body.role) { this.orgEditError = 'título é obrigatório'; return; }
+        const res = await fetch(url, {
+          method: this.orgEditMode === 'add' ? 'POST' : 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json();
+        if (!res.ok || data.error) { this.orgEditError = data.error || `erro ${res.status}`; return; }
+        this.orgEditOpen = false;
+        this.detail = await api(`/api/businesses/${encodeURIComponent(bizSlug)}`);
+        this.renderActiveChart('org-chart');
+        this.flash('✓ organograma atualizado', 2000);
+      } catch (e) {
+        this.orgEditError = e.message || String(e);
+      } finally {
+        this.orgEditSaving = false;
+      }
+    },
+
+    async refreshAll() {
+      await Promise.all([
+        this.fetchScope(),
+        this.fetchSquads(),
+        this.fetchBusinesses(),
+        this.fetchProjects(),
+        this.fetchRuns(),
+        this.fetchMindClones(),
+        this.fetchHealth(),
+        this.fetchAuditScores(),
+        this.fetchSetupSources(),
+        this.fetchSetupStatus(),
+        this.fetchSubsystems(),
+        this.fetchKnownProjects(),
+      ]);
+      this.flash(`refreshed · ${this.squads.length} squads, ${this.businesses.length} bus`);
+    },
+
+    // ─── Audit scores (squads/businesses/mind-clones) ───
+    async fetchAuditScores() {
+      const endpoints = [
+        { kind: 'squads',       url: '/api/audit/report' },
+        { kind: 'businesses',   url: '/api/businesses/audit/report' },
+        { kind: 'mind-clones',  url: '/api/mind-clones/audit/report' },
+      ];
+      await Promise.all(endpoints.map(async ({ kind, url }) => {
+        try {
+          const r = await api(url);
+          if (!r || !Array.isArray(r.scores)) return;
+          const map = {};
+          for (const s of r.scores) {
+            const key = kind === 'mind-clones' ? `${s.category}/${s.slug}` : s.slug;
+            map[key] = { tier: s.tier, score: s.score };
+          }
+          this.auditScores[kind] = map;
+        } catch {}
+      }));
+    },
+    scoreFor(item) {
+      const map = this.auditScores[this.kind] || {};
+      const key = item.slug || item.id || '';
+      return map[key] || null;
+    },
+    /**
+     * Aggregate audit summary for a given kind:
+     *   { total, green, yellow, red, avg, allGreen }
+     * Returns null when there's no audit data for that kind yet.
+     */
+    auditSummary(kind) {
+      const map = this.auditScores[kind];
+      if (!map) return null;
+      const entries = Object.values(map);
+      if (entries.length === 0) return null;
+      const counts = { green: 0, yellow: 0, red: 0 };
+      let sum = 0;
+      for (const e of entries) {
+        counts[e.tier] = (counts[e.tier] || 0) + 1;
+        sum += e.score || 0;
+      }
+      const total = entries.length;
+      return {
+        total,
+        green: counts.green,
+        yellow: counts.yellow,
+        red: counts.red,
+        avg: Math.round(sum / total),
+        allGreen: counts.green === total,
+      };
+    },
+
+    // ─── Fetch ───
+    async fetchScope() {
+      try {
+        this.scope = await api('/api/scope');
+        // Project-first by default: with no saved preference, CONSUMPTION (Runs/
+        // Cost/Memory/Agents/Activity) opens in the PROJECT scope when there is a
+        // project folder. Libraries (squads/businesses/clones) stay global.
+        const saved = (typeof localStorage !== 'undefined') && localStorage.getItem('glance.projectFilter');
+        if (!saved) {
+          const want = (this.scope && this.scope.projectRoot) ? 'project' : 'all';
+          this.setProjectFilter(want, false);  // false = don't persist the automatic choice
+        }
+      } catch(e) {}
+    },
+    async fetchHealth()   { try { const h = await api('/api/health'); this.health = { ...h, ok: h.ok, uptime: humanizeMs(h.uptime_ms) }; } catch(e) {} },
+    // ─── Engine subsystems (what is standing) ───
+    // A failed read does NOT become a row of red: the payload stays empty and the
+    // strip says nothing, rather than claiming eight subsystems fell because one
+    // fetch did.
+    async fetchSubsystems() {
+      try { this.subsystems = (await api('/api/subsystems')).subsystems; }
+      catch (e) { this.subsystems = null; }
+    },
+    // ─── Project switcher (topnav) — OTHER Nirvana projects on this machine,
+    // distinct from projectFilter above (which only filters within the ONE
+    // project this instance is bound to). Read-only; always available.
+    async fetchKnownProjects() {
+      try { this.knownProjects = (await api('/api/known-projects')).projects || []; }
+      catch (e) { this.knownProjects = []; }
+    },
+    async fetchSquads()   { this.listLoading.squads = true; this.listError.squads = null; try { const r = await api('/api/squads'); this.squads = r.squads; this.counts.squads = r.squads.length; } catch(e) { this.listError.squads = e.message || 'failed'; this.flash(`✗ squads: ${e.message || 'load failed'}`, 3000); } finally { this.listLoading.squads = false; } },
+    async fetchBusinesses(){ this.listLoading.businesses = true; this.listError.businesses = null; try { const r = await api('/api/businesses'); this.businesses = r.businesses; this.counts.businesses = r.businesses.length; } catch(e) { this.listError.businesses = e.message || 'failed'; this.flash(`✗ businesses: ${e.message || 'load failed'}`, 3000); } finally { this.listLoading.businesses = false; } },
+    async fetchProjects() { this.listLoading.projects = true; this.listError.projects = null; try { const r = await api(`/api/projects${this.projectQuery('?')}`); this.projects = this.absence.listItems(r.projects); this.counts.projects = this.absence.listLength(r.projects); } catch(e) { this.listError.projects = e.message || 'failed'; this.flash(`✗ projects: ${e.message || 'load failed'}`, 3000); } finally { this.listLoading.projects = false; } },
+    async fetchRuns(opts = {}) {
+      try {
+        const r = await api(`/api/runs?days=7&limit=200${this.projectQuery()}`);
+        this.runs = this.absence.listItems(r.runs);
+        // `r.total` may be null (the logs root does not exist): the count stays
+        // undetermined instead of borrowing the length of an empty list.
+        this.counts.runs = this.absence.isUnknown(r.total) ? this.absence.listLength(r.runs) : r.total;
+        // If a run is selected, refresh its detail
+        if (this.selectedRun?.trace_id && opts.refreshDetail !== false) {
+          const updated = this.runs.find(x => x.trace_id === this.selectedRun.trace_id);
+          if (updated) this.selectedRun = updated;
+        }
+      } catch (e) {}
+    },
+    selectRun(run) {
+      const wasCollapsed = this.sidebarCollapsed;
+      this.selectedRun = run;
+      // Nielsen H1 (visibility of system status): the sidebar auto-collapsing
+      // needs to announce itself the first time it happens, not just silently
+      // change width (ux-qa finding, page-layout-redesign.md §3.1).
+      if (!wasCollapsed && this.sidebarCollapsed && !this.sidebarHintShown) {
+        this.sidebarHintShown = true;
+        this.showSidebarHint = true;
+        this.sidebarLiveMessage = 'Sidebar recolhida para ícones — uma run está aberta em detalhe. Use o botão fixar para mantê-la cheia.';
+        setTimeout(() => { this.showSidebarHint = false; }, 4000);
+      }
+    },
+    // Sidebar auto-collapse to the 64px icon rail (page-layout-redesign.md
+    // §1.3) — driven by whether a run is open in detail, never by `kind`.
+    get sidebarCollapsed() {
+      const pl = window.NirvanaPanelLayout;
+      return pl
+        ? pl.shouldCollapseSidebar({ pinnedFull: this.sidebarPinnedFull, hasSelectedRun: !!this.selectedRun })
+        : (!this.sidebarPinnedFull && !!this.selectedRun);
+    },
+    toggleSidebarPin() {
+      this.showSidebarHint = false;
+      this.sidebarPinnedFull = !this.sidebarPinnedFull;
+      try { localStorage.setItem('glance.sidebarPinnedFull', this.sidebarPinnedFull ? '1' : '0'); } catch {}
+    },
+    // Runs rail: search filter + collapse toggle (page-layout-redesign.md §1.3).
+    get filteredRunsList() {
+      const pl = window.NirvanaPanelLayout;
+      return pl ? pl.filterRunsByQuery(this.visibleRuns, this.runsListQuery) : this.visibleRuns;
+    },
+    toggleRunsRail() {
+      this.runsRailCollapsed = !this.runsRailCollapsed;
+      try { localStorage.setItem('glance.runsRailCollapsed', this.runsRailCollapsed ? '1' : '0'); } catch {}
+    },
+    // "Atividade relacionada" — activity events scoped to this run's
+    // business/project, excluding events already on its own trace.
+    relatedActivity(run) {
+      const pl = window.NirvanaPanelLayout;
+      return pl ? pl.filterRelatedActivity(this.activityEvents, run) : [];
+    },
+    runStatusColor(status) {
+      if (status === 'delivered') return 'meta-ok';
+      if (status === 'gate_failed') return 'meta-bad';
+      if (status === 'running') return 'meta-pending';
+      return '';
+    },
+    runRelTime(iso) {
+      if (!iso) return '';
+      // Clamp negative diffs to 0 — events from machines with skewed clocks
+      // were rendering as huge positive numbers (-150000h ago bug).
+      const ms = Math.max(0, Date.now() - new Date(iso).getTime());
+      const s = Math.floor(ms / 1000);
+      if (s < 60) return `${s}s ago`;
+      const m = Math.floor(s / 60);
+      if (m < 60) return `${m}min ago`;
+      const h = Math.floor(m / 60);
+      if (h < 24) return `${h}h ago`;
+      return new Date(iso).toLocaleDateString();
+    },
+    startRunsAutoRefresh() {
+      if (this.runsAutoRefresh) return;
+      this.runsAutoRefresh = setInterval(() => {
+        if (this.kind === 'runs') this.fetchRuns({ refreshDetail: true });
+      }, 5000);
+    },
+    stopRunsAutoRefresh() {
+      if (this.runsAutoRefresh) { clearInterval(this.runsAutoRefresh); this.runsAutoRefresh = null; }
+    },
+    async fetchMindClones(){ this.listLoading['mind-clones'] = true; this.listError['mind-clones'] = null; try { const r = await api('/api/mind-clones'); this.mindClones = r.mind_clones; this.counts['mind-clones'] = r.mind_clones.length; } catch(e) { this.listError['mind-clones'] = e.message || 'failed'; this.flash(`✗ mind-clones: ${e.message || 'load failed'}`, 3000); } finally { this.listLoading['mind-clones'] = false; } },
+
+    // ─── Memory layer (state.db) ───
+    async fetchMemoryStats() {
+      try { this.memoryStats = await api('/api/memory/stats'); }
+      catch (e) { this.memoryStats = { available: false, error: String(e) }; }
+    },
+    async fetchDecisions() {
+      const q = new URLSearchParams();
+      if (this.memoryFilters.project_id) q.set('project_id', this.memoryFilters.project_id);
+      q.set('limit', '200');
+      try {
+        const r = await api(`/api/decisions?${q}${this.projectQuery()}`);
+        this.decisions = r.decisions || [];
+      } catch (e) { this.decisions = []; }
+    },
+    async fetchGates() {
+      const q = new URLSearchParams();
+      if (this.memoryFilters.project_id) q.set('project_id', this.memoryFilters.project_id);
+      if (this.memoryFilters.phase) q.set('phase', this.memoryFilters.phase);
+      if (this.memoryFilters.verdict) q.set('verdict', this.memoryFilters.verdict);
+      q.set('limit', '100');
+      try {
+        const r = await api(`/api/gates?${q}${this.projectQuery()}`);
+        this.gates = r.gates || [];
+      } catch (e) { this.gates = []; }
+    },
+    async fetchAuditEvents() {
+      const q = new URLSearchParams();
+      if (this.memoryFilters.event) q.set('event', this.memoryFilters.event);
+      if (this.memoryFilters.project_id) q.set('project_id', this.memoryFilters.project_id);
+      q.set('limit', '200');
+      try {
+        const r = await api(`/api/audit/events?${q}${this.projectQuery()}`);
+        this.auditEvents = r.events || [];
+      } catch (e) { this.auditEvents = []; }
+    },
+    async fetchMemory() {
+      // Refetch the visible memory tab when project filter changes
+      try {
+        const list = [];
+        if (this.kind === 'memory') {
+          if (this.memorySubTab === 'decisions') list.push(this.fetchDecisions());
+          else if (this.memorySubTab === 'gates') list.push(this.fetchGates());
+          else if (this.memorySubTab === 'audit') list.push(this.fetchAuditEvents());
+        }
+        await Promise.all(list);
+      } catch {}
+    },
+    restartAgentsStream() {
+      try { this.stopAgentsStream && this.stopAgentsStream(); } catch {}
+      if (this.kind === 'agents') {
+        try { this.startAgentsStream && this.startAgentsStream(); } catch {}
+      }
+    },
+    restartActivityStream() {
+      try { if (this.activityStream) this.activityStream.close(); } catch {}
+      try { this.startActivityStream && this.startActivityStream(); } catch {}
+    },
+    async refreshMemory() {
+      await Promise.all([this.fetchMemoryStats(), this.fetchDecisions(), this.fetchGates(), this.fetchAuditEvents()]);
+    },
+    toggleMemoryRow(key) {
+      this.memoryExpanded[key] = !this.memoryExpanded[key];
+    },
+    async addDecision() {
+      if (!this.memoryAddDraft.decision_id || !this.memoryAddDraft.text) {
+        this.toast = { visible: true, message: 'decision_id + text obrigatórios' };
+        setTimeout(() => { this.toast.visible = false; }, 2500);
+        return;
+      }
+      try {
+        const r = await fetch('/api/decisions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            decision_id: this.memoryAddDraft.decision_id,
+            text: this.memoryAddDraft.text,
+            source: this.memoryAddDraft.source || 'glance',
+            rationale: this.memoryAddDraft.rationale || null,
+            project_id: this.memoryFilters.project_id || undefined,
+          }),
+        });
+        const data = await r.json();
+        if (data.ok) {
+          this.toast = { visible: true, message: `decision ${this.memoryAddDraft.decision_id} salva` };
+          this.memoryAddOpen = false;
+          this.memoryAddDraft = { decision_id: '', text: '', source: 'manual', rationale: '' };
+          await this.fetchDecisions();
+        } else {
+          this.toast = { visible: true, message: data.error || 'erro ao salvar' };
+        }
+        setTimeout(() => { this.toast.visible = false; }, 2500);
+      } catch (e) { this.toast = { visible: true, message: String(e) }; setTimeout(() => { this.toast.visible = false; }, 2500); }
+    },
+
+    // ─── Graph view (knowledge graph) ───
+    // 'topology' is global engine data (businesses/squads/capabilities/mind-clones) —
+    // it deliberately ignores the top-nav All/Project toggle, since that data has no
+    // notion of "which project". 'activity' is the per-project artifact/decision
+    // trail, so it respects the toggle exactly like Runs/Cost/Memory do.
+    async fetchGraph() {
+      const q = this.graphScope === 'activity' ? this.projectQuery('?') : '';
+      try { this.graph = await api(`/api/graph${q}`); }
+      catch (e) { this.graph = { nodes: [], edges: [] }; }
+      // Compute temporal range from nodes with created_at
+      const stamps = (this.graph?.nodes || [])
+        .map(n => n.created_at)
+        .filter(Boolean)
+        .sort();
+      if (stamps.length >= 2) {
+        const minMs = new Date(stamps[0]).getTime();
+        const maxMs = new Date(stamps[stamps.length - 1]).getTime();
+        this.graphTimeline = { range: [stamps[0], stamps[stamps.length - 1]], minMs, maxMs };
+        this.graphTimeMs = maxMs;
+        this.graphTimeISO = new Date(maxMs).toISOString();
+      } else {
+        this.graphTimeline = null;
+        this.graphTimeMs = null;
+        this.graphTimeISO = null;
+      }
+      this.renderGraphNow();
+    },
+    renderGraphNow(opts = {}) {
+      // Tear down previous instance so the simulation/listeners don't leak
+      try { this.graphCtrl?.dispose?.(); } catch {}
+      this.graphCtrl = null;
+      setTimeout(() => {
+        if (!window.renderGraph || !this.graph) return;
+        this.graphCtrl = window.renderGraph('#graph-canvas', this.graph, {
+          filter: this.graphFilter,
+          timeFilterISO: this.graphTimeISO,
+          physics: this.graphPhysics,
+          colors: this.graphColors,
+          onNodeSelect: (node) => this.onGraphNodeSelect(node),
+        });
+        // Compute visible count
+        const cutoff = this.graphTimeISO;
+        this.graphFilteredCount = (this.graph.nodes || []).filter(n => !n.created_at || !cutoff || n.created_at <= cutoff).length;
+        // Auto-fit-to-extent: by default true on filter change. Wait for the
+        // sim to do a few ticks so nodes have positions before we measure.
+        if (opts.autoFit !== false) {
+          setTimeout(() => this.graphCtrl?.fitToExtent?.(80), 600);
+        }
+      }, 50);
+    },
+    setGraphFilter(filter) {
+      this.graphFilter = filter;
+      this.clearGraphSelection();
+      this.renderGraphNow({ autoFit: true });
+    },
+    setGraphScope(scope) {
+      if (this.graphScope === scope) return;
+      this.graphScope = scope;
+      this.graphFilter = scope === 'activity' ? 'created' : 'capabilities';
+      this.clearGraphSelection();
+      this.fetchGraph(); // different data per scope (project-filtered or not) — refetch, not just re-render
+    },
+    graphFitView() {
+      this.graphCtrl?.fitToExtent?.(80);
+    },
+    toggleGraphLegend() {
+      this.graphLegendOpen = !this.graphLegendOpen;
+      this.$nextTick?.(() => window.lucide?.createIcons?.());
+    },
+    toggleGraphSettings() {
+      this.graphSettingsOpen = !this.graphSettingsOpen;
+      this.$nextTick?.(() => window.lucide?.createIcons?.());
+    },
+    toggleGraphFullscreen() {
+      this.graphFullscreen = !this.graphFullscreen;
+      this.$nextTick?.(() => {
+        try { window.lucide?.createIcons?.(); } catch {}
+        // Resize the simulation viewport
+        this.renderGraphNow({ autoFit: true });
+      });
+    },
+    applyGraphPhysics() {
+      try { localStorage.setItem('glance.graphPhysics', JSON.stringify(this.graphPhysics)); } catch {}
+      this.graphCtrl?.updatePhysics?.(this.graphPhysics);
+    },
+    setGraphColor(type, hex) {
+      this.graphColors[type] = hex;
+      try { localStorage.setItem('glance.graphColors', JSON.stringify(this.graphColors)); } catch {}
+      this.graphCtrl?.updateColors?.(this.graphColors);
+    },
+    resetGraphSettings() {
+      this.graphPhysics = { linkDistance: 36, charge: -120, collide: 3, alphaDecay: 0.02, nodeScale: 1.0, labelOpacity: 0.7 };
+      this.graphColors = {
+        squad: '#2563eb', business: '#a855f7', 'mind-clone': '#10b981', capability: '#f59e0b',
+        project: '#dc2626', brief: '#fb923c', plan: '#eab308', dag: '#84cc16',
+        handoff: '#06b6d4', audit_run: '#8b5cf6', output: '#14b8a6', decision: '#ec4899',
+      };
+      try { localStorage.removeItem('glance.graphPhysics'); localStorage.removeItem('glance.graphColors'); } catch {}
+      this.graphCtrl?.updatePhysics?.(this.graphPhysics);
+      this.graphCtrl?.updateColors?.(this.graphColors);
+    },
+    onGraphNodeSelect(node) {
+      this.graphSelectedNode = node || null;
+      if (!node) { this.graphSelectedNeighbors = []; return; }
+      const ids = new Set();
+      for (const e of (this.graph?.edges || [])) {
+        const s = typeof e.source === 'string' ? e.source : e.source.id;
+        const t = typeof e.target === 'string' ? e.target : e.target.id;
+        if (s === node.id) ids.add(t);
+        if (t === node.id) ids.add(s);
+      }
+      this.graphSelectedNeighbors = (this.graph?.nodes || []).filter(n => ids.has(n.id));
+      this.$nextTick?.(() => window.lucide?.createIcons?.());
+    },
+    selectGraphNode(node) {
+      this.onGraphNodeSelect(node);
+      this.graphCtrl?.select?.(node.id);
+    },
+    centerGraphNode(id) {
+      this.graphCtrl?.centerOn?.(id);
+    },
+    clearGraphSelection() {
+      this.graphSelectedNode = null;
+      this.graphSelectedNeighbors = [];
+      this.graphCtrl?.select?.(null);
+    },
+    onGraphTimeInput(evt) {
+      const ms = Number(evt.target.value);
+      if (!Number.isFinite(ms)) return;
+      this.graphTimeMs = ms;
+      this.graphTimeISO = new Date(ms).toISOString();
+      this.renderGraphNow();
+    },
+    setGraphTime(iso) {
+      const ms = new Date(iso).getTime();
+      this.graphTimeMs = ms;
+      this.graphTimeISO = iso;
+      this.renderGraphNow();
+    },
+    toggleGraphPlay() {
+      if (this.graphPlaying) {
+        clearInterval(this.graphPlayInterval);
+        this.graphPlayInterval = null;
+        this.graphPlaying = false;
+      } else if (this.graphTimeline) {
+        this.graphPlaying = true;
+        // Restart from beginning if at end
+        if (this.graphTimeMs >= this.graphTimeline.maxMs) {
+          this.graphTimeMs = this.graphTimeline.minMs;
+        }
+        const totalSpan = this.graphTimeline.maxMs - this.graphTimeline.minMs;
+        const stepMs = Math.max(1000, Math.floor(totalSpan / 60));
+        this.graphPlayInterval = setInterval(() => {
+          this.graphTimeMs += stepMs;
+          if (this.graphTimeMs >= this.graphTimeline.maxMs) {
+            this.graphTimeMs = this.graphTimeline.maxMs;
+            clearInterval(this.graphPlayInterval);
+            this.graphPlayInterval = null;
+            this.graphPlaying = false;
+          }
+          this.graphTimeISO = new Date(this.graphTimeMs).toISOString();
+          this.renderGraphNow();
+        }, 250);
+      }
+    },
+    graphTypeColor(type) {
+      const c = {
+        squad: '#2563eb', business: '#a855f7', 'mind-clone': '#10b981', capability: '#f59e0b',
+        project: '#dc2626', brief: '#fb923c', plan: '#eab308', dag: '#84cc16',
+        handoff: '#06b6d4', audit_run: '#8b5cf6', output: '#14b8a6', decision: '#ec4899',
+      };
+      return c[type] || '#64748b';
+    },
+    navigateToNode(node) {
+      if (!node) return;
+      if (node.type === 'squad') { this.kind = 'squads'; setTimeout(() => this.select({ slug: node.slug }), 100); }
+      else if (node.type === 'business') { this.kind = 'businesses'; setTimeout(() => this.select({ slug: node.slug }), 100); }
+      else if (node.type === 'mind-clone') {
+        this.kind = 'mind-clones';
+        const [cat, sl] = node.slug.split('/');
+        setTimeout(() => this.select({ slug: node.slug, category: cat, _mc: { category: cat, slug: sl, source: node.source || 'global' } }), 100);
+      }
+    },
+
+    // ─── Cost dashboard ───
+    async fetchCost() {
+      try { this.cost = await api(`/api/cost/summary?period=${this.costPeriod}${this.projectQuery()}`); }
+      catch (e) { this.cost = null; }
+      setTimeout(() => {
+        if (window.renderCostCharts && this.cost) {
+          window.renderCostCharts(this.cost);
+        }
+      }, 50);
+    },
+    setCostPeriod(p) { this.costPeriod = p; this.fetchCost(); },
+
+    // ─── Live Agents (Agents tab SSE) ───
+    startAgentsStream() {
+      if (this.agentsES) { try { this.agentsES.close(); } catch {} }
+      this.agentsES = new EventSource('/api/agents/live' + this.projectQuery('?'));
+      // `snapshot` is the opening state, `pulse` the periodic aggregate; both
+      // carry the same payload, so one handler serves the two names.
+      const applyAgentAggregate = (e) => {
+        try {
+          const d = JSON.parse(e.data);
+          this.agents = d.agents || [];
+          this.agentsSummary = d.summary || null;
+          // re-render swimlanes after Alpine updates DOM
+          this.$nextTick(() => this.renderAllSwimlanes());
+          // re-render workspace if active
+          if (this.agentsViewMode === 'workspace' && window.__agentWorkspace) {
+            window.__agentWorkspace.syncAgents(this.agents);
+          }
+        } catch {}
+      };
+      this.agentsES.addEventListener('snapshot', applyAgentAggregate);
+      this.agentsES.addEventListener('pulse', applyAgentAggregate);
+      this.agentsES.addEventListener('status_change', (e) => {
+        try {
+          const d = JSON.parse(e.data);
+          // optional: brief flash animation; for now just rely on the pulse to redraw
+          console.debug('[agents] status change:', d.trace_id, d.from, '→', d.to);
+        } catch {}
+      });
+      // ticker that updates "X seconds ago" displays without polling backend
+      if (!this._agentsTickerHandle) {
+        this._agentsTickerHandle = setInterval(() => {
+          // No-op trigger to make Alpine re-evaluate `agentRelativeTime` getters
+          if (this.kind === 'agents') this.agents = [...this.agents];
+        }, 1000);
+      }
+    },
+    stopAgentsStream() {
+      if (this.agentsES) { try { this.agentsES.close(); } catch {} this.agentsES = null; }
+      if (this._agentsTickerHandle) { clearInterval(this._agentsTickerHandle); this._agentsTickerHandle = null; }
+    },
+    toggleSidebar() {
+      this.sidebarOpen = !this.sidebarOpen;
+      try { localStorage.setItem('glance.sidebarOpen', this.sidebarOpen ? '1' : '0'); } catch {}
+      this.$nextTick(() => { try { window.lucide?.createIcons(); } catch {} });
+    },
+    toggleRightPane() {
+      this.rightPaneOpen = !this.rightPaneOpen;
+      try { localStorage.setItem('glance.rightPaneOpen', this.rightPaneOpen ? '1' : '0'); } catch {}
+      this.$nextTick(() => { try { window.lucide?.createIcons(); } catch {} });
+    },
+    // Activity: on-demand overlay (page-layout-redesign.md §1.3). Opening
+    // moves focus into the panel; closing returns it to the bell that opened
+    // it, so focus is never dropped on <body> (WCAG 2.4.3).
+    openActivity() {
+      this.activityOverlayOpen = true;
+      this.activityUnseenCount = 0;
+      this.$nextTick(() => { this.$refs.activityCloseBtn?.focus(); try { window.lucide?.createIcons(); } catch {} });
+    },
+    closeActivity() {
+      this.activityOverlayOpen = false;
+      this.$nextTick(() => { this.$refs.activityTrigger?.focus(); });
+    },
+    // ── Project scope filter ──
+    canFilterByProject() {
+      return !!(this.scope && this.scope.projectRoot);
+    },
+    // URL helper: returns the param suffix to attach to backend requests when
+    // the user has selected "Project" mode. Empty string when filter is off
+    // or when no projectRoot is available.
+    projectQuery(prefix = '&') {
+      if (this.projectFilter !== 'project' || !this.canFilterByProject()) return '';
+      return `${prefix}project=${encodeURIComponent(this.scope.projectRoot)}`;
+    },
+    // Refetch every backend-aggregated view so Cost / Runs / Memory match what's
+    // shown for Agents / Activity. Squads/businesses/mind-clones intentionally
+    // NOT refetched — those stay global. Shared by setProjectFilter (All↔Project
+    // MODE change, within one bound project) and switchProject (rebinding to a
+    // DIFFERENT project) — same list either way, so it lives in one place.
+    refetchProjectScopedViews() {
+      try { this.fetchRuns && this.fetchRuns(); } catch {}
+      try { this.fetchCost && this.fetchCost(); } catch {}
+      try { this.fetchMemory && this.fetchMemory(); } catch {}
+      try { this.fetchProjects && this.fetchProjects(); } catch {}
+      try { this.fetchGraph && this.fetchGraph(); } catch {}
+      try { this.restartAgentsStream && this.restartAgentsStream(); } catch {}
+      try { this.restartActivityStream && this.restartActivityStream(); } catch {}
+    },
+    setProjectFilter(mode, persist = true) {
+      // 'all' | 'project' — silently ignore 'project' if no root detected
+      if (mode === 'project' && !this.canFilterByProject()) return;
+      const changed = this.projectFilter !== mode;
+      this.projectFilter = mode;
+      // persist=false for the AUTOMATIC (project-first) choice: it doesn't become
+      // a stored preference, so it re-evaluates by projectRoot on every session.
+      if (persist) { try { localStorage.setItem('glance.projectFilter', mode); } catch {} }
+      if (changed) this.refetchProjectScopedViews();
+      this.$nextTick(() => this.renderAllSwimlanes && this.renderAllSwimlanes());
+    },
+    // ── Project switcher: rebinds this Glance INSTANCE to a different project
+    // (POST /api/actions/switch-project), unlike setProjectFilter above which only
+    // filters within the one project already bound. Requires --allow-actions.
+    async switchProject(targetPath) {
+      const path = (targetPath || '').trim();
+      if (!path || this.projectSwitching) return;
+      this.projectSwitching = true;
+      try {
+        const r = await fetch('/api/actions/switch-project', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ project_root: path }),
+        });
+        const data = await r.json();
+        if (!r.ok) { this.flash(`✗ switch project: ${data.error || r.status}`, 4000); return; }
+        this.scope = data.scope;
+        this.flash(`▶ switched to ${(data.to || '').split('/').slice(-1)[0] || data.to}`, 2000);
+        this.refetchProjectScopedViews();
+        try { this.fetchSubsystems && this.fetchSubsystems(); } catch {}
+        try { this.fetchSetupStatus && this.fetchSetupStatus(); } catch {}
+        try { this.fetchKnownProjects && this.fetchKnownProjects(); } catch {}
+      } catch (e) {
+        this.flash(`✗ ${e.message}`, 4000);
+      } finally {
+        this.projectSwitching = false;
+      }
+    },
+    matchesCurrentProject(item) {
+      if (this.projectFilter !== 'project' || !this.canFilterByProject()) return true;
+      const root = (this.scope.projectRoot || '').replace(/\/+$/, '');
+      if (!root) return true;
+
+      // 1. Direct cwd prefix match (most reliable — works for any agent CLI)
+      if (item.cwd && (item.cwd === root || item.cwd.startsWith(root + '/'))) return true;
+
+      // 2. Fallback for project_id. Claude Code stores transcripts under
+      //    ~/.claude/projects/-Users-alice-foo-bar/, and our importer turns that
+      //    back into "Users/alice/foo/bar" — every "-" becomes "/" indiscriminately,
+      //    so a real "nirvana-os" path is encoded as "nirvana/os". We can't reverse
+      //    that perfectly, but for matching we normalise BOTH sides by treating
+      //    "/" and "-" as the same separator and lowercasing.
+      if (item.project_id) {
+        const norm = (s) => s.toLowerCase().replace(/[\\/_\-]+/g, '/').replace(/^\/+|\/+$/g, '');
+        const rootN = norm(root);
+        const pidN = norm(item.project_id);
+        if (pidN === rootN || pidN.startsWith(rootN + '/')) return true;
+      }
+
+      // 3. Business/squad dispatches (via brief-business.ts / brief-squad.ts)
+      //    have no notion of "cwd" at all — their project_id IS the trace_id
+      //    ("glance-visual-impl-2026...", not a filesystem path), so both
+      //    checks above always miss them, and every dispatch this project
+      //    ever ran disappeared from its own Runs tab. outputs_dir/outputs_root
+      //    would be the real filesystem signal, but in practice brief-business.ts
+      //    doesn't stamp it on every event — so fall back to trusting the
+      //    backend: projectQuery() above already sent ?project=<root> on this
+      //    fetch, and the server's own eventMatchesProject (server.ts) already
+      //    scopes business/squad dispatches by project before this item ever
+      //    reaches the client. A run carrying business_slug/squad_name only
+      //    got here because the server already decided it belongs.
+      const out = item.outputs_dir || item.outputs_root;
+      if (out && (out === root || out.startsWith(root + '/'))) return true;
+      if (item.business_slug || item.squad_name || item.target) return true;
+
+      return false;
+    },
+    get visibleAgents() {
+      let list = this.agents;
+      if (this.projectFilter === 'project' && this.canFilterByProject()) {
+        list = list.filter(a => this.matchesCurrentProject(a));
+      }
+      if (this.suspiciousFilterOn) {
+        list = list.filter(a => a.is_suspicious_dispatch);
+      }
+      return list;
+    },
+    suspiciousDispatchCount() {
+      let list = this.agents;
+      if (this.projectFilter === 'project' && this.canFilterByProject()) {
+        list = list.filter(a => this.matchesCurrentProject(a));
+      }
+      return list.filter(a => a.is_suspicious_dispatch).length;
+    },
+    toggleSuspiciousDispatchFilter() {
+      this.suspiciousFilterOn = !this.suspiciousFilterOn;
+      this.$nextTick(() => this.renderAllSwimlanes && this.renderAllSwimlanes());
+    },
+    get visibleAgentsSummary() {
+      if (this.projectFilter !== 'project' || !this.canFilterByProject()) return this.agentsSummary;
+      const list = this.visibleAgents;
+      const out = { tool_in_flight: 0, running: 0, idle: 0, waiting: 0, stale: 0, completed: 0, failed: 0, total: 0 };
+      for (const s of list) { out[s.status] = (out[s.status] || 0) + 1; out.total++; }
+      return out;
+    },
+    get visibleRuns() {
+      if (this.projectFilter !== 'project' || !this.canFilterByProject()) return this.runs;
+      return this.runs.filter(r => this.matchesCurrentProject(r));
+    },
+    get visibleActivityEvents() {
+      if (this.projectFilter !== 'project' || !this.canFilterByProject()) return this.activityEvents;
+      return this.activityEvents.filter(e => this.matchesCurrentProject(e));
+    },
+
+    toggleAgentsFullscreen() {
+      this.agentsFullscreen = !this.agentsFullscreen;
+      this.$nextTick(() => {
+        try { window.lucide?.createIcons(); } catch {}
+        // resize PixiJS canvas if active
+        if (this.agentsViewMode === 'workspace' && window.__agentWorkspace?._handleResize) {
+          window.__agentWorkspace._handleResize();
+        }
+        // re-render swimlanes to fit new width
+        if (this.agentsViewMode === 'swimlane') this.renderAllSwimlanes();
+      });
+    },
+    renderAllSwimlanes() {
+      if (!window.renderAgentSwimlane) return;
+      for (const a of this.agents) {
+        const el = document.querySelector(`[data-agent-swimlane="${a.trace_id}"]`);
+        if (el) {
+          try { window.renderAgentSwimlane(el, a.recent_events || []); } catch {}
+        }
+      }
+    },
+    selectAgent(agent) { this.selectedAgent = agent; },
+    closeAgentDetail() { this.selectedAgent = null; },
+    agentStatusColor(status) {
+      const colors = {
+        tool_in_flight: '#facc15',  // amber-400 (pulse)
+        running: '#22c55e',          // green-500
+        idle: '#94a3b8',             // slate-400 (alive but inference-only)
+        waiting: '#3b82f6',          // blue-500
+        stale: '#f59e0b',            // amber-500
+        completed: '#10b981',        // emerald-500
+        failed: '#ef4444',           // red-500
+      };
+      return colors[status] || '#64748b';
+    },
+    // Map status → token variant (success/warn/danger/info/neutral)
+    agentStatusVariant(status) {
+      return ({
+        tool_in_flight: 'warn',
+        running: 'success',
+        idle: 'neutral',
+        waiting: 'info',
+        stale: 'warn',
+        completed: 'success',
+        failed: 'danger',
+      })[status] || 'neutral';
+    },
+    runStatusVariant(status) {
+      return ({
+        running: 'warn',
+        delivered: 'success',
+        gate_failed: 'danger',
+        stale: 'neutral',
+        unknown: 'neutral',
+      })[status] || 'neutral';
+    },
+    gateVariant(verdict) {
+      return ({ pass: 'success', fail: 'danger', needs_revision: 'warn', skipped: 'neutral' })[verdict] || 'neutral';
+    },
+    agentStatusLabel(status) {
+      const labels = {
+        tool_in_flight: 'Tool in flight',
+        running: 'Running',
+        idle: 'Idle',
+        waiting: 'Waiting',
+        stale: 'Stale',
+        completed: 'Completed',
+        failed: 'Failed',
+      };
+      return labels[status] || status;
+    },
+    agentHostIcon(host) {
+      // Lucide icon names; UI swaps via [data-lucide]
+      const icons = {
+        'claude-code': 'sparkles',
+        'claude-code-hook': 'sparkles',
+        'gemini-cli': 'gem',
+        'gemini-cli-hook': 'gem',
+        'codex': 'code-2',
+        'fs-watch': 'folder-search',
+      };
+      return icons[host] || 'bot';
+    },
+    formatAgentDuration(ms) {
+      if (!ms || ms < 0) ms = 0;
+      const s = Math.floor(ms / 1000);
+      if (s < 60) return `${s}s`;
+      const m = Math.floor(s / 60);
+      if (m < 60) return `${m}m ${s % 60}s`;
+      const h = Math.floor(m / 60);
+      return `${h}h ${m % 60}m`;
+    },
+    // ── Mind-clone chip helpers (Phase D) ──
+    mindCloneChipText(agent) {
+      const inj = (agent.injected_mind_clones || []).length;
+      const dec = (agent.declared_mind_clones || []).length;
+      return `${inj}/${dec}`;
+    },
+    mindCloneChipTitle(agent) {
+      if (!agent || !agent.declared_mind_clones?.length) return '';
+      if (agent.is_suspicious_dispatch) {
+        const miss = (agent.missing_mind_clones || []).join(', ');
+        return `⚠ ${(agent.missing_mind_clones || []).length} mind-clone(s) declared but not injected: ${miss}`;
+      }
+      const inj = (agent.injected_mind_clones || []).length;
+      return `${inj} mind-clone(s) injected (sha-verified)`;
+    },
+
+    // ── Mind-clone detail helpers ──
+    mindCloneFileGroups() {
+      const files = this.mindCloneDetail?.files || [];
+      const groups = new Map();
+      const order = ['agent', 'dna', 'playbooks', 'dossiers', 'memory', '_root', 'other'];
+      const labels = { agent: 'Agent', dna: 'DNA', playbooks: 'Playbooks', dossiers: 'Dossiers', memory: 'Memory', _root: 'Root', other: 'Other' };
+      for (const f of files) {
+        const key = order.includes(f.category) ? f.category : 'other';
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(f);
+      }
+      return order.filter(k => groups.has(k)).map(k => ({ label: labels[k] || k, files: groups.get(k) }));
+    },
+    mindCloneActiveFileObj() {
+      const files = this.mindCloneDetail?.files || [];
+      return files.find(f => f.path === this.mindCloneActiveFile) || null;
+    },
+    selectMindCloneFile(path) {
+      this.mindCloneActiveFile = path;
+      // Re-render lucide icons in the newly visible content area
+      this.$nextTick(() => { try { window.lucide?.createIcons(); } catch {} });
+    },
+    async copyMindCloneFile() {
+      const f = this.mindCloneActiveFileObj();
+      if (!f?.content) return;
+      try { await navigator.clipboard.writeText(f.content); this.flash(`copied ${f.path}`); }
+      catch (e) { this.flash(`copy failed`); }
+    },
+    formatBytes(n) {
+      if (!n) return '0 B';
+      if (n < 1024) return `${n} B`;
+      if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`;
+      return `${(n / (1024 * 1024)).toFixed(2)} MB`;
+    },
+
+    formatTokens(n) {
+      if (!n) return '0';
+      if (n < 1000) return String(n);
+      if (n < 1_000_000) return (n / 1000).toFixed(1) + 'k';
+      return (n / 1_000_000).toFixed(2) + 'M';
+    },
+    formatUSD(n) {
+      if (!n || n < 0.01) return '<$0.01';
+      if (n < 10) return '$' + n.toFixed(2);
+      if (n < 1000) return '$' + n.toFixed(1);
+      return '$' + Math.round(n);
+    },
+
+    // ─── Activity feed (right sidebar SSE) ───
+    startActivityStream() {
+      if (this.activityStream) try { this.activityStream.close(); } catch {}
+      this.activityStream = new EventSource('/api/activity/stream' + this.projectQuery('?'));
+      this.activityStream.addEventListener('snapshot', (e) => {
+        try { const d = JSON.parse(e.data); this.activityEvents = d.events || []; } catch {}
+      });
+      this.activityStream.addEventListener('timeline', (e) => {
+        try {
+          const ev = JSON.parse(e.data);
+          this.activityEvents.unshift(ev);
+          if (this.activityEvents.length > 50) this.activityEvents.length = 50;
+          if (!this.activityOverlayOpen) this.activityUnseenCount++;
+        } catch {}
+      });
+    },
+    activityIcon(event) {
+      const icons = {
+        stall_detected: '⚠', stall_retry: '↻', loop_detected: '∞',
+        approval_granted: '✓', approval_rejected: '✗', approval_checkpoint: '◇',
+        gate_failed: '✗', validation_failed: '✗', context_budget_warning: '⚡',
+        handoff: '↪', resume: '↶',
+      };
+      return icons[event] || '·';
+    },
+    navigateFromActivity(ev) {
+      if (!ev) return;
+      // If event has a project_id, jump to projects view
+      if (ev.project_id) {
+        this.kind = 'projects';
+        setTimeout(() => this.select({ id: ev.project_id }), 100);
+      }
+    },
+    activityRelative(ts) {
+      if (!ts) return '';
+      const d = (Date.now() - new Date(ts).getTime()) / 1000;
+      if (d < 60) return `${Math.round(d)}s ago`;
+      if (d < 3600) return `${Math.round(d / 60)}m ago`;
+      if (d < 86400) return `${Math.round(d / 3600)}h ago`;
+      return `${Math.round(d / 86400)}d ago`;
+    },
+
+    // ─── Setup mode (overlay on lists) ───
+    async toggleSetupMode() {
+      this.setupMode = !this.setupMode;
+      if (this.setupMode) {
+        // When activating Setup, prefer to view a kind that has items to pick from
+        if (!['squads','businesses','mind-clones'].includes(this.kind)) this.kind = 'squads';
+        await Promise.all([
+          this.fetchSetupStatus(),
+          this.fetchSetupSources(),
+        ]);
+      }
+    },
+    async fetchSetupSources() {
+      try {
+        const [s, b, m] = await Promise.all([
+          api('/api/setup/source?kind=squads'),
+          api('/api/setup/source?kind=businesses'),
+          api('/api/setup/source?kind=mind-clones'),
+        ]);
+        this.setupGlobalSquads = s.items || [];
+        this.setupGlobalBusinesses = b.items || [];
+        this.setupGlobalMindClones = m.items || [];
+      } catch (e) {
+        this.toast = { visible: true, message: 'failed to load global sources: ' + (e.message || e) };
+        setTimeout(() => { this.toast.visible = false; }, 3000);
+      }
+    },
+    async fetchSetupStatus() {
+      try { this.setupStatus = await api('/api/setup/status'); }
+      catch { this.setupStatus = null; }
+    },
+    isLocalCopy(kind, slug) {
+      // For mind-clones the source list (setupGlobalMindClones) carries per-item
+      // `local` flag computed by the backend (`<category>/<slug>.md` presence).
+      // For squads/businesses we still compare against /api/setup/status local lists.
+      if (kind === 'mind-clones') {
+        const item = (this.setupGlobalMindClones || []).find(m => `${m.category}/${m.slug}` === slug);
+        return !!item?.local;
+      }
+      const list = this.setupStatus?.local?.[kind] || [];
+      return list.includes(String(slug).split('/').pop());
+    },
+    toggleSetupSelection(kind, slug) {
+      if (!this.setupSelected[kind]) this.setupSelected[kind] = {};
+      if (this.setupSelected[kind][slug]) delete this.setupSelected[kind][slug];
+      else this.setupSelected[kind][slug] = true;
+    },
+    isItemPicked(kind, slug) {
+      return !!this.setupSelected[kind]?.[slug];
+    },
+    setupSelectionCount() {
+      return Object.keys(this.setupSelected.squads || {}).length
+           + Object.keys(this.setupSelected.businesses || {}).length
+           + Object.keys(this.setupSelected['mind-clones'] || {}).length;
+    },
+    setupSelectAll(kind) {
+      if (!this.setupSelected[kind]) this.setupSelected[kind] = {};
+      // Use the list as currently displayed (respects search/source filter and
+      // setup-mode global override). filteredList already maps mind-clones to
+      // `${category}/${slug}` slugs.
+      for (const item of this.filteredList) {
+        const slug = item.slug || item.id;
+        if (slug) this.setupSelected[kind][slug] = true;
+      }
+    },
+    setupClearAll() {
+      this.setupSelected = { squads: {}, businesses: {}, 'mind-clones': {} };
+    },
+    async applySetup() {
+      const items = [];
+      for (const slug of Object.keys(this.setupSelected.squads || {})) items.push({ kind: 'squads', slug });
+      for (const slug of Object.keys(this.setupSelected.businesses || {})) items.push({ kind: 'businesses', slug });
+      for (const slug of Object.keys(this.setupSelected['mind-clones'] || {})) items.push({ kind: 'mind-clones', slug });
+      if (items.length === 0) {
+        this.toast = { visible: true, message: 'nothing selected' };
+        setTimeout(() => { this.toast.visible = false; }, 2000);
+        return;
+      }
+      const target = this.setupStatus?.project_root;
+      if (!target) { this.toast = { visible: true, message: 'project_root not detected' }; setTimeout(()=>{this.toast.visible=false},2500); return; }
+      this.setupApplying = true;
+      try {
+        if (!this.setupStatus?.has_nirvana) {
+          const initR = await fetch('/api/setup/init', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ target_dir: target, scope: 'merge' }),
+          }).then(r => r.json());
+          if (!initR.ok) { throw new Error(initR.error || 'init failed'); }
+        }
+        const r = await fetch('/api/setup/copy-batch', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ target_dir: target, items, overwrite: false }),
+        }).then(r => r.json());
+        if (r.ok || r.applied > 0) {
+          this.toast = { visible: true, message: `copied ${r.applied} of ${items.length} to ${target.split('/').slice(-2).join('/')}` };
+          await this.fetchSetupStatus();
+          await this.refreshAll();
+        } else {
+          this.toast = { visible: true, message: r.error || 'copy failed' };
+        }
+      } catch (e) {
+        this.toast = { visible: true, message: String(e.message || e) };
+      } finally {
+        this.setupApplying = false;
+        setTimeout(() => { this.toast.visible = false; }, 3500);
+      }
+    },
+    mindClonesDiagnosticIssues() {
+      return this.setupStatus?.mind_clones_diagnostic?.issues || [];
+    },
+    mindClonesDiagnosticSummary() {
+      const d = this.setupStatus?.mind_clones_diagnostic;
+      if (!d) return '';
+      const broken = (d.issues || []).filter(i => i.kind === 'broken_symlink').length;
+      const missing = (d.issues || []).filter(i => i.kind === 'missing_dir').length;
+      const cats = d.categories || [];
+      const brokenCats = cats.filter(c => c.broken).length;
+      const healthyCats = cats.filter(c => !c.broken).length;
+      const parts = [];
+      if (broken) parts.push(`${broken} broken symlink${broken === 1 ? '' : 's'} — external volume not mounted`);
+      if (missing) parts.push(`${missing} missing dir${missing === 1 ? '' : 's'}`);
+      parts.push(`${brokenCats}/${cats.length} categories broken · ${healthyCats} healthy · ${d.total_mind_clones} mind-clones loadable`);
+      return parts.join(' · ');
+    },
+    // ─── Settings modal (env editor) ───
+    // ─── Chat (Phase 3) — conversation panel that operates the Nirvana ──
+    chatOpen: false,
+    chatId: null,              // trace_id/project_id of the active session
+    chatMessages: [],          // [{role:'user'|'assistant'|'system', text, events:[], streaming}]
+    chatInput: '',
+    chatBusy: false,
+    chatRunEvents: [],         // audit events of the active trace (live timeline)
+    chatRunES: null,           // EventSource for /api/runs/:id/stream
+    chatMode: 'run',           // 'run' (new dispatch) | 'revise' | 'resume'
+    chatHistory: [],           // [{id, title, mode, updatedAt}] persisted in localStorage
+    chatHistoryOpen: false,    // history drawer inside the panel
+    // Chat panel width — 460..920px, resizable via drag handle or
+    // ArrowLeft/ArrowRight (page-layout-redesign.md §2.2), persisted like the
+    // other Glance layout preferences. chat-history above is unrelated and
+    // unchanged — it stays the on-demand drawer it already was in production.
+    chatWidth: (() => {
+      let saved = null;
+      try { saved = parseInt(localStorage.getItem('glance.chatWidth'), 10); } catch {}
+      return (Number.isFinite(saved) && saved >= 460 && saved <= 920) ? saved : 460;
+    })(),
+    canonicalProjectId: null,
+
+    // The control plane is canonical when this workspace has been adopted.
+    // localStorage remains a compatibility fallback for legacy workspaces.
+    async loadChatHistory() {
+      try {
+        const result = await api('/api/v1/projects');
+        this.canonicalProjectId = result.projects?.[0]?.project_id || null;
+        if (this.canonicalProjectId) {
+          const history = await api(`/api/v1/projects/${encodeURIComponent(this.canonicalProjectId)}/conversations`);
+          this.chatHistory = (history.conversations || []).map(c => ({ id: c.conversation_id, title: c.title, mode: 'run', updatedAt: Date.parse(c.updated_at) }));
+          return;
+        }
+      } catch {}
+      try { this.chatHistory = JSON.parse(localStorage.getItem('glance.chatHistory') || '[]'); } catch { this.chatHistory = []; }
+    },
+    saveChatToHistory() {
+      if (!this.chatId) return;
+      const title = (this.chatMessages.find(m => m.role === 'user')?.text || 'Nova conversa').slice(0, 60);
+      const existing = this.chatHistory.findIndex(c => c.id === this.chatId);
+      const entry = { id: this.chatId, title, mode: this.chatMode, updatedAt: Date.now() };
+      if (existing >= 0) this.chatHistory[existing] = entry; else this.chatHistory.unshift(entry);
+      this.chatHistory = this.chatHistory.slice(0, 30);
+      if (!this.canonicalProjectId) {
+        try { localStorage.setItem('glance.chatHistory', JSON.stringify(this.chatHistory)); } catch {}
+      }
+    },
+    async openChatFromHistory(entry) {
+      // The conversation whose turn is streaming right now: just show it, never rebuild the bubbles.
+      if (entry.id === this.chatId && this.chatBusy) { this.chatHistoryOpen = false; this.chatOpen = true; return; }
+      this.chatId = entry.id;
+      this.chatMode = entry.mode || 'run';
+      this.chatHistoryOpen = false;
+      this.chatOpen = true;
+      if (this.canonicalProjectId && entry.id.startsWith('cnv_')) {
+        try {
+          const conversation = await api(`/api/v1/conversations/${encodeURIComponent(entry.id)}`);
+          this.chatMessages = (conversation.messages || []).map(m => ({ role: m.role, text: m.content }));
+          this.chatSession = null; this.chatSessionRuntime = null; this.chatResumeCommand = null;
+          this.applySession(conversation.session, null);
+          if (conversation.active_turn) {
+            // A turn still running (or queued) for this conversation: follow it again after a reload.
+            this.chatMessages.push({ role: 'assistant', text: '', events: [], streaming: true });
+            this.chatBusy = true;
+            this.subscribeTurn(conversation.active_turn, this.chatMessages[this.chatMessages.length - 1]);
+          }
+          return;
+        } catch {}
+      }
+      const isRun = this.chatMode === 'revise' || this.chatMode === 'resume';
+      if (isRun) {
+        // Production run: rehydrate the timeline from the trace's audit trail.
+        this.chatMessages = [{ role: 'system', text: `Continuando a conversa "${entry.title}".` }];
+        try {
+          const run = await api(`/api/runs/${encodeURIComponent(entry.id)}`);
+          if (run?.brief) this.chatMessages.push({ role: 'user', text: run.brief });
+          this.chatRunEvents = run?.events || [];
+        } catch {}
+        this.subscribeRun(entry.id);
+      } else {
+        // Concierge conversation: not a production run — no rehydrate/subscribe.
+        this.chatMessages = [{ role: 'system', text: `Conversa "${entry.title}".` }];
+      }
+    },
+    deleteChatFromHistory(id) {
+      this.chatHistory = this.chatHistory.filter(c => c.id !== id);
+      if (!this.canonicalProjectId) {
+        try { localStorage.setItem('glance.chatHistory', JSON.stringify(this.chatHistory)); } catch {}
+      }
+    },
+
+    // Open the chat pointed at an existing run, to continue the session.
+    openChatForRun(run) {
+      this.chatId = run.trace_id;
+      this.chatMode = run.resumable ? 'revise' : 'resume';
+      this.chatMessages = [{ role: 'system', text: run.resumable
+        ? `Continuando a session ${run.session_id?.slice(0,12)} (${run.session_runtime}). Escreva a mudança que quer.`
+        : `Retomando o projeto ${run.trace_id.slice(0,20)} em contexto novo.` }];
+      this.chatOpen = true;
+      this.subscribeRun(run.trace_id);
+    },
+
+    // ─── Runtime routing rules (USE_* / NOT_USE_*) — special settings tab ──
+    rulesData: null,           // { project:[{key,value}], global:[], runtimes:[] }
+    rulesDraft: [],            // [{ envKey, mode:'use'|'not', runtime, text }]
+    rulesLoading: false,
+    async openSettings() {
+      this.settingsOpen = true;
+      this.settingsRestartRequired = false;
+      this.engineDraft = {}; this.engineErrors = {}; this.engineNotice = {}; this.engineSaving = {};
+      // The engine section first: its first group is the default tab when none was chosen yet.
+      await this.fetchEngineSettings();
+      await Promise.all([this.fetchSettings(), this.fetchRules()]);
+    },
+    settingsIsEngineTab() { return String(this.settingsActiveGroup || '').startsWith('engine:'); },
+    engineActiveGroup() { return this.engineGroups.find(g => 'engine:' + g.id === this.settingsActiveGroup) || null; },
+    async fetchEngineSettings() {
+      const panel = window.NirvanaSettingsPanel;
+      if (!panel) { this.engineError = 'settings-panel.js não carregou'; return; }
+      try {
+        const query = this.canonicalProjectId ? `?project_id=${encodeURIComponent(this.canonicalProjectId)}` : '';
+        const r = await fetch(`/api/v1/settings${query}`);
+        const body = await r.json().catch(() => null);
+        if (!r.ok) { this.engineError = panel.problemMessage(body, r.status); this.engineGroups = []; return; }
+        this.engineSettings = body;
+        this.engineError = null;
+        const built = panel.buildSettingsPanel(body);
+        this.engineGroups = built.groups;
+        for (const g of built.groups) for (const f of g.fields) if (!(f.key in this.engineScope)) this.engineScope[f.key] = panel.defaultScope(f);
+        if (!this.settingsActiveGroup && built.groups.length) this.settingsActiveGroup = 'engine:' + built.groups[0].id;
+      } catch (e) {
+        this.engineError = String(e.message || e);
+        this.engineGroups = [];
+      }
+    },
+    // The control's current input: the draft when the user touched it, else the effective value.
+    engineDraftValue(f) {
+      return f.key in this.engineDraft ? this.engineDraft[f.key] : window.NirvanaSettingsPanel.controlState(f);
+    },
+    engineDisplay(f, value) { return window.NirvanaSettingsPanel.displayValue(f, value); },
+    async saveEngineSetting(f) {
+      const panel = window.NirvanaSettingsPanel;
+      await this.engineWrite(f, panel.writeRequest(f, this.engineScope[f.key], this.engineDraftValue(f)));
+    },
+    async unsetEngineSetting(f) {
+      const panel = window.NirvanaSettingsPanel;
+      await this.engineWrite(f, panel.unsetRequest(f, this.engineScope[f.key]));
+    },
+    // One write per key: a fresh Idempotency-Key, the refusal inline (the schema's own message),
+    // the notice from the API's answer, then the section re-reads the effective values.
+    async engineWrite(f, request) {
+      const panel = window.NirvanaSettingsPanel;
+      this.engineSaving[f.key] = true;
+      this.engineErrors[f.key] = '';
+      this.engineNotice[f.key] = '';
+      try {
+        const r = await fetch(request.path, {
+          method: request.method,
+          headers: { 'Content-Type': 'application/json', 'Idempotency-Key': crypto.randomUUID() },
+          body: request.body ? JSON.stringify(request.body) : undefined,
+        });
+        const body = await r.json().catch(() => null);
+        if (!r.ok) { this.engineErrors[f.key] = panel.problemMessage(body, r.status); return; }
+        this.engineNotice[f.key] = panel.changeNotice(body);
+        delete this.engineDraft[f.key];
+        await this.fetchEngineSettings();
+      } catch (e) {
+        this.engineErrors[f.key] = String(e.message || e);
+      } finally {
+        this.engineSaving[f.key] = false;
+      }
+    },
+    async fetchRules() {
+      this.rulesLoading = true;
+      try {
+        this.rulesData = await api('/api/config/rules');
+        this.loadRulesDraft();
+      } catch (e) { this.rulesData = null; }
+      finally { this.rulesLoading = false; }
+    },
+    // Convert the active scope's rules into editable rows {mode,runtime,text}.
+    loadRulesDraft() {
+      const RT = { CLAUDE_CODE: 'claude-code', CLAUDE: 'claude-code', CODEX: 'codex', GEMINI: 'gemini-cli', GEMINI_CLI: 'gemini-cli', ANTIGRAVITY: 'antigravity-cli', ANTIGRAVITY_CLI: 'antigravity-cli', AGY: 'antigravity-cli', KIMI: 'kimi-cli', KIMI_CLI: 'kimi-cli', GROK: 'grok-cli', GROK_CLI: 'grok-cli', PI: 'pi', PI_CLI: 'pi', PI_DEV: 'pi', PI_CODING_AGENT: 'pi', HERMES: 'hermes' };
+      const src = (this.rulesData?.[this.settingsScopePicker] || []);
+      this.rulesDraft = src.map(r => {
+        const m = r.key.match(/^(NOT_USE|USE)_([A-Z0-9_]+)$/);
+        const mode = m && m[1] === 'NOT_USE' ? 'not' : 'use';
+        const runtime = m ? (RT[m[2]] || 'claude-code') : 'claude-code';
+        return { mode, runtime, text: r.value };
+      });
+    },
+    addRule() { this.rulesDraft.push({ mode: 'use', runtime: 'codex', text: '' }); },
+    removeRule(i) { this.rulesDraft.splice(i, 1); },
+    // Serialize the rows back into USE_<RT>/NOT_USE_<RT> keys.
+    rulesToEnv() {
+      const SUFFIX = { 'claude-code': 'CLAUDE_CODE', 'codex': 'CODEX', 'gemini-cli': 'GEMINI', 'antigravity-cli': 'ANTIGRAVITY', 'kimi-cli': 'KIMI', 'grok-cli': 'GROK', 'pi': 'PI', 'hermes': 'HERMES' };
+      const out = {};
+      for (const r of this.rulesDraft) {
+        if (!r.text.trim()) continue;
+        const key = (r.mode === 'not' ? 'NOT_USE_' : 'USE_') + (SUFFIX[r.runtime] || 'CODEX');
+        out[key] = r.text.trim();
+      }
+      return out;
+    },
+    async saveRules() {
+      if (!this.rulesData?.allow_actions) return;
+      const updates = this.rulesToEnv();
+      // Delete keys that existed but disappeared from the draft.
+      const existing = (this.rulesData?.[this.settingsScopePicker] || []).map(r => r.key);
+      const deletes = existing.filter(k => !(k in updates));
+      try {
+        const r = await fetch('/api/config/rules', {
+          method: 'PUT', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ scope: this.settingsScopePicker, updates, deletes }),
+        }).then(x => x.json());
+        if (r.ok) { this.flash(`✓ ${r.applied_count} regra(s) salva(s) → ${this.settingsScopePicker} .env`); await this.fetchRules(); }
+        else { this.flash(`✗ ${r.error || 'falhou'}`, 3000); }
+      } catch (e) { this.flash(`✗ ${e.message}`, 3000); }
+    },
+    closeSettings() {
+      if (this.settingsPendingCount() > 0) {
+        if (!confirm('Discard staged changes?')) return;
+      }
+      this.settingsOpen = false;
+      this.settingsDraft = {};
+      this.settingsDeletes = {};
+      this.engineDraft = {};
+      this.engineErrors = {};
+      this.engineNotice = {};
+    },
+    async fetchSettings() {
+      try {
+        this.settingsData = await api('/api/config');
+        this.settingsDraft = {};
+        this.settingsDeletes = {};
+        if (!this.settingsActiveGroup && this.settingsData?.groups?.length) {
+          this.settingsActiveGroup = this.settingsData.groups[0].id;
+        }
+      } catch (e) {
+        this.settingsData = null;
+        this.toast = { visible: true, message: `Failed to load settings: ${e.message || e}` };
+        setTimeout(() => { this.toast.visible = false; }, 3000);
+      }
+    },
+    settingsActiveGroupObj() {
+      return (this.settingsData?.groups || []).find(g => g.id === this.settingsActiveGroup);
+    },
+    settingsPendingCount() {
+      let count = 0;
+      const idx = new Map();
+      for (const g of this.settingsData?.groups || []) for (const f of g.fields) idx.set(f.key, f);
+      for (const [k, v] of Object.entries(this.settingsDraft)) {
+        const f = idx.get(k);
+        if (!f) continue;
+        // Sensitive blank means "leave unchanged"
+        if (f.sensitive && v === '') continue;
+        // Staged delete (__DELETE__ + flag) counts
+        if (v === '__DELETE__' && this.settingsDeletes[k]) { count++; continue; }
+        if (v === '__DELETE__') continue;
+        const current = this.settingsScopePicker === 'project' ? f.project_value : f.global_value;
+        if (v !== current) count++;
+      }
+      return count;
+    },
+    async saveSettings() {
+      if (!this.settingsData?.allow_actions) return;
+      this.settingsSaving = true;
+      try {
+        const updates = {};
+        const deletes = [];
+        const idx = new Map();
+        for (const g of this.settingsData.groups) for (const f of g.fields) idx.set(f.key, f);
+        for (const [k, v] of Object.entries(this.settingsDraft)) {
+          const f = idx.get(k);
+          if (!f) continue;
+          if (v === '__DELETE__' || this.settingsDeletes[k]) { deletes.push(k); continue; }
+          // Sensitive blank = skip (leave unchanged)
+          if (f.sensitive && v === '') continue;
+          const current = this.settingsScopePicker === 'project' ? f.project_value : f.global_value;
+          if (v === current) continue;
+          updates[k] = v;
+        }
+        if (Object.keys(updates).length === 0 && deletes.length === 0) {
+          this.toast = { visible: true, message: 'no changes to save' };
+          setTimeout(() => { this.toast.visible = false; }, 1800);
+          this.settingsSaving = false;
+          return;
+        }
+        const r = await fetch('/api/config', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ scope: this.settingsScopePicker, updates, deletes }),
+        }).then(x => x.json());
+        if (r.ok) {
+          const liveMsg = r.live_reloaded
+            ? `saved & live · ${r.applied_count} change${r.applied_count === 1 ? '' : 's'} → ${this.settingsScopePicker} .env`
+            : `saved ${r.applied_count} change${r.applied_count === 1 ? '' : 's'} to ${this.settingsScopePicker} .env (restart required)`;
+          this.toast = { visible: true, message: liveMsg };
+          this.settingsRestartRequired = !r.live_reloaded;
+          this.settingsDraft = {};
+          this.settingsDeletes = {};
+          await this.fetchSettings();
+          // Refresh the rest of the UI (scope header, lists) so changes are
+          // visible immediately instead of waiting for next manual reload.
+          await this.refreshAll();
+        } else {
+          this.toast = { visible: true, message: r.error || 'save failed' };
+        }
+        setTimeout(() => { this.toast.visible = false; }, 3000);
+      } catch (e) {
+        this.toast = { visible: true, message: String(e.message || e) };
+        setTimeout(() => { this.toast.visible = false; }, 3000);
+      }
+      this.settingsSaving = false;
+    },
+    async restartGlance() {
+      if (!confirm('Restart Glance now? You will need to re-launch it manually.')) return;
+      try {
+        await fetch('/api/config/restart', { method: 'POST' });
+        this.toast = { visible: true, message: 'Glance is shutting down. Re-run: bun ~/.nirvana/skills/harness/scripts/glance.ts --allow-actions' };
+      } catch (e) {
+        this.toast = { visible: true, message: 'restart request failed: ' + (e.message || e) };
+      }
+    },
+    // ─── Chat: methods (Phase 3) ───
+    async openChat() {
+      // Free chat: conversational concierge. Generates a fresh chatId.
+      if (this.canonicalProjectId) {
+        try {
+          const response = await fetch(`/api/v1/projects/${encodeURIComponent(this.canonicalProjectId)}/conversations`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json', 'Idempotency-Key': crypto.randomUUID() }, body: JSON.stringify({ title: 'Nova conversa' }),
+          });
+          const conversation = await response.json();
+          this.chatId = conversation.conversation_id;
+        } catch { this.chatId = 'chat-' + Date.now().toString(36); }
+      } else this.chatId = 'chat-' + Date.now().toString(36);
+      this.chatMode = 'run';        // 'run' here = concierge (chat-agent)
+      this.chatMessages = [];
+      this.chatRunEvents = [];
+      this.chatResumeSession = null;
+      this.chatSession = null; this.chatSessionRuntime = null; this.chatResumeCommand = null; this.chatTurnId = null;
+      if (this.chatTurnES) { this.chatTurnES.close(); this.chatTurnES = null; }
+      this.chatHistoryOpen = false;
+      this.chatOpen = true;
+    },
+    closeChat() {
+      this.chatOpen = false;
+      if (this.chatRunES) { this.chatRunES.close(); this.chatRunES = null; }
+    },
+    // Chat panel resize — drag handle AND ArrowLeft/ArrowRight keyboard,
+    // clamped to 460..920px (page-layout-redesign.md §2.2), persisted.
+    startChatResize(e) {
+      e.preventDefault();
+      // preventDefault() on mousedown also suppresses the browser's default
+      // click-to-focus behavior — restore it explicitly so the separator
+      // stays keyboard-operable (ArrowLeft/ArrowRight) right after a drag.
+      e.currentTarget.focus();
+      const startX = e.clientX;
+      const startW = this.chatWidth;
+      const pl = window.NirvanaPanelLayout;
+      const clamp = (w) => (pl ? pl.clampChatWidth(w) : Math.min(920, Math.max(460, w)));
+      const onMove = (ev) => { this.chatWidth = clamp(startW - (ev.clientX - startX)); };
+      const onUp = () => {
+        window.removeEventListener('mousemove', onMove);
+        window.removeEventListener('mouseup', onUp);
+        try { localStorage.setItem('glance.chatWidth', String(this.chatWidth)); } catch {}
+      };
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('mouseup', onUp);
+    },
+    stepChatWidth(delta) { this.setChatWidthPreset(this.chatWidth + delta); },
+    setChatWidthPreset(w) {
+      const pl = window.NirvanaPanelLayout;
+      this.chatWidth = pl ? pl.clampChatWidth(w) : Math.min(920, Math.max(460, w));
+      try { localStorage.setItem('glance.chatWidth', String(this.chatWidth)); } catch {}
+    },
+    // Subscribe to a trace's audit event stream (live timeline).
+    subscribeRun(traceId) {
+      if (this.chatRunES) { this.chatRunES.close(); this.chatRunES = null; }
+      this.chatRunEvents = [];
+      const es = new EventSource(`/api/runs/${encodeURIComponent(traceId)}/stream`);
+      const paint = () => this.$nextTick(() => { try { window.lucide?.createIcons(); } catch {} this.scrollChatBottom(); });
+      es.addEventListener('snapshot', (e) => { try { this.chatRunEvents = JSON.parse(e.data).events || []; paint(); } catch {} });
+      es.addEventListener('timeline', (e) => { try { this.chatRunEvents.push(JSON.parse(e.data)); paint(); } catch {} });
+      es.addEventListener('done', () => { es.close(); });
+      es.onerror = () => { /* keep — reopens on the next turn */ };
+      this.chatRunES = es;
+    },
+    // Human label for an audit event. Single source: run-event-labels.js,
+    // exposed by the index.html module adapter as window.NirvanaRunEventLabels.
+    chatEventLabel(ev) {
+      return window.NirvanaRunEventLabels?.chatEventLabel(ev) || ev.event || ev.type || 'evento';
+    },
+    // AG-UI orchestration surface: maps each event (canonical `ev.type` or
+    // legacy `ev.event`) into a semantic block {icon, title, sub, tone}.
+    // Foundation of the run mode's live timeline.
+    runEventView(ev) {
+      const labels = window.NirvanaRunEventLabels;
+      return labels ? labels.runEventView(ev) : { icon: 'circle', title: ev.type || ev.event || 'evento', sub: '', tone: '' };
+    },
+    // Timeline rows, shared by the Chat panel and the Runs tab. Infrastructure
+    // events (coordinator snapshots, lease renewals) stay in the stream but
+    // are hidden until the user toggles them; `hidden` feeds the toggle label.
+    infraEventsVisible: false,
+    runTimeline(events) {
+      const labels = window.NirvanaRunEventLabels;
+      return labels ? labels.runTimeline(events, this.infraEventsVisible) : { visible: events || [], hidden: 0 };
+    },
+    // Trajectory Card: the single grouping used by BOTH the Chat panel
+    // (mode 'live') and the Runs tab (mode 'historical') — see trajectory-card.js.
+    // `expandedTrajectoryRows` keys by the row's stable `_seq`, so an expanded
+    // judgement/delivery row survives the infra toggle and re-renders.
+    expandedTrajectoryRows: {},
+    trajectoryRows(events) {
+      const tc = window.NirvanaTrajectoryCard;
+      return tc ? tc.buildTrajectoryRows(events, { showInfra: this.infraEventsVisible }) : { rows: [], hidden: 0 };
+    },
+    isTrajectoryRowExpanded(seq) { return !!this.expandedTrajectoryRows[seq]; },
+    toggleTrajectoryRow(seq) { this.expandedTrajectoryRows[seq] = !this.expandedTrajectoryRows[seq]; },
+    // Live header derived from the stream: business/squad/agent, canonical
+    // state, Gauntlet decision and cost (see summarizeRunEvents).
+    get runSummary() {
+      const labels = window.NirvanaRunEventLabels;
+      return labels ? labels.summarizeRunEvents(this.chatRunEvents) : { cost: 0, count: (this.chatRunEvents || []).length };
+    },
+    // How the Run's target was decided (`run.route`): named in the Message, chosen by the router, or agent-x by fallback.
+    routeLabel(route) {
+      const labels = window.NirvanaRunEventLabels;
+      return labels && route ? labels.routeSourceLabel(route) : '';
+    },
+    routeVia(route) { return route ? ` (${this.routeLabel(route)}${route.rationale ? ': ' + route.rationale : ''})` : ''; },
+    // What a prepared Run is doing, from its target and `run.route`: a Run without a route is
+    // still being routed by the queue (`x_run_route_resolved` brings the target).
+    canonicalRunStep(target, route) {
+      if (!route) return 'Roteando a Message (empresa, squad ou agent-x)…';
+      const kind = target?.kind;
+      return (!kind || kind === 'agent-x') ? `Executando agent-x no Gauntlet light${this.routeVia(route)}…` : `Executando ${kind} ${target.slug || ''}${this.routeVia(route)}…`;
+    },
+    // The answer the queue wrote to the conversation for a Message the router could not place.
+    async canonicalRunAnswer(runId) {
+      try {
+        const conversation = await api(`/api/v1/conversations/${encodeURIComponent(this.chatId)}`);
+        const reply = (conversation.messages || []).filter(m => m.role === 'assistant' && m.run_id === runId).pop();
+        return reply ? reply.content : '';
+      } catch { return ''; }
+    },
+    runStateVariant(state) {
+      return ({ completed: 'success', delivered_with_reservations: 'success', running: 'warn', verifying: 'warn', revising: 'warn',
+        waiting: 'info', prepared: 'info', failed: 'danger', withheld: 'danger', cancelled: 'danger', rolled_back: 'danger', abandoned: 'danger' })[state] || 'neutral';
+    },
+    // Multi-target coordinator projection of the streaming canonical Run
+    // (GET /api/v1/runs/:run/multi-target). Null until the Run saves a snapshot.
+    chatMultiTarget: null,
+    async refreshMultiTarget(projectId, runId) {
+      try {
+        const result = await api(`/api/v1/runs/${encodeURIComponent(runId)}/multi-target?project_id=${encodeURIComponent(projectId)}`);
+        this.chatMultiTarget = result.projection || null;
+      } catch {}
+    },
+    runMultiTarget(m) { return m.streaming ? this.chatMultiTarget : (m.multiTarget || null); },
+    multiTargetWaveCount(projection) { return (projection?.nodes || []).reduce((max, node) => Math.max(max, node.waveIndex + 1), 0); },
+    multiTargetStateVariant(state) {
+      return ({ delivered: 'success', running: 'warn', ready: 'info', pending: 'neutral', withheld: 'warn', skipped: 'neutral', failed: 'danger', stalled: 'danger' })[state] || 'neutral';
+    },
+    chatRuntime: '',           // '' = auto (session host); or claude-code/codex/…
+    chatFast: false,           // fast/cheap mode (opt-in); default = agentic
+    chatResumeSession: null,   // runtime session_id to continue the conversation
+    chatSession: null,         // native runtime session of the canonical conversation (maestro turn)
+    chatSessionRuntime: null,
+    chatResumeCommand: null,   // how to continue the same session from a terminal in the project root
+    chatTurnId: null,          // the maestro turn running for the open conversation (cancel target)
+    chatTurnES: null,          // EventSource of that turn
+    // Send a turn. Default = conversational concierge (chat-agent). The
+    // revise/resume mode is only used on "Continuar session" of an existing run.
+    async sendChat() {
+      const msg = this.chatInput.trim();
+      if (!msg || this.chatBusy) return;
+      // `!cmd` = shell command; `/cmd` = slash command. Intercept BEFORE the
+      // concierge (conversation mode only; in revise/resume the msg goes to the run).
+      if (this.chatMode === 'run') {
+        if (msg.startsWith('!')) { this.chatInput = ''; return this.runShell(msg.slice(1).trim()); }
+        if (msg.startsWith('/')) { this.chatInput = ''; return this.runSlash(msg); }
+      }
+      if (!this.chatId) this.chatId = 'chat-' + Date.now().toString(36);
+      this.chatInput = '';
+      this.chatMessages.push({ role: 'user', text: msg });
+      this.chatMessages.push({ role: 'assistant', text: '', events: [], streaming: true });
+      let canonicalReceipt = null;
+      if (this.canonicalProjectId && this.chatId.startsWith('cnv_')) {
+        try {
+          const response = await fetch(`/api/v1/conversations/${encodeURIComponent(this.chatId)}/messages`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json', 'Idempotency-Key': crypto.randomUUID() },
+            body: JSON.stringify({ project_id: this.canonicalProjectId, role: 'user', content: msg, mode: 'turn' }),
+          });
+          canonicalReceipt = await response.json();
+          if (!response.ok) throw new Error(canonicalReceipt.detail || canonicalReceipt.title || 'falha ao iniciar o turno');
+        } catch (error) {
+          const asst = this.chatMessages[this.chatMessages.length - 1];
+          asst.text = `⚠ ${error.message || error}`; asst.streaming = false; this.chatBusy = false;
+          return;
+        }
+      }
+      // Grab the REACTIVE reference (array proxy) — mutating the raw object would
+      // not trigger Alpine's re-render, and the bubble would stay at "orquestrando…".
+      const asst = this.chatMessages[this.chatMessages.length - 1];
+      this.chatBusy = true;
+      // Save to history RIGHT at send time (not only at the end) — Ctrl+R loses nothing.
+      this.saveChatToHistory();
+      try { location.hash = `#/chat/${this.chatId}`; } catch {}
+      this.$nextTick(() => this.scrollChatBottom());
+
+      if (canonicalReceipt?.turn) {
+        // A maestro turn: the project's runtime session answers; the events arrive by SSE.
+        const turn = canonicalReceipt.turn;
+        if (turn.state === 'unavailable') {
+          asst.text = `⚠ Turnos do maestro indisponíveis (${turn.detail || turn.reason}).`;
+          asst.streaming = false; this.chatBusy = false;
+          return;
+        }
+        this.applySession(canonicalReceipt.session, turn);
+        this.subscribeTurn(turn, asst);
+        return;
+      }
+      if (canonicalReceipt?.run) {
+        // The receipt is immediate: an explicit prefix already carries target and `run.route`; a
+        // routed Message shows them once the stream brings `x_run_route_resolved`.
+        asst.text = canonicalReceipt.queued
+          ? `Run canônico preparado. ${this.canonicalRunStep(canonicalReceipt.run.target, canonicalReceipt.run.route)}`
+          : `Run não executado: ${canonicalReceipt.run.state}${this.routeVia(canonicalReceipt.run.route)}.`;
+        if (canonicalReceipt.queued) this.subscribeCanonicalRun(this.canonicalProjectId, canonicalReceipt.run.runId, canonicalReceipt.run.lastSequence || 0, asst);
+        else { asst.streaming = false; this.chatBusy = false; }
+        return;
+      }
+
+      // revise/resume = continue a specific production RUN (nrv revise/resume).
+      // Otherwise, the conversational concierge.
+      const isRunMode = this.chatMode === 'revise' || this.chatMode === 'resume';
+      if (isRunMode) this.subscribeRun(this.chatId);
+      const action = this.chatMode === 'revise' ? 'chat-revise' : (this.chatMode === 'resume' ? 'chat-resume' : 'chat-agent');
+      const body = { chat_id: this.chatId, message: msg };
+      if (action === 'chat-agent') {
+        if (this.chatResumeSession) body.resume_session = this.chatResumeSession;
+        if (this.chatRuntime) body.runtime = this.chatRuntime;
+        if (this.chatFast) body.fast = true;
+      }
+      try {
+        const r = await fetch(`/api/actions/${action}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) }).then(x => x.json());
+        if (r.error || !r.job) { asst.text = `⚠ ${r.error || 'falha ao iniciar o job'}`; asst.streaming = false; this.chatBusy = false; return; }
+        this.followChatJob(r.job.id, asst, action === 'chat-agent' ? 'concierge' : 'run');
+      } catch (e) {
+        asst.text = `⚠ ${e.message}`; asst.streaming = false; this.chatBusy = false;
+      }
+    },
+    subscribeCanonicalRun(projectId, runId, after, asst) {
+      if (this.chatRunES) this.chatRunES.close();
+      this.chatRunEvents = [];
+      this.chatMultiTarget = null;
+      const es = new EventSource(`/api/v1/projects/${encodeURIComponent(projectId)}/stream?after=${Number(after) || 0}`);
+      this.chatRunES = es;
+      es.addEventListener('timeline', async (event) => {
+        try {
+          const item = JSON.parse(event.data);
+          if (item.runId !== runId) return;
+          this.chatRunEvents.push(item);
+          // Only snapshots, node events and the terminal event change the projection.
+          if (item.type === 'multi_target.snapshot_saved' || item.type === 'multi_target.plan_terminal' || item.payload?.node) this.refreshMultiTarget(projectId, runId);
+          if (item.type === 'x_run_route_resolved') asst.text = `Run canônico preparado. ${this.canonicalRunStep(item.payload?.target, item.payload?.route)}`;
+          if (item.type === 'run.transitioned' && ['completed', 'withheld', 'delivered_with_reservations', 'cancelled', 'failed', 'rolled_back'].includes(item.payload?.to)) {
+            es.close();
+            if (this.chatMultiTarget) await this.refreshMultiTarget(projectId, runId);
+            // Keep the timeline and the projection with the message once the stream ends.
+            asst.events = [...this.chatRunEvents];
+            asst.multiTarget = this.chatMultiTarget;
+            asst.text = `Run ${item.payload.to}.`;
+            // A Message the router could not place ends with the answer the queue wrote to the conversation.
+            if (item.payload.reason === 'no_dispatchable_target') asst.text = (await this.canonicalRunAnswer(runId)) || asst.text;
+            asst.streaming = false; this.chatBusy = false;
+            this.$nextTick(() => this.scrollChatBottom());
+          }
+        } catch {}
+      });
+      es.onerror = () => { /* EventSource resumes from the cursor query and SSE id. */ };
+    },
+    // The native session of the conversation's runtime (kept by the runtime, per working
+    // directory): shown short in the header, with the terminal command that continues it.
+    applySession(session, turn) {
+      const id = (session && session.session_id) || (turn && turn.session_id) || null;
+      if (!id) return;
+      this.chatSession = id;
+      this.chatSessionRuntime = (session && session.session_runtime) || (turn && turn.runtime) || this.chatSessionRuntime;
+      this.chatResumeCommand = (session && session.resume_command) || (this.chatSessionRuntime === 'claude-code' ? `claude --resume ${id}` : null);
+    },
+    // Follow one maestro turn by SSE: tok → live text, tool → chip, run → link to the Run the
+    // maestro opened, done → the reply. The server persists the assistant message; nothing to POST.
+    subscribeTurn(turn, asst) {
+      if (this.chatTurnES) { this.chatTurnES.close(); this.chatTurnES = null; }
+      this.chatTurnId = turn.turn_id;
+      asst.turnId = turn.turn_id; asst.tools = []; asst.runs = [];
+      const es = new EventSource(turn.events_url);
+      this.chatTurnES = es;
+      let graceTimer = null;
+      const clearGrace = () => { if (graceTimer) { clearTimeout(graceTimer); graceTimer = null; } };
+      const finish = (errText) => {
+        clearGrace(); es.close();
+        if (this.chatTurnES === es) this.chatTurnES = null;
+        this.chatTurnId = null;
+        asst.streaming = false; this.chatBusy = false;
+        if (errText && !asst.text) asst.text = errText;
+        this.saveChatToHistory();
+        this.$nextTick(() => { this.scrollChatBottom(); try { window.lucide?.createIcons(); } catch {} });
+      };
+      es.onmessage = (e) => {
+        clearGrace();
+        let ev; try { ev = JSON.parse(e.data); } catch { return; }
+        if (ev.t === 'tok') { asst.text = (asst.text || '') + ev.v; this.$nextTick(() => this.scrollChatBottom()); }
+        else if (ev.t === 'tool') { asst.tools = [...(asst.tools || []), { name: ev.name, cmd: ev.cmd }]; this.$nextTick(() => this.scrollChatBottom()); }
+        else if (ev.t === 'run') { asst.runs = [...(asst.runs || []), ev]; this.fetchRuns(); this.$nextTick(() => { try { window.lucide?.createIcons(); } catch {} }); }
+        else if (ev.t === 'done') {
+          asst.text = ev.result || (asst.text || '').trim() || (ev.state === 'cancelled' ? 'Turno cancelado.' : (ev.error ? `⚠ ${ev.error}` : '(sem resposta)'));
+          asst.cost = ev.cost_usd; asst.turnState = ev.state;
+          this.applySession({ session_id: ev.session_id, session_runtime: ev.runtime, resume_command: ev.resume_command }, null);
+          finish();
+        }
+      };
+      es.onerror = () => {
+        // CLOSED = the server ended the stream without `done` (it died). CONNECTING = the
+        // EventSource reconnects on its own (Last-Event-ID resumes); 20 s of grace, then give up
+        // instead of an eternal "orquestrando…".
+        if (es.readyState === EventSource.CLOSED) { if (asst.streaming) finish('⚠ conexão encerrada. Recarregue a página.'); return; }
+        if (asst.streaming && !graceTimer) graceTimer = setTimeout(() => { if (asst.streaming) finish('⚠ conexão perdida (o servidor pode ter reiniciado). Recarregue a página.'); }, 20000);
+      };
+    },
+    // SIGTERM on the turn's process group; the stream ends with done.state = cancelled.
+    async cancelTurn() {
+      if (!this.chatTurnId || !this.chatId) return;
+      try {
+        await fetch(`/api/v1/conversations/${encodeURIComponent(this.chatId)}/turns/${encodeURIComponent(this.chatTurnId)}:cancel`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json', 'Idempotency-Key': crypto.randomUUID() },
+          body: JSON.stringify({ project_id: this.canonicalProjectId }),
+        });
+      } catch {}
+    },
+    // A Run the maestro opened during the turn: the Runs tab, with that Run selected.
+    openRunFromChat(run) {
+      this.enterKind('runs');
+      this.$nextTick(() => { const it = (this.runs || []).find(x => x.trace_id === run.trace_id || x.trace_id === run.run_id); if (it) this.selectRun(it); });
+    },
+    // Kept as a compatibility method for old bookmarked UI state. The control
+    // plane intentionally has no browser shell route.
+    async runShell(cmd) {
+      this.chatMessages.push({ role: 'system', text: 'Comandos de shell não são aceitos pelo control plane do browser.' });
+    },
+    // `/<cmd>` — slash commands (client-side; no shell).
+    runSlash(raw) {
+      const [cmd, ...rest] = raw.slice(1).trim().split(/\s+/);
+      const arg = rest.join(' ');
+      const say = (text) => { this.chatMessages.push({ role: 'system', text }); this.$nextTick(() => this.scrollChatBottom()); };
+      switch ((cmd || '').toLowerCase()) {
+        case 'new': case 'clear':
+          this.openChat();
+          return;
+        case 'fast':
+          this.chatFast = true; say('Modo **rápido** ligado (mais veloz e econômico).'); return;
+        case 'agentic': case 'agentico':
+          this.chatFast = false; say('Modo **agêntico** ligado (mais acertivo — padrão).'); return;
+        case 'route':
+          if (!arg) return say('Uso: `/route <o que você quer entregar>`');
+          this.chatInput = `Qual empresa ou squad usar para: ${arg}? Explique a escolha.`;
+          return this.sendChat();
+        case 'run': {
+          const [slug, ...briefParts] = rest;
+          const brief = briefParts.join(' ');
+          if (!slug || !brief) return say('Uso: `/run <empresa-ou-squad> <brief>`');
+          return this.runDispatch(slug, brief);
+        }
+        case 'help': default:
+          say([
+            '**Comandos do chat:**',
+            '`/new` — nova conversa · `/clear` — limpar',
+            '`/route <brief>` — qual empresa/squad usar',
+            '`/run <slug> <brief>` — despachar um trabalho',
+            '`/fast` · `/agentic` — trocar o modo de roteamento',
+            'Comandos de shell não são expostos pelo browser.',
+          ].join('\n'));
+          return;
+      }
+    },
+    // Dispatch a real production run (slug + brief) via the chat-run action.
+    async runDispatch(slug, brief) {
+      if (!this.chatId) this.chatId = 'chat-' + Date.now().toString(36);
+      this.chatMessages.push({ role: 'user', text: `/run ${slug} ${brief}` });
+      this.chatMessages.push({ role: 'assistant', text: '', events: [], streaming: true });
+      const asst = this.chatMessages[this.chatMessages.length - 1];
+      this.chatBusy = true;
+      this.subscribeRun(this.chatId);
+      this.saveChatToHistory();
+      this.$nextTick(() => this.scrollChatBottom());
+      try {
+        const r = await fetch('/api/actions/chat-run', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chat_id: this.chatId, slug, message: brief }) }).then(x => x.json());
+        if (r.error || !r.job) { asst.text = `⚠ ${r.error || 'falha ao despachar'}`; asst.streaming = false; this.chatBusy = false; return; }
+        this.followChatJob(r.job.id, asst, 'run');
+      } catch (e) { asst.text = `⚠ ${e.message}`; asst.streaming = false; this.chatBusy = false; }
+    },
+    // Follow the job through the stdout SSE. Server format: `data: {kind, line?,
+    // lines?, code?}` (UNNAMED events → use onmessage, not addEventListener).
+    followChatJob(jobId, asst, kind) {
+      const es = new EventSource(`/api/actions/jobs/${jobId}/stream`);
+      let buf = [];
+      let doneData = null;
+      let graceTimer = null;
+      const clearGrace = () => { if (graceTimer) { clearTimeout(graceTimer); graceTimer = null; } };
+      // Streaming concierge (NDJSON): tok→live text, tool→chip, done→payload.
+      const feedConcierge = (line) => {
+        let nd; try { nd = JSON.parse(line); } catch { return; }
+        if (nd.t === 'tok') { asst.text = (asst.text || '') + nd.v; this.$nextTick(() => this.scrollChatBottom()); }
+        else if (nd.t === 'tool') { asst.tools = [...(asst.tools || []), { name: nd.name, cmd: nd.cmd }]; this.$nextTick(() => this.scrollChatBottom()); }
+        else if (nd.t === 'done') { doneData = nd; }
+        else if (nd.result !== undefined) { doneData = { result: nd.result, session_id: nd.session_id }; }  // old format (non-streaming)
+      };
+      // errText: message to show when the job ends with NO output (connection
+      // lost / timeout). Only appears if there is no real reply in the buffer.
+      const finish = (errText) => {
+        clearGrace(); clearTimeout(watchdog);
+        es.close();
+        asst.streaming = false;
+        this.chatBusy = false;
+        const joined = buf.join('\n').trim();
+        if (kind === 'concierge') {
+          // Streaming: asst.text was already assembled from the tokens; done
+          // carries the canonical reply (and the session_id to continue). Runtimes
+          // without a token-stream (codex/gemini/agy/hermes) send it all at once in done.
+          const answer = (doneData && doneData.result) || (asst.text || '').trim();
+          asst.text = answer || errText || '(sem resposta)';
+          if (doneData && doneData.session_id) this.chatResumeSession = doneData.session_id;
+        } else if (kind === 'shell') {
+          // Raw shell output → monospace code block.
+          asst.text = '```\n' + (joined || errText || '(sem saída)') + '\n```';
+        } else {
+          asst.text = joined || errText || '(sem saída)';
+          asst.events = [...this.chatRunEvents];
+        }
+        this.saveChatToHistory();
+        if (this.canonicalProjectId && this.chatId?.startsWith('cnv_') && asst.text) {
+          fetch(`/api/v1/conversations/${encodeURIComponent(this.chatId)}/messages`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json', 'Idempotency-Key': crypto.randomUUID() },
+            body: JSON.stringify({ project_id: this.canonicalProjectId, role: 'assistant', content: asst.text }),
+          }).catch(() => {});
+        }
+        this.$nextTick(() => { this.scrollChatBottom(); try { window.lucide?.createIcons(); } catch {} });
+      };
+      // Final safety net: if nothing signals 'done' (hung job), don't leave an
+      // eternal "orquestrando…". 6min > the concierge timeout (5min) so a
+      // legitimately slow turn isn't killed.
+      const watchdog = setTimeout(() => {
+        if (this.chatBusy) finish('⚠ sem resposta (tempo esgotado). Recarregue a página e tente de novo.');
+      }, 6 * 60 * 1000);
+      es.onmessage = (e) => {
+        clearGrace(); // data arrived → connection alive
+        try {
+          const d = JSON.parse(e.data);
+          // snapshot is the authoritative state of stdout-so-far; on an EventSource
+          // reconnection it re-arrives complete → reset (don't accumulate duplicates).
+          if (d.kind === 'snapshot') {
+            buf = Array.isArray(d.lines) ? [...d.lines] : [];
+            // Reconnection: rebuild the concierge text from the snapshot.
+            if (kind === 'concierge') { asst.text = ''; asst.tools = []; doneData = null; for (const l of buf) feedConcierge(l); }
+          }
+          else if (d.kind === 'line' && typeof d.line === 'string') {
+            buf.push(d.line);
+            if (kind === 'concierge') feedConcierge(d.line);
+            else if (kind === 'shell') { asst.text = '```\n' + buf.slice(-40).join('\n') + '\n```'; this.$nextTick(() => this.scrollChatBottom()); }
+            else if (kind === 'run') { asst.text = buf.filter(l => /▶|✓|✗|→/.test(l)).slice(-8).join('\n') || 'orquestrando…'; this.$nextTick(() => this.scrollChatBottom()); }
+          }
+          else if (d.kind === 'done' || d.kind === 'error') finish();
+        } catch {}
+      };
+      es.onerror = () => {
+        if (es.readyState === EventSource.CLOSED) { if (this.chatBusy) finish('⚠ conexão encerrada. Recarregue a página.'); return; }
+        // CONNECTING = the EventSource is reconnecting on its own (transient blip
+        // or dead server). Give 20s of grace: if a snapshot/done re-arrives,
+        // onmessage clears the timer; if it does NOT recover, the server probably
+        // restarted/died → give up instead of hanging in an eternal "orquestrando…".
+        if (this.chatBusy && !graceTimer) {
+          graceTimer = setTimeout(() => {
+            if (this.chatBusy) finish('⚠ conexão perdida (o servidor pode ter reiniciado). Recarregue a página.');
+          }, 20000);
+        }
+      };
+    },
+    scrollChatBottom() {
+      const el = document.querySelector('.chat-messages');
+      if (el) el.scrollTop = el.scrollHeight;
+    },
+    renderMd(text) {
+      try { return window.marked ? window.marked.parse(text || '', { breaks: true }) : this.escapeHtml(text); }
+      catch { return this.escapeHtml(text); }
+    },
+    escapeHtml(text) {
+      return String(text || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])).replace(/\n/g, '<br>');
+    },
+
+    // ─── Hash deep-links: #/chat/<id>, #/<kind>, #/<kind>/<slug> ───
+    applyHash() {
+      const h = (location.hash || '').replace(/^#\/?/, '');
+      if (!h) return;
+      const parts = h.split('/');
+      if (parts[0] === 'chat' && parts[1]) {
+        // The hash reflects the CURRENT conversation (sendChat updates it). If we
+        // are already in it, don't reload — reloading would wipe the live bubbles.
+        if (parts[1] === this.chatId && (this.chatOpen || this.chatBusy)) return;
+        const entry = this.chatHistory.find(c => c.id === parts[1]) || { id: parts[1], title: 'conversa', mode: 'run' };
+        this.openChatFromHistory(entry);
+        return;
+      }
+      const kindIds = this.kinds.map(k => k.id);
+      if (kindIds.includes(parts[0])) {
+        this.enterKind(parts[0]);
+        if (parts[1] && this.isListKind(parts[0])) {
+          // select the item once the lists have loaded
+          this.$nextTick(() => { const it = (this.currentList || []).find(x => (x.slug || x.id) === parts[1]); if (it) this.select(it); });
+        }
+      }
+    },
+
+    // ─── Navigation (stack: kinds → list → detail) ───
+    isListKind(id) { return this.LIST_KINDS.includes(id || this.kind); },
+    // 'kinds' = Level 1 (type cards); 'list' = Level 2 (full-height list).
+    get navLevel() { return (this.isListKind() && this.kindEntered) ? 'list' : 'kinds'; },
+    // Enter a type from the menu. LIST_KIND → Level 2; view-kind → switches the
+    // page and keeps Level 1 (the card stays highlighted). Persists the section.
+    enterKind(id) {
+      this.kind = id;
+      this.selected = null;
+      this.detail = null;
+      this.kindEntered = this.isListKind(id);
+      try { localStorage.setItem('glance.kind', id); } catch {}
+      try { localStorage.setItem('glance.kindEntered', this.kindEntered ? '1' : '0'); } catch {}
+    },
+    // Go back from Level 2 to Level 1 (list → type cards).
+    backToKinds() {
+      this.selected = null;
+      this.detail = null;
+      this.kindEntered = false;
+      try { localStorage.setItem('glance.kindEntered', '0'); } catch {}
+    },
+    goBack() {
+      this.selected = null;
+      this.detail = null;
+      this.mindCloneContent = null;
+      // Stop any DAG poll started for the selected project
+      if (this._dagPoll) { clearInterval(this._dagPoll); this._dagPoll = null; }
+    },
+
+    // ─── Selection ───
+    async select(item) {
+      this.selected = item;
+      this.tab = this.kind === 'projects' ? 'dag' : (this.kind === 'businesses' ? 'org-chart' : 'overview');
+      this.detail = null;
+      this.mindCloneContent = null;
+      try {
+        if (this.kind === 'squads') {
+          this.detail = await api(`/api/squads/${encodeURIComponent(item.slug)}`);
+        } else if (this.kind === 'businesses') {
+          this.detail = await api(`/api/businesses/${encodeURIComponent(item.slug)}`);
+          // If user is already on the org-chart tab, render immediately;
+          // otherwise the $watch on `tab` will trigger render when they switch.
+          this.renderActiveChart();
+        } else if (this.kind === 'projects') {
+          this.detail = await api(`/api/projects/${encodeURIComponent(item.id)}/dag`);
+          // Render DAG when ready
+          this.$nextTick(() => {
+            if (window.renderDag && this.detail?.dag) {
+              window.renderDag('#dag-canvas', this.detail.dag);
+            }
+          });
+          // Auto-refresh DAG every 5s
+          if (this._dagPoll) clearInterval(this._dagPoll);
+          this._dagPoll = setInterval(async () => {
+            try {
+              const fresh = await api(`/api/projects/${encodeURIComponent(item.id)}/dag`);
+              this.detail = fresh;
+              if (window.renderDag && fresh.dag) window.renderDag('#dag-canvas', fresh.dag);
+            } catch(e) {}
+          }, 5000);
+        } else if (this.kind === 'mind-clones') {
+          const mc = item._mc;
+          const r = await api(`/api/mind-clones/${encodeURIComponent(mc.category)}/${encodeURIComponent(mc.slug)}`);
+          this.mindCloneContent = r.content;        // legacy concatenation
+          this.mindCloneDetail = r;
+          // Auto-select the first file (AGENT.md typically — already sorted by priority backend-side)
+          this.mindCloneActiveFile = r.files?.[0]?.path || null;
+        }
+      } catch(e) { this.flash(`err: ${e.message}`); }
+    },
+
+    isSelected(item) {
+      if (!this.selected) return false;
+      // Match per-kind: squads/businesses/mind-clones use slug, projects use id.
+      // Important: never let undefined === undefined evaluate to true (which
+      // would make every list row appear active).
+      const itemKey = item.slug ?? item.id;
+      const selKey = this.selected.slug ?? this.selected.id;
+      if (itemKey == null || selKey == null) return false;
+      return itemKey === selKey;
+    },
+
+    itemSubtitle(item) {
+      if (item.version) return `v${item.version} · ${(item.domains || []).slice(0,3).join(', ')}`;
+      if (item.brief_preview) return item.brief_preview.slice(0, 60).replace(/\n/g, ' ');
+      if (item.category) return item.category;
+      return '';
+    },
+
+    // ─── Theme cycle ───
+    cycleTheme() {
+      const seq = ['apple', 'apple-dark', 'awwwards'];
+      const cur = document.documentElement.dataset.theme || 'apple';
+      const next = seq[(seq.indexOf(cur) + 1) % seq.length];
+      document.documentElement.dataset.theme = next;
+      this.flash(`theme: ${next}`);
+      // Re-render charts so their colors follow the new theme
+      this.renderActiveChart();
+    },
+
+    // ─── Search ───
+    async runSearch() {
+      const q = this.searchQuery.trim();
+      if (q.length < 2) { this.searchResults = []; this.searchDone = false; return; }
+      try {
+        const r = await api(`/api/search?q=${encodeURIComponent(q)}`);
+        this.searchResults = r.results;
+        this.searchDone = true;   // marks that a search with ≥2 chars returned
+      } catch(e) { this.searchResults = []; this.searchDone = true; }
+    },
+    onSearchPick(r) {
+      this.searchQuery = '';
+      this.searchResults = [];
+      this.searchDone = false;
+      const map = { 'squad': 'squads', 'business': 'businesses', 'mind-clone': 'mind-clones' };
+      // Enter the type (Level 2) before selecting the item — the list shows full-height.
+      this.enterKind(map[r.kind] || 'squads');
+      this.$nextTick(() => {
+        let item;
+        if (r.kind === 'mind-clone') {
+          const [cat, slug] = r.slug.split('/');
+          item = this.mindClones.find(m => m.category === cat && m.slug === slug);
+          if (item) item = { slug: r.slug, source: r.source, category: cat, _mc: item };
+        } else if (r.kind === 'squad') {
+          item = this.squads.find(s => s.slug === r.slug);
+        } else if (r.kind === 'business') {
+          item = this.businesses.find(b => b.slug === r.slug);
+        }
+        if (item) this.select(item);
+      });
+    },
+
+    // ─── Logs ───
+    restartLogStream() {
+      if (this.logStream) { this.logStream.close(); this.logStream = null; }
+      this.logs = [];
+      this.startLogStream();
+    },
+    startLogStream() {
+      try {
+        const es = new EventSource(`/api/logs/stream?type=${this.logType}`);
+        es.onmessage = (e) => {
+          try {
+            const data = JSON.parse(e.data);
+            if (data.kind === 'snapshot') this.logs = data.events || [];
+            else if (data.kind === 'tick') this.logs = data.events || [];
+          } catch(err) {}
+        };
+        es.onerror = () => { /* will retry automatically by browser */ };
+        this.logStream = es;
+      } catch(e) {}
+    },
+
+    logKindLabel(e) {
+      if (e.classification) return e.classification;
+      if (e.event_type) return e.event_type;
+      if (e.stage) return `stage-${e.stage}`;
+      if (e.event) return e.event;
+      return 'event';
+    },
+    logKindClass(e) {
+      const lbl = (this.logKindLabel(e) || '').toString().toLowerCase();
+      if (lbl.includes('high')) return 'log-kind-decision-high';
+      if (lbl.includes('ambiguous')) return 'log-kind-decision-ambiguous';
+      if (lbl.includes('no_match') || lbl.includes('nomatch')) return 'log-kind-decision-no_match';
+      if (lbl.includes('route')) return 'log-kind-route';
+      return 'log-kind-event';
+    },
+    logSummary(e) {
+      if (e.brief) return e.brief.slice(0, 80);
+      if (e.message) return e.message.slice(0, 80);
+      if (e.target) return `→ ${e.target}`;
+      if (e.target_business || e.target_squad) return `→ ${e.target_business || e.target_squad}`;
+      const keys = Object.keys(e).filter(k => !['timestamp','ts','event_type','event','classification','stage','_file','_ce'].includes(k));
+      if (keys.length) return keys.slice(0,2).map(k => `${k}=${JSON.stringify(e[k]).slice(0,30)}`).join(' ');
+      return '';
+    },
+
+    // ─── Capability parser ───
+    // Registry stores capabilities as string ids in the form "<domain>.<noun>.<verb>"
+    // e.g. "design.guided_analysis.execute". Some squads may store full objects.
+    parseCapability(c) {
+      if (typeof c === 'string') {
+        const parts = c.split('.');
+        if (parts.length >= 3) {
+          const verb = parts[parts.length - 1];
+          const domain = parts[0];
+          const noun = parts.slice(1, -1).join('.');
+          return { id: c, domain, noun, verb };
+        }
+        return { id: c, domain: '—', noun: c, verb: '—' };
+      }
+      return { id: c.id || '', domain: c.domain || '—', noun: c.noun || '', verb: c.verb || '' };
+    },
+
+    // ─── Markdown lite (just headings + code spans, no deps) ───
+    renderMarkdownLite(md) {
+      if (!md) return '';
+      return md
+        .replace(/[<>]/g, c => ({ '<': '&lt;', '>': '&gt;' }[c]))
+        .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+        .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+        .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+        .replace(/`([^`]+)`/g, '<code>$1</code>')
+        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+        .replace(/^- (.+)$/gm, '<li>$1</li>')
+        .replace(/(<li>.*<\/li>\n?)+/g, '<ul>$&</ul>')
+        .replace(/\n\n/g, '</p><p>')
+        .replace(/^/, '<p>')
+        .replace(/$/, '</p>');
+    },
+
+    // ─── Actions ───
+    async runAction(name, body) {
+      try {
+        const r = await fetch(`/api/actions/${name}`, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(body || {}),
+        });
+        const data = await r.json();
+        if (!r.ok) {
+          this.flash(`✗ ${name}: ${data.error || r.status}`, 4000);
+          return;
+        }
+        this.flash(`▶ ${name} started`, 1500);
+        this.consoleOpen = true;
+        this.activeJobId = data.job.id;
+        this.jobs.unshift(data.job);
+        this.jobOutputs[data.job.id] = [];
+        this.tailJob(data.job.id);
+      } catch (e) {
+        this.flash(`✗ ${e.message}`, 4000);
+      }
+    },
+    // ─── Admission gate ───
+    // Read-only: the server runs `nrv validate --json` in a child with a
+    // timeout, so a slow entity answers 504 instead of freezing the cockpit.
+    async verifyEntity(kind, slug) {
+      if (!slug || this.verifyBusy) return;
+      this.verifyBusy = true;
+      this.verifyKey = `${kind}:${slug}`;
+      this.verifyReport = null;
+      try {
+        const r = await fetch(`/api/v1/verify/${kind}/${encodeURIComponent(slug)}`);
+        const data = await r.json();
+        if (!r.ok) { this.flash(`✗ ${data.title || 'verify'}: ${data.detail || r.status}`, 5000); this.verifyKey = null; return; }
+        this.verifyReport = data;
+        const s = data.summary || {};
+        this.flash(`${data.verdict} · ${s.errors || 0} erro(s), ${s.warnings || 0} aviso(s)`, 3000);
+      } catch (e) {
+        this.flash(`✗ ${e.message}`, 4000);
+        this.verifyKey = null;
+      } finally {
+        this.verifyBusy = false;
+      }
+    },
+    verifyShown(kind, slug) { return !!this.verifyReport && this.verifyKey === `${kind}:${slug}`; },
+    verifyFixable() { return (this.verifyReport?.findings || []).some(f => f.autofix === 'mechanical'); },
+    confirmAction(name, body, prompt) {
+      if (!window.confirm(prompt)) return;
+      this.runAction(name, body);
+    },
+    tailJob(id) {
+      // Avoid double-stream
+      if (this.jobStreams[id]) return;
+      const es = new EventSource(`/api/actions/jobs/${id}/stream`);
+      this.jobStreams[id] = es;
+      es.onmessage = (e) => {
+        try {
+          const ev = JSON.parse(e.data);
+          if (ev.kind === 'snapshot') {
+            this.jobOutputs[id] = ev.lines || [];
+          } else if (ev.kind === 'line') {
+            this.jobOutputs[id] = [...(this.jobOutputs[id] || []), ev.line];
+          } else if (ev.kind === 'done') {
+            es.close();
+            delete this.jobStreams[id];
+            this.refreshJobs();
+          }
+          // Auto-scroll
+          this.$nextTick(() => {
+            const el = this.$refs.jobOutput;
+            if (el) el.scrollTop = el.scrollHeight;
+          });
+        } catch {}
+      };
+      es.onerror = () => { es.close(); delete this.jobStreams[id]; };
+    },
+    async refreshJobs() {
+      try {
+        const r = await fetch('/api/actions/jobs');
+        const data = await r.json();
+        this.jobs = data.jobs || [];
+      } catch {}
+    },
+    async cancelJob(id) {
+      if (!window.confirm('Cancel this job?')) return;
+      await fetch(`/api/actions/${id}/cancel`, { method: 'POST' }).catch(() => {});
+      // Endpoint mismatch — use actions/jobs/:id/cancel
+      await fetch(`/api/actions/jobs/${id}/cancel`, { method: 'POST' }).catch(() => {});
+      this.refreshJobs();
+    },
+    getJob(id) { return this.jobs.find(j => j.id === id); },
+    renderIcons() {
+      if (typeof window.lucide === 'undefined' || typeof window.lucide.createIcons !== 'function') return;
+      try {
+        window.lucide.createIcons({
+          attrs: { 'stroke-width': '1.75', 'aria-hidden': 'true' },
+        });
+      } catch (_) {}
+    },
+    statusIcon(status) {
+      return ({ running: 'circle-dot', completed: 'check', failed: 'x', cancelled: 'ban', queued: 'circle' })[status] || 'help-circle';
+    },
+    statusGlyph(status) {
+      return ({ running: '●', completed: '✓', failed: '✗', cancelled: '⊘', queued: '◌' })[status] || '?';
+    },
+    formatJobTime(j) {
+      if (j.finished_at) {
+        const ms = j.finished_at - j.started_at;
+        return `${Math.round(ms/100)/10}s ago`;
+      }
+      const ms = Date.now() - j.started_at;
+      return `${Math.round(ms/100)/10}s elapsed`;
+    },
+
+    // ─── Toast ───
+    flash(msg, ms = 1800) {
+      this.toast = { visible: true, message: msg };
+      clearTimeout(this._toastTimer);
+      this._toastTimer = setTimeout(() => { this.toast.visible = false; }, ms);
+    },
+  };
+}
+
+async function api(path) {
+  const r = await fetch(path);
+  if (!r.ok) throw new Error(`${path}: ${r.status}`);
+  return r.json();
+}
+
+function humanizeMs(ms) {
+  if (!ms) return '';
+  const s = Math.floor(ms / 1000);
+  if (s < 60) return `${s}s`;
+  const m = Math.floor(s / 60);
+  if (m < 60) return `${m}m`;
+  const h = Math.floor(m / 60);
+  return `${h}h${m % 60}m`;
+}
