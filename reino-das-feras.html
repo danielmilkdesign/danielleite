@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reino das Feras — Case Study | Daniel Leite</title>
+    <meta name="description" content="Reino das Feras: gamificação B2B que transforma treinamento de produto em jornada espacial com cards colecionáveis e ranking para a Purina. Case de Product Design por Daniel Leite.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon-dl.svg">
+    <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    
+    <!-- Fonts: DM Mono, Manrope & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#ecfeff', 100: '#cffafe', 200: '#a5f3fc', 300: '#67e8f9',
+                            400: '#22d3ee', 500: '#06b6d4', 600: '#0891b2', 700: '#0e7490',
+                            800: '#155e75', 900: '#164e63', 950: '#083344',
+                        },
+                        dark: { bg: '#070707', card: '#0e1217', surface: '#0e1217', border: '#1c2430' }
+                    },
+                    fontFamily: {
+                        sans: ['Manrope', 'sans-serif'],
+                        heading: ['Manrope', 'sans-serif'],
+                        mono: ['DM Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Lucide Icons & GSAP + Lenis -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="case-study.css">
+</head>
+<body class="bg-dark-bg text-slate-100 font-sans selection:bg-cyan-500/30 selection:text-cyan-300 relative overflow-x-hidden min-h-screen">
+
+    <!-- Scroll Progress Bar -->
+    <div id="scroll-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-cyan-500 via-sky-400 to-amber-400 z-[110] transition-all duration-150"></div>
+
+    <!-- HEADER (Matching index.html) -->
+    <header class="case-header">
+        <div class="header-left">
+            <a href="index.html" class="logo-wrap" aria-label="Daniel Leite Home">
+                <img src="LOGO-DL.svg" alt="Daniel Leite" class="logo-img">
+            </a>
+            <a href="index.html#work" class="header-back-pill" data-cursor="BACK" title="Voltar para a seção de projetos">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                <span>Voltar ao Portfólio</span>
+            </a>
+        </div>
+
+        <!-- Desktop Navigation Menu -->
+        <nav class="header-nav" aria-label="Navegação Principal">
+            <a href="index.html#work" class="header-link active">WORK</a>
+            <a href="index.html#thinking" class="header-link">THINKING</a>
+            <a href="index.html#skills" class="header-link">SKILLS</a>
+            <a href="index.html#about" class="header-link">ABOUT</a>
+            <a href="index.html#career" class="header-link">CARREIRA</a>
+            <a href="index.html#contact" class="header-link header-link-cta">FALE COMIGO ↗</a>
+        </nav>
+
+        <!-- Mobile Hamburger Button -->
+        <button class="menu-btn" aria-label="Abrir menu de navegação" id="menu-toggle-btn">
+            <span class="mono">MENU</span>
+            <span class="menu-icon"><i></i><i></i></span>
+        </button>
+    </header>
+
+    <!-- Fullscreen Sliding Mobile Menu -->
+    <div class="menu" id="main-menu" aria-hidden="true">
+        <nav>
+            <a href="index.html#work"><span class="menu-num">01</span> WORK</a>
+            <a href="index.html#thinking"><span class="menu-num">02</span> THINKING</a>
+            <a href="index.html#skills"><span class="menu-num">03</span> SKILLS</a>
+            <a href="index.html#about"><span class="menu-num">04</span> ABOUT</a>
+            <a href="index.html#career"><span class="menu-num">05</span> CARREIRA</a>
+            <a href="index.html#contact"><span class="menu-num">06</span> CONTACT</a>
+            <a href="index.html#work" style="margin-top: 16px; font-size: 1.15rem; color: var(--accent);">← VOLTAR AO PORTFÓLIO</a>
+        </nav>
+    </div>
+
+    <!-- CONTENT CONTAINER -->
+    <main class="case-container">
+        
+        <!-- Case Hero -->
+        <div class="case-hero">
+            <div class="case-hero-meta">
+                <span class="case-badge-cyan">Product Designer</span>
+                <span class="case-badge-muted">Gamificação B2B</span>
+                <span class="case-badge-muted">Mobile UX</span>
+                <span class="case-badge-muted">Pré-lançamento</span>
+            </div>
+
+            <h1 class="case-title">
+                Reino das Feras — <em>Gamificação</em> que Ensina a Vender
+            </h1>
+
+            <p class="case-lead">
+                Treinamento de produto transformado em jornada de jogo, com cards colecionáveis que levam o argumento de venda para o balcão.
+            </p>
+
+            <p class="case-intro">
+                O <strong>Reino das Feras</strong> é uma camada de gamificação criada dentro de uma plataforma existente da <strong>Agência Digi para a Purina</strong>. O vendedor se torna um explorador que atravessa galáxias temáticas espaciais, ganha XP, disputa posições no ranking e coleciona conhecimento prático e argumentos de venda prontos para cada linha de produtos do portfólio.
+            </p>
+
+            <!-- Metadata Specs Grid (Signature Hairline Grid) -->
+            <div class="case-specs">
+                <div class="spec-item">
+                    <span class="spec-label mono">ROLE</span>
+                    <span class="spec-value">Product Designer</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label mono">SCOPE</span>
+                    <span class="spec-value">Fluxo, Mecânicas & Telas</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label mono">CONTEXTO</span>
+                    <span class="spec-value">Agência Digi para Purina</span>
+                </div>
+                <div class="spec-item">
+                    <span class="spec-label mono">PRAZO</span>
+                    <span class="spec-value highlight">1 Semana (Sprint Ágil)</span>
+                </div>
+            </div>
+
+            <!-- Cover Image Showcase -->
+            <div class="case-cover">
+                <img src="assets/capa-reino-das-feras.webp" alt="Telas do Reino das Feras: dashboard de galáxias, partida e modal de novo card" loading="eager" decoding="async">
+            </div>
+        </div>
+
+        <!-- Section 01: Problema & Contexto -->
+        <section class="case-section">
+            <div class="case-section-grid">
+                <aside class="case-section-aside">
+                    <span class="case-section-num mono">/ 01</span>
+                    <span class="case-section-kicker mono">PROBLEMA & CONTEXTO</span>
+                    <h2 class="case-section-title">Conhecer o Produto <em>Não É</em> Saber Vendê-lo</h2>
+                </aside>
+
+                <div class="case-body">
+                    <p>
+                        Seis linhas de produto, cada uma com diferenciais e atributos próprios. Para quem está no ponto de venda (PDV), decorar fichas técnicas frias não basta: é preciso saber o que dizer ao cliente, na hora certa. O desafio foi criar uma experiência que fizesse esse conhecimento circular por vontade própria, sem parecer um treinamento obrigatório e cansativo.
+                    </p>
+
+                    <div class="case-cards-grid">
+                        <div class="case-card">
+                            <div class="case-card-kicker mono">PORTFÓLIO EXTENSO</div>
+                            <h4>Muitas Linhas, Pouco Tempo</h4>
+                            <p>Pro Plan, Dog Chow, ONE, Beneful, Cat Chow e Doguitos para aprender, diferenciar e recomendar em meio à rotina acelerada da loja.</p>
+                        </div>
+
+                        <div class="case-card">
+                            <div class="case-card-kicker mono">ENGAJAMENTO B2B</div>
+                            <h4>Motivo Real para Voltar</h4>
+                            <p>Treinamentos corporativos pontuais são esquecidos. A plataforma precisava de um loop de recompensas que desse motivo para retornar toda semana.</p>
+                        </div>
+
+                        <div class="case-card">
+                            <div class="case-card-kicker mono">APLICAÇÃO DIRETA</div>
+                            <h4>Do Conteúdo ao Balcão</h4>
+                            <p>A informação precisava chegar já no formato acionável de uso: benefícios centrais, diferenciais chave e um argumento de venda pronto.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 02: Estratégia de Gamificação -->
+        <section class="case-section">
+            <div class="case-section-grid">
+                <aside class="case-section-aside">
+                    <span class="case-section-num mono">/ 02</span>
+                    <span class="case-section-kicker mono">ESTRATÉGIA & GAME UX</span>
+                    <h2 class="case-section-title">O Jogo como <em>Ponte</em> para o Conhecimento</h2>
+                </aside>
+
+                <div class="case-body">
+                    <p>
+                        Um jogo sozinho apenas entretém, mas não fecha vendas. A decisão central foi tratar a vitória no mini-game como porta de entrada para o conteúdo pedagógico: cada fase concluída entrega um card colecionável de produto, e é o card que carrega o valor de negócio da marca.
+                    </p>
+
+                    <div class="case-cards-grid">
+                        <div class="case-card">
+                            <div class="case-card-kicker mono">MECÂNICA FAMILIAR</div>
+                            <h4>Bolinhas, Sem Curva de Aprendizado</h4>
+                            <p>Uma dinâmica casual conhecida deixa o esforço cognitivo livre para o que importa: reter os atributos dos produtos.</p>
+                        </div>
+
+                        <div class="case-card">
+                            <div class="case-card-kicker mono">PROGRESSÃO SEQUENCIAL</div>
+                            <h4>Galáxias Temáticas</h4>
+                            <p>Cada galáxia representa uma linha de produtos e só é destravada após a anterior, garantindo que todo o portfólio seja percorrido.</p>
+                        </div>
+
+                        <div class="case-card">
+                            <div class="case-card-kicker mono">RECOMPENSA ACIONÁVEL</div>
+                            <h4>O Card como Argumento</h4>
+                            <p>Benefícios, diferenciais, argumento de venda pronto e uma curiosidade por produto, guardados permanentemente no álbum.</p>
+                        </div>
+                    </div>
+
+                    <div class="galaxies-wrap">
+                        <span class="galaxy-tag">Galáxia 1 · Pro Plan</span>
+                        <span class="galaxy-tag">Galáxia 2 · Dog Chow</span>
+                        <span class="galaxy-tag">Galáxia 3 · ONE</span>
+                        <span class="galaxy-tag">Galáxia 4 · Beneful</span>
+                        <span class="galaxy-tag">Galáxia 5 · Cat Chow</span>
+                        <span class="galaxy-tag">Galáxia 6 · Doguitos</span>
+                    </div>
+
+                    <div class="case-callout">
+                        <div class="case-callout-title mono">CORE LOOP DE NEGÓCIO</div>
+                        <p>O mini-game capta a atenção inicial e ativa o senso de desafio; a conclusão premia o vendedor com XP e cards colecionáveis que sintetizam os argumentos comerciais para uso direto no atendimento ao cliente.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 03: Arquitetura do Fluxo -->
+        <section class="case-section">
+            <div class="case-section-grid">
+                <aside class="case-section-aside">
+                    <span class="case-section-num mono">/ 03</span>
+                    <span class="case-section-kicker mono">ARQUITETURA DE INFORMAÇÃO</span>
+                    <h2 class="case-section-title">Do Banner Inicial ao <em>Ranking Global</em></h2>
+                </aside>
+
+                <div class="case-body">
+                    <p>
+                        O jogo vive organicamente dentro da plataforma corporativa, não como um aplicativo desconectado. Duas entradas levam ao mesmo ponto, e cada etapa alimenta a seguinte em um ciclo virtuoso de recompensa e retenção:
+                    </p>
+                </div>
+            </div>
+
+            <!-- Full-Width Responsive Flow Canvas -->
+            <div class="flow-canvas-wrapper">
+                <div class="flow-canvas-header">
+                    <div class="flow-canvas-title mono">
+                        <span class="pulse-dot"></span>
+                        <span>JORNADA DO JOGADOR · FLUXO P2P DE 11 TELAS</span>
+                    </div>
+                    <div class="flow-canvas-actions">
+                        <span class="flow-canvas-hint mono">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                            <span>Arraste ou role horizontalmente</span>
+                        </span>
+                        <button type="button" class="flow-expand-btn mono" id="open-flow-modal">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+                            <span>Ver em Alta Resolução</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="flow-scroll-viewport" id="flow-viewport" title="Clique e arraste para navegar pelo fluxo">
+                    <img src="assets/reino-fluxo-completo.webp" alt="Fluxo completo do Reino das Feras, da Home ao detalhe do card" class="flow-scroll-img" loading="lazy" width="6000" height="1585">
+                </div>
+            </div>
+
+            <!-- 6 Flow Steps Cards Grid -->
+            <div class="flow-steps-grid">
+                <div class="flow-step-card">
+                    <span class="mono">ETAPA 01</span>
+                    <h4>Entrada Dupla</h4>
+                    <p>Banner hero na Home com link direto para o jogo e item no menu lateral, para quem prefere navegar pela estrutura da plataforma.</p>
+                </div>
+                <div class="flow-step-card">
+                    <span class="mono">ETAPA 02</span>
+                    <h4>Dashboard Galáctico</h4>
+                    <p>O Explorador vê seu XP atual, as seis galáxias com prêmios e atalhos rápidos para o álbum de cards e o ranking geral.</p>
+                </div>
+                <div class="flow-step-card">
+                    <span class="mono">ETAPA 03</span>
+                    <h4>Antes da Partida</h4>
+                    <p>Um micro-vídeo dinâmico sobre o produto da galáxia, seguido de uma tela de carregamento temática imersiva.</p>
+                </div>
+                <div class="flow-step-card">
+                    <span class="mono">ETAPA 04</span>
+                    <h4>Partida &amp; Foco Total</h4>
+                    <p>O menu superior da plataforma desaparece durante o jogo para ampliar a área útil e evitar toques acidentais.</p>
+                </div>
+                <div class="flow-step-card">
+                    <span class="mono">ETAPA 05</span>
+                    <h4>Desfecho &amp; Recompensa</h4>
+                    <p>Vitória entrega XP e desbloqueia um novo card. A derrota possui tela acolhedora própria, com opção de revanche rápida.</p>
+                </div>
+                <div class="flow-step-card">
+                    <span class="mono">ETAPA 06</span>
+                    <h4>Retenção &amp; Consulta</h4>
+                    <p>Álbum de produtos conquistados sempre à mão para consulta rápida no balcão e ranking disputado com todos os exploradores.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 04: Craft & Telas do Jogo -->
+        <section class="case-section">
+            <div class="case-section-grid">
+                <aside class="case-section-aside">
+                    <span class="case-section-num mono">/ 04</span>
+                    <span class="case-section-kicker mono">CRAFT & TELAS</span>
+                    <h2 class="case-section-title">Interface do <em>Jogo</em> & Universo Visual</h2>
+                </aside>
+
+                <div class="case-body">
+                    <p>
+                        Um universo espacial que confere identidade lúdica à experiência, desenhado com hierarquia precisa para que o conteúdo pedagógico do produto nunca se perca dentro do apelo visual do jogo:
+                    </p>
+
+                    <div class="case-gallery">
+                        <div class="case-gallery-item">
+                            <img src="assets/reino-telas-principais.webp" alt="Dashboard de galáxias, partida, modal de novo card e ranking" loading="lazy" decoding="async">
+                            <div class="case-gallery-caption mono">Dashboard das galáxias, tela de gameplay, modal de novo card e ranking de exploradores.</div>
+                        </div>
+
+                        <div class="case-gallery-item">
+                            <img src="assets/reino-telas-jornada.webp" alt="Tela de abertura, vídeo, carregamento e fase concluída" loading="lazy" decoding="async">
+                            <div class="case-gallery-caption mono">Abertura imersiva, pílula de vídeo de produto, loading temático e tela de fase concluída.</div>
+                        </div>
+
+                        <div class="case-gallery-item">
+                            <img src="assets/reino-telas-apoio.webp" alt="Álbum de produtos, detalhes do card e tela de derrota" loading="lazy" decoding="async">
+                            <div class="case-gallery-caption mono">Álbum de produtos colecionáveis, detalhe do card com argumento de venda e tela de derrota com revanche.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 05: Decisões de Design -->
+        <section class="case-section">
+            <div class="case-section-grid">
+                <aside class="case-section-aside">
+                    <span class="case-section-num mono">/ 05</span>
+                    <span class="case-section-kicker mono">DECISÕES DE DESIGN</span>
+                    <h2 class="case-section-title">O que Priorizei em <em>Uma Semana</em></h2>
+                </aside>
+
+                <div class="case-body">
+                    <p>
+                        Com o prazo enxuto de uma semana, o foco foi entregar o ciclo completo de ponta a ponta e fechar cada ponto de contato com consistência, em vez de aprofundar apenas um recorte isolado:
+                    </p>
+
+                    <div class="decision-list">
+                        <div class="decision-row">
+                            <span class="mono">01</span>
+                            <h4>Mecânica conhecida, conteúdo novo</h4>
+                            <p>Reaproveitar uma dinâmica clássica que o público já domina economizou tempo precioso de design e aprendizado, concentrando toda a atenção nos produtos Purina.</p>
+                        </div>
+                        <div class="decision-row">
+                            <span class="mono">02</span>
+                            <h4>Tela limpa durante a partida</h4>
+                            <p>O menu superior da plataforma corporativa desaparece durante o jogo. Menos elementos concorrentes, mais área útil e menor probabilidade de toques acidentais.</p>
+                        </div>
+                        <div class="decision-row">
+                            <span class="mono">03</span>
+                            <h4>Desbloqueio progressivo em sequência</h4>
+                            <p>Fases travadas constroem um senso tangível de jornada e evitam que o vendedor pule as linhas de produtos menos conhecidas ou de nicho.</p>
+                        </div>
+                        <div class="decision-row">
+                            <span class="mono">04</span>
+                            <h4>O caminho infeliz também é desenhado</h4>
+                            <p>Quem perde encontra a pontuação feita e duas saídas claras (revanche ou voltar). Frustração sem saída é o principal motivo de abandono de jogo.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 06: Status & Métricas -->
+        <section class="case-section">
+            <div class="case-section-grid">
+                <aside class="case-section-aside">
+                    <span class="case-section-num mono">/ 06</span>
+                    <span class="case-section-kicker mono">STATUS & INDICADORES</span>
+                    <h2 class="case-section-title">Pré-lançamento & o que Vamos <em>Medir</em></h2>
+                </aside>
+
+                <div class="case-body">
+                    <div class="case-results-card">
+                        <p>
+                            O projeto foi concluído e entregue em fase de pré-lançamento para a Purina. O produto valida a tese de que a gamificação bem estruturada transforma o treinamento corporativo de uma tarefa monótona em um ritual engajador de alto retorno comercial.
+                        </p>
+
+                        <div class="case-results-stats">
+                            <div class="case-stat">
+                                <strong>6</strong>
+                                <small class="mono">Galáxias Temáticas</small>
+                            </div>
+                            <div class="case-stat">
+                                <strong>Semanal</strong>
+                                <small class="mono">Retorno de Jogadores</small>
+                            </div>
+                            <div class="case-stat">
+                                <strong>100%</strong>
+                                <small class="mono">Cards Consultáveis</small>
+                            </div>
+                            <div class="case-stat">
+                                <strong>1 Sem</strong>
+                                <small class="mono">Sprint de Entrega</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Related Cases ("Veja Também") -->
+        <section class="case-section" style="padding-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px;">
+                <h3 style="font-size: 1.4rem; font-weight: 800; letter-spacing: -0.03em; color: #fff;">Veja Também</h3>
+                <span class="mono" style="font-size: 0.72rem; color: var(--muted); letter-spacing: 0.1em;">CASES SELECIONADOS</span>
+            </div>
+
+            <div class="case-related-grid">
+                <!-- Case: RecruiterSys -->
+                <a href="recruitersys.html" class="case-related-card">
+                    <div class="case-related-img">
+                        <img src="assets/CAPA RECRUITER.webp" alt="RecruiterSys" loading="lazy" decoding="async">
+                    </div>
+                    <div class="case-related-info">
+                        <span class="case-related-tag mono">ATS B2B & HR TECH</span>
+                        <h4 class="case-related-title">RecruiterSys – Ecossistema Tech</h4>
+                    </div>
+                </a>
+
+                <!-- Case: Diário de Bordo -->
+                <a href="diario-edb.html" class="case-related-card">
+                    <div class="case-related-img">
+                        <img src="assets/HORUZ.webp" alt="Diário de Bordo Aeronáutico Hóruz eDB" loading="lazy" decoding="async">
+                    </div>
+                    <div class="case-related-info">
+                        <span class="case-related-tag mono">UX/UI & AERONÁUTICA</span>
+                        <h4 class="case-related-title">Diário de Bordo Aeronáutico (Hóruz eDB)</h4>
+                    </div>
+                </a>
+
+                <!-- Case: VentHome -->
+                <a href="ventihome.html" class="case-related-card">
+                    <div class="case-related-img">
+                        <img src="assets/VENTIHOME.webp" alt="VentHome" loading="lazy" decoding="async">
+                    </div>
+                    <div class="case-related-info">
+                        <span class="case-related-tag mono">UX/UI & HARDWARE IOT</span>
+                        <h4 class="case-related-title">VentHome – Além do Vento</h4>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Footer Navigation CTA -->
+        <div class="case-footer-nav">
+            <a href="ventihome.html" class="edge-glow-btn group">
+                <span class="edge-glow-inner">
+                    <i data-lucide="arrow-left" class="w-4 h-4 transition-transform group-hover:-translate-x-1"></i>
+                    <span>Case Anterior: VentHome</span>
+                </span>
+            </a>
+
+            <a href="recruitersys.html" class="next-project-card">
+                <span class="next-project-label mono">PRÓXIMO CASE</span>
+                <span class="next-project-title">
+                    RecruiterSys – Ecossistema Tech <span class="arrow">→</span>
+                </span>
+            </a>
+        </div>
+
+    </main>
+
+    <footer class="container" style="padding-block: 40px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+        <div class="logo-wrap">
+            <img src="LOGO-DL.svg" alt="Daniel Leite" style="height: 22px; width: auto;">
+        </div>
+        <div class="mono" style="color: var(--muted); font-size: 0.72rem;">&copy; 2026 DANIEL LEITE — SENIOR PRODUCT DESIGNER &amp; DESIGN ENGINEER</div>
+        <div><a href="#" class="mono" style="color: var(--accent); font-size: 0.72rem; text-decoration: none;">VOLTAR AO TOPO ↑</a></div>
+    </footer>
+
+    <!-- Flow Diagram Fullscreen Lightbox Modal -->
+    <div id="flow-modal" class="flow-modal" aria-hidden="true" role="dialog" aria-label="Visualizador do fluxo em alta resolução">
+        <div class="flow-modal-bar">
+            <div class="mono" style="font-size: 0.78rem; color: var(--accent); display: flex; align-items: center; gap: 8px;">
+                <span class="pulse-dot"></span>
+                <span>ARQUITETURA DE FLUXO COMPLETA (6000 × 1585)</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 14px;">
+                <span class="mono" style="font-size: 0.72rem; color: var(--muted);">Arraste para navegar · ESC para fechar</span>
+                <button type="button" class="flow-modal-close" id="close-flow-modal">
+                    <span>FECHAR ✕</span>
+                </button>
+            </div>
+        </div>
+        <div class="flow-modal-content" id="flow-modal-content">
+            <img src="assets/reino-fluxo-completo.webp" alt="Fluxo completo em alta resolução" class="flow-modal-img">
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="case-study.js"></script>
+</body>
+</html>

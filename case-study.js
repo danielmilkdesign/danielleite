@@ -51,4 +51,92 @@ document.addEventListener('DOMContentLoaded', () => {
       progressBar.style.width = scrolled + '%';
     }, { passive: true });
   }
+
+  // Drag-to-scroll utility for interactive viewports
+  function setupDragToScroll(el) {
+    if (!el) return;
+    let isDown = false;
+    let startX, scrollLeft, startY, scrollTop;
+
+    el.addEventListener('mousedown', (e) => {
+      isDown = true;
+      el.classList.add('is-dragging');
+      startX = e.pageX - el.offsetLeft;
+      scrollLeft = el.scrollLeft;
+      startY = e.pageY - el.offsetTop;
+      scrollTop = el.scrollTop;
+    });
+
+    const stopDrag = () => {
+      isDown = false;
+      el.classList.remove('is-dragging');
+    };
+
+    el.addEventListener('mouseleave', stopDrag);
+    el.addEventListener('mouseup', stopDrag);
+
+    el.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - el.offsetLeft;
+      const walkX = (x - startX) * 1.5;
+      el.scrollLeft = scrollLeft - walkX;
+
+      const y = e.pageY - el.offsetTop;
+      const walkY = (y - startY) * 1.5;
+      el.scrollTop = scrollTop - walkY;
+    });
+  }
+
+  const flowViewport = document.getElementById('flow-viewport');
+  if (flowViewport) {
+    setupDragToScroll(flowViewport);
+  }
+
+  const flowModalContent = document.getElementById('flow-modal-content');
+  if (flowModalContent) {
+    setupDragToScroll(flowModalContent);
+  }
+
+  // Flow Fullscreen Lightbox Modal
+  const flowModal = document.getElementById('flow-modal');
+  const openFlowBtn = document.getElementById('open-flow-modal');
+  const closeFlowBtn = document.getElementById('close-flow-modal');
+
+  function openFlowModal() {
+    if (!flowModal) return;
+    flowModal.classList.add('is-open');
+    flowModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeFlowModal() {
+    if (!flowModal) return;
+    flowModal.classList.remove('is-open');
+    flowModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  if (openFlowBtn) {
+    openFlowBtn.addEventListener('click', openFlowModal);
+  }
+  if (flowViewport) {
+    // Double click or clicking directly on the image also opens high-res modal
+    flowViewport.addEventListener('dblclick', openFlowModal);
+  }
+  if (closeFlowBtn) {
+    closeFlowBtn.addEventListener('click', closeFlowModal);
+  }
+  if (flowModal) {
+    flowModal.addEventListener('click', (e) => {
+      if (e.target === flowModal || e.target === flowModalContent) {
+        closeFlowModal();
+      }
+    });
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && flowModal.classList.contains('is-open')) {
+        closeFlowModal();
+      }
+    });
+  }
 });
