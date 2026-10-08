@@ -13,10 +13,10 @@
 <link rel="shortcut icon" href="favicon.ico">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 
-<!-- Fonts: DM Mono, Manrope & Plus Jakarta Sans -->
+<!-- Fonts: Manrope & Plus Jakarta Sans -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
 
 <style>
 :root {
@@ -56,10 +56,11 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 ::selection { background: var(--accent); color: #000; }
 
 .mono {
-  font-family: "DM Mono", monospace;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 0.72rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  font-weight: 600;
 }
 
 .container { padding-inline: var(--pad); }
@@ -117,8 +118,9 @@ header {
   gap: 32px;
 }
 .header-link {
-  font-family: "DM Mono", monospace;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 0.75rem;
+  font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
@@ -247,8 +249,9 @@ body.menu-open .menu-icon i:last-child {
   gap: 16px;
 }
 .menu a .menu-num {
-  font-family: "DM Mono", monospace;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
   font-size: 0.28em;
+  font-weight: 700;
   letter-spacing: 0.05em;
   color: var(--accent);
 }
@@ -551,7 +554,8 @@ body.menu-open .menu-icon i:last-child {
   padding: 4px 10px;
   border-radius: 6px;
   font-size: 0.72rem;
-  font-family: "DM Mono", monospace;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 600;
 }
 
 /* Edge Glow Case Study Button */
@@ -778,8 +782,9 @@ body.menu-open .menu-icon i:last-child {
 .think-num {
   font-size: 0.72rem;
   color: #64748b;
-  font-family: "DM Mono", monospace;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
   letter-spacing: 0.1em;
+  font-weight: 600;
 }
 .think-card h3 {
   font-size: clamp(1.8rem, 2.3vw, 2.8rem);
@@ -1074,7 +1079,9 @@ footer {
   pointer-events: none;
   opacity: 0;
   transform: translate(16px, 16px);
-  font: 11px "DM Mono", monospace;
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   transition: opacity 0.2s;
@@ -1109,35 +1116,102 @@ footer {
   .about-avatar-wrap { max-width: 440px; aspect-ratio: 4/5; }
 }
 
-@media (max-width: 800px) {
-  :root { --pad: 20px; }
-  .hero { min-height: 115vh; }
-  .hero-fixed {
-    align-items: flex-end;
-    padding-bottom: clamp(24px, 5vh, 40px);
+@media (max-width: 860px) {
+  :root { 
+    --pad: clamp(18px, 5.5vw, 28px); 
   }
+  
+  .hero-square-accent {
+    display: none !important;
+  }
+  
+  .hero-grid {
+    opacity: 0.12;
+  }
+
+  .hero-fixed {
+    height: 100vh;
+    height: 100dvh;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding-bottom: clamp(52px, 14dvh, 110px);
+  }
+
+  .content-curtain {
+    margin-top: 100vh;
+    margin-top: 100dvh;
+  }
+
   .hero-portrait-bg {
     width: 100%;
     right: 0;
     left: 0;
-    object-position: center 16%;
-    opacity: 0.58;
-    mask-image: radial-gradient(circle at 50% 30%, black 58%, transparent 92%),
-                linear-gradient(to bottom, black 0%, black 75%, transparent 100%);
-    -webkit-mask-image: radial-gradient(circle at 50% 30%, black 58%, transparent 92%),
-                        linear-gradient(to bottom, black 0%, black 75%, transparent 100%);
+    top: clamp(24px, 4.5dvh, 48px);
+    height: calc(100% - clamp(24px, 4.5dvh, 48px));
+    object-fit: cover;
+    object-position: 55% top;
+    opacity: 0.95;
+    filter: contrast(1.06) brightness(0.96);
+    mask-image: linear-gradient(to bottom, black 0%, black 76%, rgba(0, 0, 0, 0.3) 92%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 76%, rgba(0, 0, 0, 0.3) 92%, transparent 100%);
   }
+
   .hero-content {
     padding: 0 var(--pad);
-    margin: 0 auto;
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
   }
+
   .hero-display-title {
-    font-size: clamp(2.4rem, 10vw, 3.2rem);
-    line-height: 0.86;
+    font-family: 'Plus Jakarta Sans', 'Manrope', sans-serif;
+    font-size: clamp(2.05rem, 8.8vw, 2.85rem);
+    line-height: 0.90;
+    letter-spacing: -0.055em;
+    font-weight: 800;
+    text-transform: uppercase;
   }
+
+  .hero-display-title .title-line {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.04em;
+    white-space: nowrap;
+  }
+
+  .hero-display-title .outline {
+    color: #ffffff !important;
+    -webkit-text-stroke: 0 !important;
+    text-shadow: none !important;
+  }
+
+  .hero-display-title .accent {
+    color: var(--accent);
+    text-shadow: 0 0 25px rgba(6, 182, 212, 0.4);
+  }
+
   .scroll-hint {
-    margin-top: 14px;
+    margin-top: clamp(14px, 2.2vh, 20px);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 600;
+    font-size: clamp(0.62rem, 2.2vw, 0.72rem);
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.55);
   }
+
+  .scroll-hint span {
+    display: block;
+    width: clamp(28px, 8vw, 36px);
+    height: 2px;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    border-radius: 1px;
+    flex-shrink: 0;
+  }
+
   .hero-note { flex-direction: column; align-items: flex-start; gap: 24px; }
   .section { padding-block: 85px; }
   .section-head { flex-direction: column; align-items: flex-start; }
@@ -1154,6 +1228,49 @@ footer {
   .skill-row { grid-template-columns: 1fr; gap: 18px; padding-block: 36px; }
   .process-copy { justify-content: flex-start; }
   .cursor, .cursor-label { display: none !important; }
+}
+
+/* Specific fine-tuning for compact/short height mobile screens (e.g. iPhone SE, 667px) */
+@media (max-width: 860px) and (max-height: 700px) {
+  .hero-fixed {
+    padding-bottom: clamp(38px, 9vh, 65px);
+  }
+  .hero-portrait-bg {
+    top: 18px;
+    height: calc(100% - 18px);
+  }
+  .hero-display-title {
+    font-size: clamp(1.85rem, 6.8vh, 2.35rem);
+    line-height: 0.88;
+  }
+  .scroll-hint {
+    margin-top: 12px;
+  }
+}
+
+/* Specific fine-tuning for tall modern mobile screens (e.g. iPhone 14/15/16 Pro Max, Pixel 7/8, 850px+ height) */
+@media (max-width: 860px) and (min-height: 850px) {
+  .hero-fixed {
+    padding-bottom: clamp(70px, 14.5dvh, 125px);
+  }
+  .hero-display-title {
+    font-size: clamp(2.35rem, 9.2vw, 3.1rem);
+  }
+}
+
+/* Ultra-compact width mobile screens (e.g. 320px - 350px) */
+@media (max-width: 350px) {
+  :root { --pad: 14px; }
+  .hero-display-title {
+    font-size: 1.85rem;
+  }
+  .scroll-hint {
+    font-size: 0.58rem;
+    gap: 8px;
+  }
+  .scroll-hint span {
+    width: 22px;
+  }
 }
 </style>
 </head>

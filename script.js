@@ -653,7 +653,7 @@ function openCaseModal(id) {
             </div>
 
             <div class="flex flex-wrap gap-2 pt-2">
-                ${data.tags.map(t => `<span class="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-slate-400 text-xs font-mono">${t}</span>`).join('')}
+                ${data.tags.map(t => `<span class="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-slate-400 text-xs font-sans">${t}</span>`).join('')}
             </div>
         </div>
     `;
