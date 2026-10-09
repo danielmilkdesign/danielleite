@@ -439,6 +439,116 @@ body.menu-open .menu-icon i:last-child {
   100% { transform: translateX(-50%); }
 }
 
+/* Big Numbers (resultados quantificados) */
+.big-numbers {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 120px var(--pad) 110px;
+}
+.big-numbers-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  margin-top: 30px;
+}
+.big-number {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 48px 32px 0 0;
+  border-right: 1px solid var(--line);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.big-number + .big-number {
+  padding-left: 32px;
+}
+.big-number:last-child {
+  border-right: 0;
+  padding-right: 0;
+}
+.big-number:hover {
+  transform: translateY(-2px);
+}
+.big-number strong {
+  font-family: 'Plus Jakarta Sans', 'Manrope', sans-serif;
+  font-size: clamp(3.4rem, 6.5vw, 6.2rem);
+  line-height: 0.9;
+  letter-spacing: -0.07em;
+  font-weight: 800;
+  color: #ffffff;
+  display: inline-block;
+  transition: text-shadow 0.3s ease;
+}
+.big-number:hover strong {
+  text-shadow: 0 0 30px rgba(6, 182, 212, 0.3);
+}
+.big-number strong span {
+  color: var(--accent);
+}
+.big-number .big-context {
+  color: var(--accent);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+}
+.big-number p {
+  color: var(--text-dim);
+  font-size: 0.98rem;
+  line-height: 1.55;
+  max-width: 270px;
+}
+
+@media (max-width: 1024px) {
+  .big-numbers {
+    padding-block: 90px;
+  }
+  .big-numbers-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .big-number {
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 36px 24px 36px 0;
+  }
+  .big-number + .big-number {
+    padding-left: 0;
+  }
+  .big-number:nth-child(2n) {
+    border-right: 0;
+    padding-left: 28px;
+    padding-right: 0;
+  }
+  .big-number:nth-child(2n+1) {
+    padding-right: 28px;
+    padding-left: 0;
+  }
+  .big-number:nth-last-child(-n+2) {
+    border-bottom: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .big-numbers {
+    padding-block: 70px;
+  }
+  .big-numbers-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .big-number,
+  .big-number + .big-number,
+  .big-number:nth-child(2n),
+  .big-number:nth-child(2n+1) {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    padding: 32px 0;
+  }
+  .big-number:last-child {
+    border-bottom: 0;
+  }
+  .big-number strong {
+    font-size: clamp(3rem, 14vw, 4.2rem);
+  }
+}
+
 /* Sections */
 .section {
   padding: 130px var(--pad);
@@ -1353,6 +1463,42 @@ footer {
       </div>
     </div>
 
+  <!-- Big Numbers: resultados medidos em projetos reais -->
+  <section class="big-numbers" id="numbers" aria-labelledby="numbers-title">
+    <div class="section-head reveal">
+      <h2 class="section-title" id="numbers-title">My<br><em>numbers.</em></h2>
+      <p class="section-label">
+        Resultados medidos em projetos reais,<br>comparando o antes e o depois de cada entrega.
+      </p>
+    </div>
+
+    <div class="big-numbers-grid">
+      <div class="big-number reveal">
+        <strong data-target="40">40<span>%</span></strong>
+        <span class="big-context mono">GARUPA · DISCOVERY</span>
+        <p>menos tempo de cadastro de motoristas após o redesenho do onboarding.</p>
+      </div>
+
+      <div class="big-number reveal">
+        <strong data-target="25">25<span>%</span></strong>
+        <span class="big-context mono">GARUPA · PAGAMENTOS</span>
+        <p>mais conversão de pagamentos via PIX ao simplificar a jornada.</p>
+      </div>
+
+      <div class="big-number reveal">
+        <strong data-target="50">50<span>%</span></strong>
+        <span class="big-context mono">ALIARE · DESIGN SYSTEM</span>
+        <p>menos tempo para desenvolver novas funcionalidades com componentes reutilizáveis.</p>
+      </div>
+
+      <div class="big-number reveal">
+        <strong data-target="20">20<span>+</span></strong>
+        <span class="big-context mono">PESQUISA CONTÍNUA</span>
+        <p>pesquisas de UX com mais de 50 participantes em validações de produto.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- Selected Work Section -->
   <section class="section" id="work">
     <div class="section-head reveal">
@@ -1707,11 +1853,11 @@ footer {
 
         <div class="stats">
           <div class="stat">
-            <strong>14+</strong>
-            <small class="mono">YEARS IN DESIGN</small>
+            <strong>16+</strong>
+            <small class="mono">YEARS OF EXPERIENCE</small>
           </div>
           <div class="stat">
-            <strong>5+</strong>
+            <strong>6+</strong>
             <small class="mono">YEARS IN PRODUCT</small>
           </div>
           <div class="stat">
@@ -1731,7 +1877,7 @@ footer {
     <div class="section-head reveal">
       <h2 class="section-title">Career<br><em>Trajectory.</em></h2>
       <p class="section-label">
-        Mais de 14 anos de evolução contínua entre direção visual, arquitetura de interfaces, liderança de squads e engenharia de produto.
+        Mais de 16 anos de evolução contínua entre direção visual, arquitetura de interfaces, liderança de squads e engenharia de produto.
       </p>
     </div>
 
@@ -1998,6 +2144,43 @@ function initEdgeGlowButtons() {
   });
 }
 initEdgeGlowButtons();
+
+// Animated Counter for Big Numbers
+function initBigNumberCounters() {
+  const numberCards = document.querySelectorAll('.big-number strong[data-target]');
+  if (!numberCards.length) return;
+
+  const counterObserver = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const target = parseInt(el.getAttribute('data-target'), 10);
+        const suffixSpan = el.querySelector('span');
+        const suffix = suffixSpan ? suffixSpan.textContent : '';
+        if (!isNaN(target)) {
+          const duration = 1200;
+          const startTime = performance.now();
+          const step = (currentTime) => {
+            const progress = Math.min((currentTime - startTime) / duration, 1);
+            const ease = 1 - Math.pow(1 - progress, 3);
+            const val = Math.round(ease * target);
+            el.innerHTML = `${val}<span>${suffix}</span>`;
+            if (progress < 1) {
+              requestAnimationFrame(step);
+            } else {
+              el.innerHTML = `${target}<span>${suffix}</span>`;
+            }
+          };
+          requestAnimationFrame(step);
+        }
+        obs.unobserve(el);
+      }
+    });
+  }, { threshold: 0.25 });
+
+  numberCards.forEach(el => counterObserver.observe(el));
+}
+initBigNumberCounters();
 </script>
 </body>
 </html>
