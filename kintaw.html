@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#070707">
+    <title>Kintaw Kids | Case Study de Product Design | Daniel Leite</title>
+    <meta name="description" content="Case completo Kintaw Kids: estratégia, ecossistema, personas, UX/UI, fluxos, design system e plano de validação para um marketplace hiperlocal infantil.">
+    <link rel="canonical" href="https://danielleite.vercel.app/kintaw.html">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://danielleite.vercel.app/kintaw.html">
+    <meta property="og:title" content="Kintaw Kids | Case Study de Product Design">
+    <meta property="og:description" content="Estratégia, ecossistema, UX/UI e design system de um marketplace hiperlocal infantil em estágio de protótipo de MVP.">
+    <meta property="og:image" content="https://danielleite.vercel.app/assets/kintaw-cover.webp">
+    <meta property="og:image:alt" content="Telas do protótipo Kintaw Kids">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Kintaw Kids | Case Study de Product Design">
+    <meta name="twitter:description" content="Case completo de estratégia, UX/UI e design system para um marketplace hiperlocal infantil.">
+    <meta name="twitter:image" content="https://danielleite.vercel.app/assets/kintaw-cover.webp">
+
+    <link rel="icon" type="image/svg+xml" href="favicon-dl.svg">
+    <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="case-study.css">
+    <link rel="stylesheet" href="kintaw-case.css">
+</head>
+<body class="kintaw-case">
+    <a class="kintaw-skip-link" href="#conteudo">Pular para o conteúdo</a>
+    <div id="scroll-progress" aria-hidden="true"></div>
+
+    <header class="case-header">
+        <div class="header-left">
+            <a href="index.html" class="logo-wrap" aria-label="Daniel Leite Home">
+                <img src="LOGO-DL.svg" alt="Daniel Leite" class="logo-img" width="112" height="28">
+            </a>
+            <a href="index.html#work" class="header-back-pill" data-cursor="BACK" title="Voltar para a seção de projetos">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                <span>Voltar ao Portfólio</span>
+            </a>
+        </div>
+        <nav class="header-nav" aria-label="Navegação principal">
+            <a href="index.html#work" class="header-link active">WORK</a>
+            <a href="index.html#thinking" class="header-link">THINKING</a>
+            <a href="index.html#skills" class="header-link">SKILLS</a>
+            <a href="index.html#about" class="header-link">ABOUT</a>
+            <a href="index.html#career" class="header-link">CARREIRA</a>
+            <a href="index.html#contact" class="header-link header-link-cta">FALE COMIGO ↗</a>
+        </nav>
+        <button class="menu-btn" aria-label="Abrir menu de navegação" aria-controls="main-menu" aria-expanded="false" id="menu-toggle-btn">
+            <span class="mono">MENU</span><span class="menu-icon" aria-hidden="true"><i></i><i></i></span>
+        </button>
+    </header>
+
+    <div class="menu" id="main-menu" aria-hidden="true">
+        <nav aria-label="Navegação mobile">
+            <a href="index.html#work"><span class="menu-num">01</span> WORK</a>
+            <a href="index.html#thinking"><span class="menu-num">02</span> THINKING</a>
+            <a href="index.html#skills"><span class="menu-num">03</span> SKILLS</a>
+            <a href="index.html#about"><span class="menu-num">04</span> ABOUT</a>
+            <a href="index.html#career"><span class="menu-num">05</span> CARREIRA</a>
+            <a href="index.html#contact"><span class="menu-num">06</span> CONTACT</a>
+            <a href="index.html#work" class="kintaw-mobile-back">← VOLTAR AO PORTFÓLIO</a>
+        </nav>
+    </div>
+
+<main class="kintaw-canvas" id="conteudo">
+    <section class="board cover" data-export="01-capa">
+      <div class="cover-top">
+        <div class="brand" aria-label="Kintaw Kids">kintaw <small>kids</small><span class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span></div>
+        <span class="role-chip">PRODUCT DESIGN / ESTRATÉGIA, UX/UI &amp; SISTEMA</span>
+      </div>
+      <div class="cover-grid">
+        <div class="cover-copy reveal">
+          <span class="eyebrow">Case study / 2026</span>
+          <h1>O mundo começa <em>perto.</em></h1>
+          <p>Um ecossistema hiperlocal que transforma espaços do condomínio em experiências infantis seguras, descobertas pela família e viabilizadas por uma operação integrada.</p>
+          <div class="cover-tags" aria-label="Escopo do projeto">
+            <span>Marketplace B2B2C</span><span>Mobile PWA</span><span>Design system</span><span>MVP</span>
+          </div>
+        </div>
+        <div class="cover-visual" aria-label="Telas reais do produto Kintaw Kids">
+          <figure class="phone cover-home"><img src="assets/kintaw/home.webp" width="780" height="1704" alt="Home atualizada do aplicativo Kintaw Kids" fetchpriority="high"></figure>
+          <figure class="phone cover-detail"><img src="assets/kintaw/activity-detail.webp" width="780" height="1704" alt="Página atualizada de detalhes da oficina de pintura" fetchpriority="high"></figure>
+        </div>
+      </div>
+      <div class="cover-foot"><span>KINTAW KIDS / CASE DE PORTFÓLIO</span><span>RIO DE JANEIRO / BRASIL</span></div>
+    </section>
+
+    <section class="board" id="estrategia" data-export="02-contexto-papel">
+      <header class="board-head single reveal">
+        <span class="eyebrow">01 / Contexto e papel</span>
+        <h2>O case em 30 segundos , sem esconder o que ainda é hipótese.</h2>
+      </header>
+      <div class="facts reveal">
+        <div class="fact"><span>Produto</span><strong>Marketplace hiperlocal infantil</strong></div>
+        <div class="fact"><span>Superfícies</span><strong>Família, profissional e condomínio</strong></div>
+        <div class="fact"><span>Atuação</span><strong>Estratégia, UX/UI e Design System</strong></div>
+        <div class="fact"><span>Estágio</span><strong>Protótipo de MVP para validação</strong></div>
+      </div>
+      <div class="recruiter-grid">
+        <p class="statement reveal">O desafio não era desenhar apenas um app. Era projetar <em>confiança e liquidez</em> entre famílias, profissionais e condomínios.</p>
+        <ul class="scope-list reveal" aria-label="Escopo de contribuição">
+          <li><b>01</b><span><strong>Enquadramento do problema</strong><small>Conectei conveniência familiar, oferta qualificada e governança condominial numa mesma tese de produto.</small></span></li>
+          <li><b>02</b><span><strong>Arquitetura da experiência</strong><small>Modelei onboarding, descoberta, decisão, reserva e manifestação de demanda.</small></span></li>
+          <li><b>03</b><span><strong>Linguagem de interface</strong><small>Criei uma taxonomia infantil que preserva clareza para adultos e personalidade para crianças.</small></span></li>
+          <li><b>04</b><span><strong>Fundação escalável</strong><small>Organizei tokens, componentes, contraste e padrões para mobile e web.</small></span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="board mist" data-export="03-problema-decisoes">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">02 / Tese de produto</span><h2>Ativar o que já existe perto de casa.</h2></div>
+        <p class="lead">Famílias querem experiências confiáveis sem transformar cada atividade em deslocamento. Condomínios têm espaços ociosos. Profissionais precisam de demanda agrupada. A oportunidade está na orquestração.</p>
+      </header>
+      <div class="problem-layout">
+        <figure class="problem-photo reveal"><img src="assets/kintaw/context.webp" width="1200" height="896" alt="Quatro crianças pintando juntas em um jardim"><figcaption>Menos logística para os adultos. Mais mundo para as crianças.</figcaption></figure>
+        <div>
+          <div class="decision-stack reveal">
+            <article class="decision"><b>01</b><div><h3>Proximidade como proposta de valor</h3><p>A descoberta começa pelo condomínio selecionado, reduzindo incerteza sobre distância, local e acesso.</p></div></article>
+            <article class="decision"><b>02</b><div><h3>Confiança antes da conversão</h3><p>Verificação profissional, segurança, idade, materiais e capacidade aparecem antes da reserva.</p></div></article>
+            <article class="decision"><b>03</b><div><h3>Demanda também é sinal de produto</h3><p>Quando o catálogo não atende, a intenção não vira beco sem saída: alimenta a formação de uma nova turma.</p></div></article>
+          </div>
+          <div class="not-building reveal"><strong>Recorte de MVP:</strong> priorizar descoberta, confiança e manifestação de demanda; adiar rede social, gamificação e automações complexas até provar utilidade e operação.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="board dark" data-export="04-ecossistema">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">03 / Arquitetura do ecossistema</span><h2>Quatro atores. Uma unidade de valor.</h2></div>
+        <p class="lead">A oficina pronta para acontecer , profissional, espaço, faixa etária, horário, capacidade e regra de acesso , é a unidade central do produto.</p>
+      </header>
+      <div class="ecosystem reveal">
+        <article class="actor"><div class="actor-photo actor-family" role="img" aria-label="Responsável com criança em um condomínio"></div><div class="actor-copy"><b>ATOR 01</b><h3>Família</h3><p>Descobre, entende o contexto, reserva e acompanha a atividade da criança.</p></div></article>
+        <article class="actor"><div class="actor-photo actor-professional" role="img" aria-label="Educadora preparando uma oficina infantil"></div><div class="actor-copy"><b>ATOR 02</b><h3>Profissional</h3><p>Oferece disponibilidade e conduz turmas com demanda previamente sinalizada.</p></div></article>
+        <article class="actor"><div class="actor-photo actor-condo" role="img" aria-label="Gestor de condomínio em espaço de atividades"></div><div class="actor-copy"><b>ATOR 03</b><h3>Condomínio</h3><p>Disponibiliza espaços e mantém governança de agenda, acesso e comunicação.</p></div></article>
+        <article class="actor"><div class="actor-photo actor-kintaw" role="img" aria-label="Profissional de operações da Kintaw"></div><div class="actor-copy"><b>ATOR 04</b><h3>Kintaw</h3><p>Orquestra confiança, catálogo, demanda e operação entre as partes.</p></div></article>
+      </div>
+      <div class="north-star reveal"><span>North Star proposta</span><strong>Experiências realizadas</strong><small>Mais próxima do valor real do que downloads ou cadastros isolados.</small></div>
+    </section>
+
+    <section class="board mist" id="personas" data-export="05-personas">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">04 / Arquétipos comportamentais</span><h2>Duas jornadas ligadas pela mesma necessidade de previsibilidade.</h2></div>
+        <p class="lead">As personas consolidam o blueprint, os fluxos existentes e as decisões do produto. Elas orientam hipóteses de teste; não são apresentadas como participantes de pesquisa já recrutados.</p>
+      </header>
+      <div class="persona-grid reveal">
+        <article class="persona-card">
+          <div class="persona-top"><div class="persona-photo actor-family" role="img" aria-label="Renata e uma criança no jardim do condomínio"></div><div class="persona-intro"><span>Persona primária / Família</span><h3>Renata Silva, 38</h3><p>Responsável por duas crianças, mora em condomínio na Zona Sul do Rio e equilibra trabalho, escola e rotina doméstica.</p><div class="persona-tags"><i>MOBILE FIRST</i><i>4-8 ANOS</i><i>POUCO TEMPO</i></div></div></div>
+          <div class="persona-body">
+            <div class="persona-block"><b>Trabalho a realizar</b><ul><li>Encontrar uma atividade segura perto de casa</li><li>Comparar idade, horário, preço e disponibilidade</li><li>Reservar sem negociação paralela por WhatsApp</li></ul></div>
+            <div class="persona-block"><b>Objetivos</b><ul><li>Reduzir deslocamentos</li><li>Ampliar repertório e convivência das crianças</li><li>Ter clareza sobre profissional, materiais e local</li></ul></div>
+            <div class="persona-block"><b>Dores &amp; riscos</b><ul><li>Oferta fragmentada e agenda incompatível</li><li>Receio sobre segurança e credenciais</li><li>Dados pessoais solicitados cedo demais</li></ul></div>
+            <div class="persona-block"><b>Sinais de decisão</b><ul><li>Profissional verificado e condomínio confirmado</li><li>Vagas, preço final e política claros</li><li>Informações sobre alergias e cuidados</li></ul></div>
+          </div>
+        </article>
+        <article class="persona-card">
+          <div class="persona-top"><div class="persona-photo actor-professional" role="img" aria-label="Mariana preparando materiais de arte para crianças"></div><div class="persona-intro"><span>Persona secundária / Profissional</span><h3>Mariana Silva, 35</h3><p>Educadora de artes, formada em Artes Visuais pela UFRJ, com especialização Waldorf e oito anos de experiência com crianças.</p><div class="persona-tags"><i>RAIO DE 5 KM</i><i>2-12 ANOS</i><i>AGENDA FLEXÍVEL</i></div></div></div>
+          <div class="persona-body">
+            <div class="persona-block"><b>Trabalho a realizar</b><ul><li>Preencher turmas com demanda qualificada</li><li>Organizar agenda, materiais e capacidade</li><li>Conduzir atividades sem custo de espaço próprio</li></ul></div>
+            <div class="persona-block"><b>Objetivos</b><ul><li>Previsibilidade de receita e repasse</li><li>Menos esforço comercial e deslocamento</li><li>Construir reputação entre condomínios</li></ul></div>
+            <div class="persona-block"><b>Dores &amp; riscos</b><ul><li>Demanda irregular e horários ociosos</li><li>Verificação documental trabalhosa</li><li>Logística entre múltiplos condomínios</li></ul></div>
+            <div class="persona-block"><b>Sinais de decisão</b><ul><li>Quórum, endereço e remuneração antecipados</li><li>Regras de acesso e cancelamento</li><li>Agenda centralizada e comunicação objetiva</li></ul></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="board" id="diagnostico" data-export="06-swot-csd">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">05 / Enquadramento estratégico</span><h2>Clareza sobre potencial, risco e aquilo que ainda não sabemos.</h2></div>
+        <p class="lead">A leitura estratégica foi transformada em decisões de MVP e perguntas testáveis, mantendo fatos, apostas e dúvidas em camadas separadas.</p>
+      </header>
+      <div class="workshop-note reveal">Construído em conjunto com o dono do projeto</div>
+      <div class="strategy-grid reveal">
+        <article class="strategy-panel"><h3>Análise SWOT</h3><p>Leitura interna e externa para orientar prioridade, não uma promessa de resultado.</p><div class="swot-grid">
+          <div class="swot-item strength"><b>Forças</b><ul><li>Proposta hiperlocal e concreta</li><li>Espaços existentes no condomínio</li><li>Demanda como sinal de produto</li><li>Camada de confiança e Design System</li></ul></div>
+          <div class="swot-item weakness"><b>Fraquezas</b><ul><li>Cold start de múltiplos lados</li><li>Operação e verificação intensivas</li><li>Ciclo de aprovação condominial</li><li>Pagamento e backend ainda por integrar</li></ul></div>
+          <div class="swot-item opportunity"><b>Oportunidades</b><ul><li>Ativar áreas comuns ociosas</li><li>Menos trânsito e mais convivência</li><li>Diferenciação para condomínios</li><li>Programas recorrentes por demanda</li></ul></div>
+          <div class="swot-item threat"><b>Ameaças</b><ul><li>LGPD, menores e responsabilidade civil</li><li>Incidentes operacionais</li><li>Baixa liquidez inicial</li><li>Substituição por grupos informais</li></ul></div>
+        </div></article>
+        <article class="strategy-panel"><h3>Matriz CSD</h3><p>O que tratamos como certeza, suposição e dúvida na fase atual.</p><div class="csd-stack">
+          <div class="csd-item"><b>Certezas</b><ul><li>Há quatro atores e o condomínio fornece contexto e espaço.</li><li>Segurança, idade, agenda e acesso são requisitos centrais.</li><li>O MVP deve começar pequeno, com um condomínio piloto.</li></ul></div>
+          <div class="csd-item"><b>Suposições</b><ul><li>Proximidade compensa menor variedade inicial.</li><li>Verificação aumenta intenção de reserva.</li><li>“Pedir atividade” gera sinal útil para formar turmas.</li></ul></div>
+          <div class="csd-item"><b>Dúvidas</b><ul><li>Quem paga, qual take rate e qual quórum mínimo?</li><li>Quais documentos precisam vir antes da reserva?</li><li>Como funcionam aprovação, cancelamento, acesso e responsabilidade?</li></ul></div>
+        </div></article>
+      </div>
+    </section>
+
+    <section class="board dark" id="fluxo" data-export="07-fluxograma">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">06 / Fluxo do aplicativo</span><h2>O catálogo resolve o presente. A demanda ajuda a criar o próximo.</h2></div>
+        <p class="lead">O fluxo principal conecta descoberta e reserva; o fluxo de exceção transforma ausência de oferta em oportunidade operacional.</p>
+      </header>
+      <div class="flow-map reveal" aria-label="Fluxograma principal e fluxo de demanda do aplicativo Kintaw Kids">
+        <div class="flow-row">
+          <article class="flow-node"><b>Entrada</b><h3>Onboarding</h3><p>Proximidade, confiança e comunidade.</p></article>
+          <article class="flow-node"><b>Identificação</b><h3>Conta familiar</h3><p>Login ou criação de acesso.</p></article>
+          <article class="flow-node"><b>Contexto</b><h3>Responsável + condomínio + criança</h3><p>Dados progressivos para elegibilidade.</p></article>
+          <article class="flow-node accent"><b>Descoberta</b><h3>Home</h3><p>Pilares, busca, atividades e agenda.</p></article>
+          <article class="flow-node"><b>Decisão</b><h3>Detalhe</h3><p>Fit, local, profissional, preço e segurança.</p></article>
+        </div>
+        <div class="flow-bridge">Se houver oferta: reservar / Se não houver: sinalizar demanda</div>
+        <div class="flow-row">
+          <article class="flow-node accent"><b>Conversão</b><h3>Reserva</h3><p>Criança, pagamento e confirmação.</p></article>
+          <article class="flow-node"><b>Pós-reserva</b><h3>Agenda &amp; acesso</h3><p>Lembrete, instruções e acompanhamento.</p></article>
+          <article class="flow-node"><b>Exceção</b><h3>Pedir atividade</h3><p>Tema, idade, local e preferência.</p></article>
+          <article class="flow-node"><b>Orquestração</b><h3>Agrupar demanda</h3><p>Kintaw encontra quórum e profissional.</p></article>
+          <article class="flow-node"><b>Retorno</b><h3>Nova turma publicada</h3><p>Condomínio aprova e famílias são notificadas.</p></article>
+        </div>
+        <div class="flow-legend"><span><b>Fluxo direto:</b> intenção → reserva</span><span><b>Fluxo de aprendizado:</b> intenção sem oferta → nova turma</span><span><b>Pontos críticos:</b> consentimento, quórum, pagamento e regras de acesso</span></div>
+      </div>
+    </section>
+
+    <section class="board mist" data-export="08-taxonomia-pilares">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">07 / Modelo mental</span><h2>Quatro portas para responder “o que vamos fazer hoje?”</h2></div>
+        <p class="lead">A taxonomia troca categorias escolares por verbos simples, reconhecíveis e expansíveis. Cada pilar combina intenção, cor e linguagem visual.</p>
+      </header>
+      <div class="pillar-grid reveal">
+        <article class="pillar coral">
+          <div class="pillar-head"><span>Pilar 01</span><span>#FF7A45</span></div>
+          <div class="pillar-icon" aria-hidden="true"><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M13 22l7-7 3 3-7 7-3-3z"/><path d="M19 16l-1.5-8L3 4l4 15 7.5 1.5L19 16z"/><path d="M3 4l8 8"/><circle cx="12" cy="13" r="2"/></svg></div>
+          <h3>Criar</h3><p>Artes visuais, pintura criativa, experimentação de texturas, música, modelagem e imaginação.</p>
+        </article>
+        <article class="pillar teal">
+          <div class="pillar-head"><span>Pilar 02</span><span>#12B3A6</span></div>
+          <div class="pillar-icon" aria-hidden="true"><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="6" r="2.5"/><path d="M6 25l4-6 4-3-1-5 5 1 2 5 5 2"/><path d="M11 14l5 3"/></svg></div>
+          <h3>Movimentar</h3><p>Mini futebol, dança, capoeira, coordenação motora, psicomotricidade e energia ao ar livre.</p>
+        </article>
+        <article class="pillar violet">
+          <div class="pillar-head"><span>Pilar 03</span><span>#7C5CFC</span></div>
+          <div class="pillar-icon" aria-hidden="true"><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3l2.4 6.2L22 11l-5.6 1.8L14 19l-2.4-6.2L6 11l5.6-1.8L14 3z"/><path d="M23 18l1.1 2.8L27 22l-2.9 1.2L23 26l-1.1-2.8L19 22l2.9-1.2L23 18z"/></svg></div>
+          <h3>Descobrir</h3><p>Pequenos cientistas, exploração da natureza no jardim, curiosidade e raciocínio investigativo.</p>
+        </article>
+        <article class="pillar pink">
+          <div class="pillar-head"><span>Pilar 04</span><span>#FF4FA3</span></div>
+          <div class="pillar-icon" aria-hidden="true"><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M13 7a3 3 0 016 0v1h4a1 1 0 011 1v4h1a3 3 0 010 6h-1v4a1 1 0 01-1 1h-4v-1a3 3 0 00-6 0v1H9a1 1 0 01-1-1v-4H7a3 3 0 010-6h1V9a1 1 0 011-1h4V7z"/></svg></div>
+          <h3>Brincar</h3><p>Teatro infantil, contação de histórias, jogos dramáticos, recreação e novos amigos no prédio.</p>
+        </article>
+      </div>
+      <div class="activity-showcase reveal" aria-label="Componentes de atividade dos quatro pilares">
+        <article class="activity-card coral">
+          <div class="activity-head"><div class="activity-kicker"><span>4 a 7 anos</span><b>Criar</b></div><h3>Oficina de Pintura Criativa</h3></div>
+          <div class="activity-body"><div class="activity-owner"><span class="activity-avatar" aria-hidden="true">🎨</span><strong>Mariana Silva</strong><span class="activity-rating">★ 4.9</span></div><div class="activity-meta"><span><i class="activity-icon">▣</i>Sáb - 10h</span><span><i class="activity-icon">⌖</i>Salão de festas</span></div><div class="activity-capacity"><strong>Restam 4 vagas! 🔥</strong><span>8/12</span></div><div class="activity-progress"></div><div class="activity-foot"><div class="activity-price"><small>Investimento</small><strong><sup>R$</sup>50<sup>,00</sup></strong></div><a class="activity-cta" href="#detalhe">Ver detalhes&nbsp; →</a></div></div>
+        </article>
+        <article class="activity-card teal">
+          <div class="activity-head"><div class="activity-kicker"><span>4 a 7 anos</span><b>Movimentar</b></div><h3>Futebol Kids &amp; Coordenação Motora</h3></div>
+          <div class="activity-body"><div class="activity-owner"><span class="activity-avatar" aria-hidden="true">⚽</span><strong>Mariana Silva</strong><span class="activity-rating">★ 4.9</span></div><div class="activity-meta"><span><i class="activity-icon">▣</i>Sáb - 10h</span><span><i class="activity-icon">⌖</i>Salão de festas</span></div><div class="activity-capacity"><strong>Restam 4 vagas! 🔥</strong><span>8/12</span></div><div class="activity-progress"></div><div class="activity-foot"><div class="activity-price"><small>Investimento</small><strong><sup>R$</sup>50<sup>,00</sup></strong></div><a class="activity-cta" href="#detalhe">Ver detalhes&nbsp; →</a></div></div>
+        </article>
+        <article class="activity-card violet">
+          <div class="activity-head"><div class="activity-kicker"><span>4 a 7 anos</span><b>Descobrir</b></div><h3>Argila e Modelagem Lúdica</h3></div>
+          <div class="activity-body"><div class="activity-owner"><span class="activity-avatar" aria-hidden="true">🧪</span><strong>Mariana Silva</strong><span class="activity-rating">★ 4.9</span></div><div class="activity-meta"><span><i class="activity-icon">▣</i>Sáb - 10h</span><span><i class="activity-icon">⌖</i>Salão de festas</span></div><div class="activity-capacity"><strong>Restam 4 vagas! 🔥</strong><span>8/12</span></div><div class="activity-progress"></div><div class="activity-foot"><div class="activity-price"><small>Investimento</small><strong><sup>R$</sup>50<sup>,00</sup></strong></div><a class="activity-cta" href="#detalhe">Ver detalhes&nbsp; →</a></div></div>
+        </article>
+        <article class="activity-card pink">
+          <div class="activity-head"><div class="activity-kicker"><span>4 a 7 anos</span><b>Brincar</b></div><h3>Dança Criativa &amp; Consciência Corporal</h3></div>
+          <div class="activity-body"><div class="activity-owner"><span class="activity-avatar" aria-hidden="true">🎭</span><strong>Mariana Silva</strong><span class="activity-rating">★ 4.9</span></div><div class="activity-meta"><span><i class="activity-icon">▣</i>Sáb - 10h</span><span><i class="activity-icon">⌖</i>Salão de festas</span></div><div class="activity-capacity"><strong>Restam 4 vagas! 🔥</strong><span>8/12</span></div><div class="activity-progress"></div><div class="activity-foot"><div class="activity-price"><small>Investimento</small><strong><sup>R$</sup>50<sup>,00</sup></strong></div><a class="activity-cta" href="#detalhe">Ver detalhes&nbsp; →</a></div></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="board" id="produto" data-export="09-onboarding">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">08 / Primeiro contato</span><h2>Explicar valor antes de pedir dados.</h2></div>
+        <p class="lead">O onboarding apresenta, em sequência, proximidade, confiança e pertencimento. Três argumentos para reduzir a dúvida inicial antes do cadastro.</p>
+      </header>
+      <div class="screens-3 reveal">
+        <figure class="screen-card"><div class="screen-shell"><img src="assets/kintaw/onboarding-1.webp" width="390" height="884" alt="Onboarding: atividades no quintal do condomínio" loading="lazy"></div><figcaption class="screen-note"><strong>Benefício imediato</strong><p>Transforma o endereço em uma vantagem prática: experiências sem deslocamento.</p></figcaption></figure>
+        <figure class="screen-card"><div class="screen-shell"><img src="assets/kintaw/onboarding-2.webp" width="390" height="884" alt="Onboarding: educadores e instrutores auditados" loading="lazy"></div><figcaption class="screen-note"><strong>Risco reduzido</strong><p>Antecipa o principal receio da família antes de apresentar o catálogo.</p></figcaption></figure>
+        <figure class="screen-card"><div class="screen-shell"><img src="assets/kintaw/onboarding-3.webp" width="390" height="884" alt="Onboarding: quatro pilares e comunidade" loading="lazy"></div><figcaption class="screen-note"><strong>Amplitude com estrutura</strong><p>Mostra variedade sem recorrer a uma lista extensa de categorias.</p></figcaption></figure>
+      </div>
+    </section>
+
+    <section class="board mist" data-export="10-cadastro-progressivo">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">09 / Cadastro</span><h2>Uma conta familiar ligada ao lugar e ao cuidado.</h2></div>
+        <p class="lead">O fluxo organiza responsável, condomínio e criança em etapas explícitas. A estrutura prepara personalização, elegibilidade e segurança , mas também introduz fricção que precisa ser testada.</p>
+      </header>
+      <div class="registration-grid reveal">
+        <figure class="screen-card"><div class="screen-shell"><img src="assets/kintaw/login.webp" width="780" height="2234" alt="Tela atualizada de login da Kintaw Kids" loading="lazy"></div></figure>
+        <figure class="screen-card"><div class="screen-shell"><img src="assets/kintaw/register-responsible.webp" width="780" height="1704" alt="Tela atualizada de cadastro dos dados do responsável" loading="lazy"></div></figure>
+        <figure class="screen-card"><div class="screen-shell"><img src="assets/kintaw/register-condo.webp" width="780" height="1704" alt="Tela atualizada de vínculo da família com o condomínio" loading="lazy"></div></figure>
+        <figure class="screen-card"><div class="screen-shell"><img src="assets/kintaw/register-child.webp" width="780" height="1886" alt="Tela atualizada de perfil, interesses e cuidados da criança" loading="lazy"></div></figure>
+      </div>
+      <div class="risk-bar reveal"><b>Risco a validar</b><p>CPF, endereço e dados da criança aparecem cedo. O teste crítico é descobrir quais dados são indispensáveis antes da primeira reserva e quais podem ser solicitados no momento de maior intenção.</p></div>
+    </section>
+
+    <section class="board dark" id="home" data-export="11-descoberta-home">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">10 / Descoberta</span><h2>Da pergunta aberta a uma escolha contextual.</h2></div>
+        <p class="lead">A Home combina localização, quatro pilares, disponibilidade, confiança e uma saída quando o catálogo não resolve.</p>
+      </header>
+      <div class="core-grid">
+        <figure class="app-phone home-prototype reveal" aria-label="Home do aplicativo Kintaw Kids">
+          <div class="app-surface image-screen"><img src="assets/kintaw/home.webp" width="780" height="1704" alt="Tela completa da Home do Kintaw Kids" loading="lazy"></div>
+        </figure>
+        <div class="core-copy reveal">
+          <article class="decision"><b>01</b><div><h3>Localização no primeiro plano</h3><p>O condomínio ativo estabelece relevância e reduz a necessidade de filtros complexos.</p></div></article>
+          <article class="decision"><b>02</b><div><h3>Escaneabilidade antes da densidade</h3><p>Pilares, idade, ocupação, profissional e preço permitem comparar sem abrir cada item.</p></div></article>
+          <article class="decision"><b>03</b><div><h3>Escassez com contexto</h3><p>Vagas restantes aparecem junto à capacidade total; o objetivo é informar, não pressionar sem base.</p></div></article>
+          <article class="decision"><b>04</b><div><h3>Catálogo sem dead end</h3><p>“Pedir atividade” captura uma necessidade que ainda não encontrou oferta.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="board" id="detalhe" data-export="12-decisao-detalhe">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">11 / Decisão</span><h2>Confiança não é um selo. É uma sequência de respostas.</h2></div>
+        <p class="lead">A página de atividade organiza as dúvidas que antecedem a reserva: para quem é, quando acontece, onde, com quem, o que inclui e como funciona a segurança.</p>
+      </header>
+      <div class="detail-grid">
+        <figure class="app-phone detail-prototype reveal" aria-label="Detalhes da atividade no aplicativo Kintaw Kids">
+          <div class="app-surface image-screen"><img src="assets/kintaw/activity-detail.webp" width="780" height="1704" alt="Tela completa de detalhes da atividade" loading="lazy"></div>
+        </figure>
+        <div class="detail-copy reveal">
+          <article class="signal-card"><span>Camada 01</span><h3>Fit da atividade</h3><p>Idade, duração, proposta pedagógica e benefícios ajudam a família a julgar adequação.</p></article>
+          <article class="signal-card"><span>Camada 02</span><h3>Previsibilidade operacional</h3><p>Data, horário, local, ocupação e materiais inclusos reduzem perguntas antes da compra.</p></article>
+          <article class="signal-card"><span>Camada 03</span><h3>Confiança na pessoa</h3><p>Perfil, experiência e status de verificação dão contexto ao profissional responsável.</p></article>
+          <article class="signal-card"><span>Camada 04</span><h3>Próxima ação inequívoca</h3><p>Investimento e CTA permanecem no fechamento da leitura longa, sem disputar atenção com o conteúdo.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="board dark" data-export="13-motor-demanda">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">12 / Diferencial de produto</span><h2>Quando a oferta não existe, a intenção vira sinal.</h2></div>
+        <p class="lead">“Pedir atividade” transforma uma busca frustrada em dado acionável para formar turmas e orientar aquisição de profissionais.</p>
+      </header>
+      <div class="demand-layout">
+        <section class="demand-builder reveal" aria-label="Componente para solicitar uma atividade">
+          <header class="demand-builder-head"><span>Pedido inteligente</span><h3>Qual atividade está faltando por perto?</h3><p>Descreva a necessidade da sua família. Quando houver interesse suficiente no condomínio, a Kintaw busca o profissional certo.</p></header>
+          <div class="demand-form">
+            <div class="demand-field"><label>Atividade desejada</label><div class="demand-input">Ex.: iniciação musical, judô, robótica…</div></div>
+            <div class="demand-field"><label>Faixa etária</label><div class="demand-options"><span>2 a 4 anos</span><span class="selected">5 a 7 anos</span><span>8 a 10 anos</span></div></div>
+            <div class="demand-field"><label>Melhor horário</label><div class="demand-options"><span>Manhã</span><span>Tarde</span><span class="selected">Fim de semana</span></div></div>
+            <div class="demand-field"><label>O que seria importante?</label><div class="demand-input">Conte um objetivo, cuidado especial ou preferência.</div></div>
+            <div class="demand-submit">Enviar pedido para a comunidade →</div>
+          </div>
+          <div class="demand-result"><div><b>18</b><span>famílias interessadas</span></div><div><b>7</b><span>pedidos semelhantes</span></div><div><b>1</b><span>nova turma potencial</span></div></div>
+        </section>
+        <div class="hypothesis reveal">
+          <article><span>Entrada</span><h3>Linguagem natural</h3><p>A família descreve atividade, idade e preferência de horário sem aprender filtros internos.</p></article>
+          <article><span>Estruturação</span><h3>Necessidades comparáveis</h3><p>O sistema organiza os pedidos por tema, faixa etária, local e disponibilidade.</p></article>
+          <article><span>Agrupamento</span><h3>Demanda coletiva</h3><p>Pedidos próximos revelam oportunidade de turma , hipótese que depende de operação, consentimento e volume.</p></article>
+          <article><span>Validação</span><h3>O principal teste</h3><p>Descobrir se a família percebe esse fluxo abaixo do catálogo e entende o que acontece depois do envio.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="board mist" id="design-system" data-export="14-design-system">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">13 / Fundação visual</span><h2>Consistência para crescer. Personalidade para conectar.</h2></div>
+        <p class="lead">O sistema equilibra energia infantil e leitura adulta, com cores semânticas, tipografia de alta legibilidade e componentes pensados para diferentes superfícies.</p>
+      </header>
+      <div class="system-grid reveal">
+        <article class="system-card"><h3>Paleta por intenção</h3><p>O azul ancora ações e confiança. As quatro cores dos pilares ajudam orientação sem depender apenas do texto.</p><div class="swatches"><div class="swatch">AÇÃO</div><div class="swatch">CRIAR</div><div class="swatch">MOVER</div><div class="swatch">DESCOBRIR</div><div class="swatch">BRINCAR</div></div></article>
+        <article class="system-card"><h3>Hierarquia tipográfica</h3><p>Outfit dá identidade aos títulos; Plus Jakarta Sans sustenta conteúdo, formulários e dados.</p><div class="type-samples"><div class="type-row"><b>O mundo começa perto.</b><span>DISPLAY / 48</span></div><div class="type-row"><b>Oficina de pintura</b><span>TÍTULO / 24</span></div><div class="type-row"><b>Informação clara para decidir.</b><span>CORPO / 16</span></div></div></article>
+      </div>
+      <div class="token-rails reveal">
+        <div class="token"><b>Grid</b><strong>4 px</strong><small>Escala consistente para espaçamento e alinhamento.</small></div>
+        <div class="token"><b>Touch target</b><strong>≥ 44 px</strong><small>Controles dimensionados para interação por toque.</small></div>
+        <div class="token"><b>Raios</b><strong>10 → pill</strong><small>10, 14, 18, 24 e cápsula conforme hierarquia.</small></div>
+        <div class="token"><b>Motion</b><strong>150 / 220 / 340</strong><small>Feedback, transição e mudança de contexto em ms.</small></div>
+      </div>
+      <div class="checks reveal">
+        <div class="check"><b>Contraste</b><span>Azul primário #0A6FE8 atinge 4,72:1 sobre branco.</span></div>
+        <div class="check"><b>Pilares acessíveis</b><span>Tints recebem texto escuro próprio; branco não é usado sobre a cor-base.</span></div>
+        <div class="check"><b>Semântica</b><span>Estados combinam cor, texto e hierarquia , nunca cor isolada.</span></div>
+      </div>
+    </section>
+
+    <section class="board dark" id="componentes" data-export="15-componentes-design-system">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">14 / Biblioteca de componentes</span><h2>O sistema especifica comportamento, não apenas aparência.</h2></div>
+        <p class="lead">Estados, hierarquia e conteúdo foram documentados para reduzir decisões repetidas entre cadastro, catálogo, reserva e operação.</p>
+      </header>
+      <div class="component-gallery reveal">
+        <article class="component-sheet">
+          <header class="component-sheet-head"><h3>Botões &amp; ações</h3><p>Hierarquia explícita, rótulos orientados a resultado e alvos de toque consistentes.</p></header>
+          <div class="demo-group"><span class="demo-label">Hierarquia</span><div class="ds-button-row"><span class="ds-button">Reservar vaga →</span><span class="ds-button outline">Ver detalhes</span><span class="ds-button ghost">Voltar</span></div></div>
+          <div class="demo-group"><span class="demo-label">Semântica e estado</span><div class="ds-button-row"><span class="ds-button success">Confirmado ✓</span><span class="ds-button danger">Cancelar</span><span class="ds-button disabled">Indisponível</span><span class="ds-icon-button">♡</span></div></div>
+          <div class="demo-group"><span class="demo-label">Filtros</span><div class="ds-button-row"><span class="ds-chip active">✓ 4 a 7 anos</span><span class="ds-chip">Fim de semana</span><span class="ds-chip">Até R$ 60</span></div></div>
+          <div class="ds-notice">Um único CTA primário por contexto. Hover, pressed, focus, loading e disabled preservam o mesmo tamanho.</div>
+        </article>
+        <article class="component-sheet">
+          <header class="component-sheet-head"><h3>Formulários</h3><p>Campos, seleções e etapas com ajuda contextual, feedback e redução de erro.</p></header>
+          <div class="ds-field-grid">
+            <div class="ds-field"><label>Nome completo</label><div class="ds-input">Daniel Silva</div><span class="ds-helper">Como aparece no condomínio.</span></div>
+            <div class="ds-field"><label for="ds-condominio">Condomínio</label><div class="ds-select-wrap"><select id="ds-condominio" class="ds-select"><option selected>Solar das Flores</option><option>Jardins do Parque</option><option>Vila das Árvores</option></select></div><span class="ds-helper">Seleção validada pela portaria.</span></div>
+            <div class="ds-field"><label>WhatsApp</label><div class="ds-input error">(11) 9888</div><span class="ds-helper">Informe um número válido.</span></div>
+            <div class="ds-field"><label>Código de convite</label><div class="ds-input disabled">Opcional</div><span class="ds-helper">Disponível após validação.</span></div>
+          </div>
+          <div class="ds-check"><i>✓</i><span>Li e concordo com os termos de participação.</span></div>
+          <div class="ds-stepper"><div class="ds-step done"><i>✓</i><span>Responsável</span></div><div class="ds-step active"><i>2</i><span>Condomínio</span></div><div class="ds-step"><i>3</i><span>Criança</span></div></div>
+        </article>
+        <article class="component-sheet">
+          <header class="component-sheet-head"><h3>Status &amp; portas</h3><p>Vocabulário semântico consistente e quatro portas que combinam cor, ícone e texto.</p></header>
+          <div class="demo-group"><span class="demo-label">Status operacionais</span><div class="ds-badge-row"><span class="ds-badge success">● Confirmada</span><span class="ds-badge warning">◷ Aguardando</span><span class="ds-badge info">✓ Verificada</span><span class="ds-badge danger">! Últimas vagas</span></div></div>
+          <div class="ds-pillar-grid"><div class="ds-pillar-tile criar"><b>✎ Criar</b><span>Artes, música e imaginação</span></div><div class="ds-pillar-tile mover"><b>⚽ Movimentar</b><span>Esportes e coordenação</span></div><div class="ds-pillar-tile descobrir"><b>✦ Descobrir</b><span>Ciência e natureza</span></div><div class="ds-pillar-tile brincar"><b>✿ Brincar</b><span>Teatro e convivência</span></div></div>
+          <div class="demo-group"><span class="demo-label">Ocupação / 8 de 12 vagas</span><div class="ds-progress"></div></div>
+        </article>
+        <article class="component-sheet">
+          <header class="component-sheet-head"><h3>Cartões &amp; dados</h3><p>Resumos operacionais claros para atividade, profissional, preço e comunidade.</p></header>
+          <div class="ds-stat-grid"><div class="ds-stat"><b>18</b><span>famílias interessadas</span></div><div class="ds-stat"><b>4,9</b><span>avaliação média</span></div><div class="ds-stat"><b>8/12</b><span>vagas preenchidas</span></div></div>
+          <div class="ds-list-row"><i>◷</i><div><strong>Sábado / 10h</strong><span>60 minutos</span></div><b>Agenda</b></div>
+          <div class="ds-list-row"><i>⌖</i><div><strong>Salão de festas</strong><span>Condomínio Solar das Flores</span></div><b>Mapa</b></div>
+          <div class="ds-list-row"><i>R$</i><div><strong>R$ 50,00</strong><span>Materiais inclusos</span></div><b>Resumo</b></div>
+          <div class="ds-notice">Densidade controlada: cada cartão responde a uma pergunta e mantém ação, estado e conteúdo previsíveis.</div>
+        </article>
+      </div>
+      <div class="component-principles reveal">
+        <article><b>Ação</b><p>O texto do botão descreve o resultado: reservar, confirmar ou enviar pedido.</p></article>
+        <article><b>Estado</b><p>Default, hover, pressed, focus, disabled e loading fazem parte do componente.</p></article>
+        <article><b>Conteúdo</b><p>Datas, vagas e status usam formatos previsíveis em toda a experiência.</p></article>
+        <article><b>Responsividade</b><p>Mobile abaixo de 600 px; tablet até 899 px; desktop a partir de 900 px.</p></article>
+      </div>
+    </section>
+
+    <section class="board" id="validacao" data-export="16-validacao">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">15 / Próxima etapa</span><h2>O design termina onde o aprendizado começa.</h2></div>
+        <p class="lead">Antes de ampliar escopo, eu testaria as três incertezas que sustentam a proposta de valor e a operação.</p>
+      </header>
+      <div class="validation-grid reveal">
+        <article class="experiment"><span>Experimento 01</span><h3>Valor antes do cadastro</h3><p>Teste moderado com responsáveis percorrendo onboarding, cadastro e primeira atividade.</p><ul><li>Compreensão da proposta</li><li>Abandono por etapa</li><li>Campos percebidos como invasivos</li></ul></article>
+        <article class="experiment"><span>Experimento 02</span><h3>Confiança para reservar</h3><p>Entrevista + protótipo para identificar quais evidências realmente reduzem risco.</p><ul><li>Informações buscadas</li><li>Dúvidas antes do pagamento</li><li>Clareza sobre responsabilidade</li></ul></article>
+        <article class="experiment"><span>Experimento 03</span><h3>Demanda sem oferta</h3><p>Teste A/B de posição e mensagem do fluxo “Pedir atividade” na Home.</p><ul><li>Descoberta da funcionalidade</li><li>Pedidos concluídos</li><li>Expectativa sobre o retorno</li></ul></article>
+      </div>
+      <div class="what-i-learned reveal"><h3>Decisão de senioridade</h3><p>O próximo investimento não deveria ser mais tela. Deveria ser evidência: provar que famílias completam o primeiro fluxo, que confiança é suficiente para reservar e que a manifestação de demanda gera um sinal operacional útil.</p></div>
+    </section>
+
+    <section class="board dark closing" data-export="17-encerramento">
+      <div class="closing-inner reveal">
+        <div class="brand" aria-label="Kintaw Kids">kintaw <small>kids</small></div>
+        <h2>Projetar perto é enxergar o sistema inteiro.</h2>
+        <p>Um case de Product Design que conecta estratégia, arquitetura da experiência, interface, confiança e validação , sem confundir hipótese com resultado.</p>
+        <div class="credit"><img class="credit-avatar" src="assets/kintaw/daniel-avatar.webp" width="1088" height="1088" loading="lazy" decoding="async" alt="Daniel Leite"><span><strong>Daniel Leite - Senior Product Designer / Design Engineer</strong><small>Estratégia de produto / UX/UI / Design System / Prototipação</small></span></div>
+      </div>
+    </section>
+  </main>
+
+
+    <footer class="case-footer-nav kintaw-portfolio-nav">
+        <a href="index.html#work" class="edge-glow-btn"><span class="edge-glow-inner"><svg class="kintaw-footer-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg><span>Voltar ao Portfólio</span></span></a>
+        <a href="recruitersys.html" class="next-project-card"><span class="next-project-label mono">PRÓXIMO CASE</span><span class="next-project-title">RecruiterSys <span class="arrow">→</span></span></a>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="case-study.js"></script>
+</body>
+</html>
+

@@ -8,12 +8,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const isOpen = menu.classList.toggle('open');
       document.body.classList.toggle('menu-open', isOpen);
       menu.setAttribute('aria-hidden', !isOpen);
+      menuBtn.setAttribute('aria-expanded', String(isOpen));
     });
     menu.querySelectorAll('a').forEach(a => {
       a.addEventListener('click', () => {
         menu.classList.remove('open');
         document.body.classList.remove('menu-open');
         menu.setAttribute('aria-hidden', 'true');
+        menuBtn.setAttribute('aria-expanded', 'false');
       });
     });
   }

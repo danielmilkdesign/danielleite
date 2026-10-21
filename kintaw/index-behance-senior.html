@@ -1,0 +1,1268 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Kintaw Kids — case de Product Design Senior para Behance.">
+  <title>Kintaw Kids — Case de Product Design Senior</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #0877f9;
+      --blue-dark: #0759bd;
+      --blue-soft: #eaf4ff;
+      --ink: #101827;
+      --ink-2: #263247;
+      --muted: #637087;
+      --line: #dce3ed;
+      --paper: #ffffff;
+      --mist: #f4f7fb;
+      --night: #0c1424;
+      --coral: #ff6e3d;
+      --coral-soft: #ffede6;
+      --teal: #0cae9e;
+      --teal-soft: #e3f8f5;
+      --violet: #7657ef;
+      --violet-soft: #eeeaff;
+      --pink: #eb3f91;
+      --pink-soft: #ffe8f3;
+      --green: #087e4c;
+      --green-soft: #e6f7ef;
+      --amber: #a95a00;
+      --amber-soft: #fff1dc;
+      --display: "Outfit", Arial, sans-serif;
+      --body: "Plus Jakarta Sans", Arial, sans-serif;
+      --mono: "Outfit", Arial, sans-serif;
+      --text-min: 16px;
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --control-height: 48px;
+      --radius-control: 14px;
+      --radius-card: 20px;
+      --surface-app: #f8fafc;
+      --surface-card: #ffffff;
+      --text-app: #12172b;
+      --text-app-muted: #667085;
+      --shadow: 0 24px 60px rgba(20, 45, 80, .13), 0 3px 12px rgba(20, 45, 80, .06);
+      --device-shadow: 0 35px 70px rgba(8, 35, 77, .23), 0 8px 24px rgba(8, 35, 77, .12);
+    }
+
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    html { scroll-behavior: smooth; background: #dfe5ed; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #dfe5ed;
+      font-family: var(--body);
+      font-size: var(--text-min);
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    button, a { font: inherit; }
+    a { color: inherit; }
+    h1, h2, h3, h4, p, figure, blockquote, ul { margin: 0; }
+    h1, h2, h3, h4 { font-family: var(--display); text-wrap: balance; }
+    p { text-wrap: pretty; }
+    :focus-visible { outline: 3px solid #ffbd68; outline-offset: 4px; }
+    ::selection { color: var(--night); background: #ffda8e; }
+
+    .skip-link {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 9999;
+      transform: translateY(-140%);
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: white;
+      background: var(--night);
+    }
+    .skip-link:focus { transform: translateY(0); }
+
+    .canvas {
+      width: min(1440px, 100%);
+      margin-inline: auto;
+      background: white;
+      box-shadow: 0 0 80px rgba(18, 31, 49, .24);
+    }
+    .board {
+      position: relative;
+      overflow: hidden;
+      min-height: 760px;
+      padding: 104px 96px;
+      border-bottom: 1px solid var(--line);
+      isolation: isolate;
+    }
+    .board.compact { min-height: auto; }
+    .board.dark { color: white; background: var(--night); border-color: rgba(255,255,255,.08); }
+    .board.mist { background: var(--mist); }
+    .board.blue { color: white; background: var(--blue); border-color: rgba(255,255,255,.18); }
+    .board-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, .62fr);
+      gap: 70px;
+      align-items: end;
+      margin-bottom: 56px;
+    }
+    .board-head.single { display: block; max-width: 930px; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 20px;
+      color: var(--blue-dark);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .eyebrow::before { content: ""; width: 26px; height: 2px; background: currentColor; }
+    .dark .eyebrow, .blue .eyebrow { color: #b8d9ff; }
+    h2 {
+      max-width: 860px;
+      font-size: clamp(42px, 4vw, 64px);
+      line-height: 1.02;
+      letter-spacing: -.045em;
+    }
+    .lead { max-width: 67ch; color: var(--muted); font-size: 18px; line-height: 1.7; }
+    .dark .lead { color: #aab8cf; }
+    .blue .lead { color: rgba(255,255,255,.82); }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font: 800 34px/1 var(--display);
+      letter-spacing: -.045em;
+    }
+    .brand small {
+      border-radius: 7px;
+      padding: 5px 8px;
+      color: #9a421b;
+      background: #ffe5d8;
+      font-size: 13px;
+      letter-spacing: 0;
+    }
+    .dots { display: inline-flex; gap: 4px; }
+    .dots i { width: 6px; height: 6px; border-radius: 50%; background: var(--coral); }
+    .dots i:nth-child(2) { background: #2bd0b5; }
+    .dots i:nth-child(3) { background: #a28aff; }
+    .dots i:nth-child(4) { background: #ff74b8; }
+
+    .cover {
+      min-height: 960px;
+      padding: 54px 72px 48px;
+      background:
+        radial-gradient(circle at 82% 5%, rgba(255,255,255,.22), transparent 30%),
+        linear-gradient(135deg, #075dc7 0%, #0882ff 58%, #0b68da 100%);
+    }
+    .cover::after {
+      content: "";
+      position: absolute;
+      right: -140px;
+      bottom: -260px;
+      width: 720px;
+      height: 720px;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 50%;
+      box-shadow: 0 0 0 56px rgba(255,255,255,.035), 0 0 0 112px rgba(255,255,255,.025);
+      z-index: -1;
+    }
+    .cover-top, .cover-foot { display: flex; justify-content: space-between; align-items: center; }
+    .cover-top { padding-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,.22); }
+    .role-chip {
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 999px;
+      padding: 10px 16px;
+      color: rgba(255,255,255,.92);
+      background: rgba(7, 43, 92, .25);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .04em;
+    }
+    .cover-grid {
+      display: grid;
+      grid-template-columns: .88fr 1.12fr;
+      gap: 44px;
+      align-items: center;
+      min-height: 760px;
+    }
+    .cover-copy { position: relative; z-index: 4; }
+    .cover-copy .eyebrow { color: #d8ebff; }
+    .cover h1 {
+      max-width: 610px;
+      color: white;
+      font-size: clamp(74px, 7vw, 108px);
+      line-height: .92;
+      letter-spacing: -.065em;
+    }
+    .cover h1 em { color: #ffdf8e; font-style: normal; }
+    .cover-copy > p {
+      max-width: 570px;
+      margin-top: 28px;
+      color: rgba(255,255,255,.86);
+      font-size: 18px;
+      line-height: 1.65;
+    }
+    .cover-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 34px; }
+    .cover-tags span {
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 999px;
+      padding: 8px 12px;
+      color: rgba(255,255,255,.9);
+      background: rgba(255,255,255,.1);
+      font: 500 10px var(--mono);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+    .cover-visual { position: relative; min-height: 700px; }
+    .phone {
+      position: absolute;
+      width: 292px;
+      overflow: hidden;
+      border: 9px solid #20242c;
+      border-radius: 48px;
+      background: #f8fafc;
+      box-shadow: var(--device-shadow);
+    }
+    .phone img { display: block; width: 100%; height: auto; object-fit: contain; }
+    .cover-home { top: 86px; left: 32px; transform: rotate(-8deg); }
+    .cover-detail { top: 26px; right: 10px; transform: rotate(7deg); }
+    .cover-foot {
+      padding-top: 22px;
+      border-top: 1px solid rgba(255,255,255,.22);
+      color: rgba(255,255,255,.72);
+      font-size: 11px;
+      letter-spacing: .03em;
+    }
+
+    .facts {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-block: 1px solid var(--line);
+      margin-bottom: 68px;
+    }
+    .fact { padding: 24px 20px 26px 0; }
+    .fact + .fact { border-left: 1px solid var(--line); padding-left: 22px; }
+    .fact span { display: block; color: var(--muted); font: 500 10px var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+    .fact strong { display: block; margin-top: 10px; font-family: var(--display); font-size: 18px; line-height: 1.35; }
+    .recruiter-grid { display: grid; grid-template-columns: 1.08fr .92fr; gap: 56px; align-items: start; }
+    .statement { font: 600 clamp(34px, 3.2vw, 50px)/1.1 var(--display); letter-spacing: -.035em; }
+    .statement em { color: var(--blue); font-style: normal; }
+    .scope-list { display: grid; gap: 14px; list-style: none; padding: 0; }
+    .scope-list li { display: grid; grid-template-columns: 42px 1fr; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+    .scope-list b { color: var(--blue); font: 500 12px var(--mono); }
+    .scope-list strong { display: block; font-size: 14px; }
+    .scope-list small { display: block; margin-top: 5px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .truth-note {
+      margin-top: 50px;
+      padding: 22px 24px;
+      border: 1px solid #bdd9ff;
+      border-radius: 16px;
+      color: #184a83;
+      background: var(--blue-soft);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+    .truth-note strong { color: var(--blue-dark); }
+
+    .problem-layout { display: grid; grid-template-columns: .9fr 1.1fr; gap: 56px; align-items: stretch; }
+    .problem-photo { position: relative; min-height: 560px; overflow: hidden; border-radius: 30px; box-shadow: var(--shadow); }
+    .problem-photo img { width: 100%; height: 100%; object-fit: cover; }
+    .problem-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(9,18,32,.72), transparent 60%); }
+    .problem-photo figcaption { position: absolute; z-index: 2; left: 30px; right: 30px; bottom: 26px; color: white; font: 600 24px/1.25 var(--display); }
+    .decision-stack { display: grid; gap: 14px; }
+    .decision {
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      gap: 18px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: white;
+    }
+    .decision > b { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px; color: white; background: var(--blue); font: 500 12px var(--mono); }
+    .decision h3 { font-size: 20px; }
+    .decision p { margin-top: 5px; color: var(--muted); font-size: 13px; line-height: 1.65; }
+    .not-building { margin-top: 18px; padding: 18px 22px; border-radius: 16px; color: #73400b; background: var(--amber-soft); font-size: 12px; line-height: 1.65; }
+
+    .ecosystem { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .actor {
+      min-height: 390px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 22px;
+      background: rgba(255,255,255,.055);
+    }
+    .actor-photo { height: 172px; background-image: url("assets/persona-actors-contact-sheet.png"); background-repeat: no-repeat; background-size: 200% auto; }
+    .actor-family { background-position: 0 0; }
+    .actor-professional { background-position: 100% 0; }
+    .actor-condo { background-position: 0 71%; }
+    .actor-kintaw { background-position: 100% 71%; }
+    .actor-copy { padding: 22px 24px 26px; }
+    .actor b { color: #79baff; font: 500 11px var(--mono); letter-spacing: .05em; }
+    .actor h3 { margin-top: 22px; font-size: 28px; }
+    .actor p { margin-top: 10px; color: #aab8cf; font-size: 13px; line-height: 1.7; }
+    .north-star {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 24px;
+      align-items: center;
+      margin-top: 26px;
+      padding: 22px 26px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 18px;
+      background: #111d31;
+    }
+    .north-star > span { color: #79baff; font: 500 10px var(--mono); text-transform: uppercase; letter-spacing: .06em; }
+    .north-star strong { font: 600 24px var(--display); }
+    .north-star small { color: #8999b3; font-size: 11px; }
+
+    .persona-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .persona-card { overflow: hidden; border: 1px solid var(--line); border-radius: 26px; background: white; box-shadow: var(--shadow); }
+    .persona-top { display: grid; grid-template-columns: 190px 1fr; min-height: 220px; }
+    .persona-photo { min-height: 220px; background-image: url("assets/persona-actors-contact-sheet.png"); background-repeat: no-repeat; background-size: auto 200%; }
+    .persona-photo.actor-family { background-position: 6% 0; }
+    .persona-photo.actor-professional { background-position: 94% 0; }
+    .persona-intro { padding: 30px 28px; }
+    .persona-intro > span { color: var(--blue-dark); font: 500 10px var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+    .persona-intro h3 { margin-top: 13px; font-size: 31px; }
+    .persona-intro p { margin-top: 8px; color: var(--muted); font-size: 13px; line-height: 1.65; }
+    .persona-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 16px; }
+    .persona-tags i { padding: 6px 9px; border-radius: 999px; color: #335272; background: var(--blue-soft); font: 500 9px var(--mono); font-style: normal; }
+    .persona-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--line); }
+    .persona-block { min-height: 180px; padding: 24px 26px; }
+    .persona-block:nth-child(odd) { border-right: 1px solid var(--line); }
+    .persona-block:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+    .persona-block b { color: var(--blue-dark); font: 500 10px var(--mono); letter-spacing: .05em; text-transform: uppercase; }
+    .persona-block ul { margin-top: 12px; padding-left: 17px; color: var(--ink-2); font-size: 12px; line-height: 1.72; }
+    .persona-note { margin-top: 26px; padding: 18px 22px; border: 1px solid #bdd9ff; border-radius: 16px; color: #315b89; background: var(--blue-soft); font-size: 12px; line-height: 1.65; }
+
+    .workshop-note { display: inline-flex; align-items: center; gap: 9px; margin-bottom: 28px; padding: 9px 12px; border-radius: 999px; color: #094f91; background: #ddecff; font: 600 10px var(--mono); letter-spacing: .03em; text-transform: uppercase; }
+    .workshop-note::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--blue); }
+    .strategy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; align-items: stretch; }
+    .strategy-panel { padding: 28px; border: 1px solid var(--line); border-radius: 24px; background: white; box-shadow: var(--shadow); }
+    .strategy-panel h3 { font-size: 29px; }
+    .strategy-panel > p { margin-top: 7px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 24px; }
+    .swot-item { min-height: 190px; padding: 19px; border-radius: 16px; }
+    .swot-item b { font: 600 11px var(--mono); letter-spacing: .04em; text-transform: uppercase; }
+    .swot-item ul { margin-top: 11px; padding-left: 16px; font-size: 11px; line-height: 1.62; }
+    .strength { color: #126241; background: var(--green-soft); }
+    .weakness { color: #8a4a00; background: var(--amber-soft); }
+    .opportunity { color: #174f88; background: var(--blue-soft); }
+    .threat { color: #9a3150; background: #fff0f4; }
+    .csd-stack { display: grid; gap: 10px; margin-top: 24px; }
+    .csd-item { display: grid; grid-template-columns: 112px 1fr; gap: 16px; padding: 18px; border: 1px solid var(--line); border-radius: 16px; }
+    .csd-item b { color: var(--blue-dark); font: 600 10px var(--mono); letter-spacing: .04em; text-transform: uppercase; }
+    .csd-item ul { padding-left: 16px; color: var(--ink-2); font-size: 11px; line-height: 1.62; }
+
+    .flow-map { padding: 34px; border: 1px solid rgba(255,255,255,.12); border-radius: 26px; background: rgba(255,255,255,.045); }
+    .flow-row { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 34px; align-items: stretch; }
+    .flow-row + .flow-row { margin-top: 64px; }
+    .flow-node { position: relative; min-height: 132px; padding: 20px; border: 1px solid rgba(255,255,255,.14); border-radius: 17px; background: #142238; }
+    .flow-node::after { content: "→"; position: absolute; top: 50%; right: -26px; transform: translateY(-50%); color: #6faef1; font: 500 22px var(--mono); }
+    .flow-node:last-child::after { display: none; }
+    .flow-node b { color: #80c0ff; font: 500 9px var(--mono); letter-spacing: .05em; text-transform: uppercase; }
+    .flow-node h3 { margin-top: 12px; font-size: 18px; }
+    .flow-node p { margin-top: 7px; color: #aab8cf; font-size: 10px; line-height: 1.55; }
+    .flow-node.accent { color: white; border-color: #3295ff; background: #0a6fe8; }
+    .flow-node.accent b, .flow-node.accent p { color: rgba(255,255,255,.82); }
+    .flow-bridge { display: grid; grid-template-columns: 1fr auto 1fr; gap: 16px; align-items: center; margin: 30px 0; color: #91a5c0; font: 500 10px var(--mono); text-transform: uppercase; letter-spacing: .05em; }
+    .flow-bridge::before, .flow-bridge::after { content: ""; height: 1px; background: rgba(255,255,255,.13); }
+    .flow-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 26px; color: #93a4bd; font-size: 11px; }
+    .flow-legend b { color: #b9dcff; }
+
+    .pillar-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .pillar { min-height: 360px; padding: 28px 26px; border: 1px solid currentColor; border-radius: 24px; display: flex; flex-direction: column; }
+    .pillar-head { display: flex; align-items: center; justify-content: space-between; font: 700 11px var(--mono); letter-spacing: .03em; text-transform: uppercase; }
+    .pillar-icon { display: grid; place-items: center; width: 64px; height: 64px; margin-top: 28px; border-radius: 20px; color: white; }
+    .pillar-icon svg { width: 30px; height: 30px; }
+    .pillar h3 { margin-top: 26px; font-size: 30px; }
+    .pillar p { margin-top: 11px; font-size: 14px; line-height: 1.55; opacity: .92; }
+    .pillar.coral { color: #9e4319; background: var(--coral-soft); border-color: #ffb18f; }
+    .pillar.coral .pillar-icon { background: #ff7545; }
+    .pillar.teal { color: #007f75; background: var(--teal-soft); border-color: #85ddd4; }
+    .pillar.teal .pillar-icon { background: #12b3a6; }
+    .pillar.violet { color: #5534cf; background: var(--violet-soft); border-color: #b9a8ff; }
+    .pillar.violet .pillar-icon { background: #7c5cfc; }
+    .pillar.pink { color: #bd1d69; background: var(--pink-soft); border-color: #ffaad1; }
+    .pillar.pink .pillar-icon { background: #ff4fa3; }
+
+    .activity-showcase { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 34px; }
+    .activity-card { --activity: #ff6e3d; overflow: hidden; border: 1px solid #e5e9ef; border-radius: 22px; background: white; box-shadow: 0 12px 28px rgba(20,45,80,.12), 0 2px 7px rgba(20,45,80,.07); }
+    .activity-card.teal { --activity: #12b3a6; }
+    .activity-card.violet { --activity: #7657ef; }
+    .activity-card.pink { --activity: #ef3f91; }
+    .activity-head { min-height: 128px; padding: 18px; color: white; background: linear-gradient(135deg, color-mix(in srgb, var(--activity), white 4%), color-mix(in srgb, var(--activity), black 18%)); }
+    .activity-kicker { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .activity-kicker span { border-radius: 999px; padding: 5px 9px; color: var(--ink); background: rgba(255,255,255,.92); font: 700 10px var(--display); }
+    .activity-kicker b { border-radius: 999px; padding: 5px 9px; color: white; background: rgba(255,255,255,.18); font: 700 9px var(--display); letter-spacing: .03em; text-transform: uppercase; }
+    .activity-head h3 { margin-top: 16px; font-size: 20px; line-height: 1.14; }
+    .activity-body { padding: 18px; }
+    .activity-owner { display: flex; align-items: center; gap: 9px; }
+    .activity-avatar { display: grid; place-items: center; width: 38px; height: 38px; border: 2px solid #ffbd78; border-radius: 50%; background: #fff4e7; font-size: 18px; }
+    .activity-owner strong { flex: 1; font-family: var(--display); font-size: 14px; }
+    .activity-rating { border: 1px solid #ffe0a8; border-radius: 9px; padding: 5px 7px; color: #96620c; font-size: 10px; font-weight: 700; }
+    .activity-meta { display: grid; grid-template-columns: 1fr 1.2fr; gap: 10px; margin-top: 16px; color: #8795a9; font-size: 10px; font-weight: 700; }
+    .activity-meta span { display: flex; align-items: center; gap: 6px; }
+    .activity-icon { color: #9aacc1; font-size: 15px; }
+    .activity-capacity { display: flex; justify-content: space-between; gap: 10px; margin-top: 18px; font-size: 10px; font-weight: 700; }
+    .activity-capacity strong { color: var(--activity); }
+    .activity-progress { height: 7px; margin-top: 8px; overflow: hidden; border-radius: 999px; background: #edf1f5; }
+    .activity-progress::before { content: ""; display: block; width: 67%; height: 100%; border-radius: inherit; background: var(--activity); }
+    .activity-foot { display: flex; align-items: end; justify-content: space-between; gap: 10px; margin-top: 18px; }
+    .activity-price small { display: block; color: #91a0b1; font-size: 8px; font-weight: 700; text-transform: uppercase; }
+    .activity-price strong { display: block; margin-top: 3px; color: var(--ink); font: 800 22px/1 var(--display); }
+    .activity-price sup { margin-right: 2px; font-size: 9px; }
+    .activity-cta { display: inline-flex; align-items: center; justify-content: center; min-height: 42px; border-radius: 13px; padding: 0 13px; color: white; background: var(--blue); font: 700 10px var(--display); text-decoration: none; white-space: nowrap; }
+
+    .screens-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; align-items: start; }
+    .screen-card { position: relative; min-width: 0; }
+    .screen-shell {
+      position: relative;
+      padding: 8px;
+      border: 1px solid #343a46;
+      border-radius: 38px;
+      background: #171b23;
+      box-shadow: var(--device-shadow);
+    }
+    .screen-shell::after {
+      content: "";
+      position: absolute;
+      z-index: 2;
+      top: 15px;
+      left: 50%;
+      width: 30%;
+      height: 16px;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      background: #080b10;
+      box-shadow: 0 1px 0 rgba(255,255,255,.12) inset;
+    }
+    .screen-shell img { width: 100%; border-radius: 30px; }
+    .screens-3 .screen-shell { aspect-ratio: 390 / 844; overflow: hidden; }
+    .screens-3 .screen-shell img { height: 100%; object-fit: cover; object-position: top center; }
+    .screen-note { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
+    .screen-note strong { display: block; font-size: 13px; }
+    .screen-note p { margin-top: 5px; color: var(--muted); font-size: 12px; line-height: 1.65; }
+
+    .registration-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 32px; align-items: start; }
+    .registration-grid .screen-card { display: grid; place-items: start center; }
+    .registration-grid .screen-shell { width: min(500px, 100%); overflow: hidden; padding: 10px; border-radius: 48px; }
+    .registration-grid .screen-shell::after { display: none; }
+    .registration-grid .screen-shell img { width: 100%; height: auto; border-radius: 38px; object-fit: contain; object-position: top center; background: white; }
+    .registration-grid .screen-shell.native-status { padding-top: 10px; }
+    .registration-grid .screen-shell.native-status img { margin-top: 0; }
+    .risk-bar { display: grid; grid-template-columns: auto 1fr; gap: 16px; margin-top: 46px; padding: 20px 22px; border: 1px solid #ffd399; border-radius: 16px; background: #fff8eb; }
+    .risk-bar b { color: var(--amber); font: 500 11px var(--mono); text-transform: uppercase; letter-spacing: .05em; }
+    .risk-bar p { color: #694b26; font-size: 13px; line-height: 1.65; }
+
+    .core-grid { display: grid; grid-template-columns: minmax(480px, .92fr) minmax(0, 1.08fr); gap: 64px; align-items: start; }
+    .app-phone {
+      position: relative;
+      width: min(500px, 100%);
+      margin-inline: auto;
+      padding: 14px;
+      border: 1px solid #39414d;
+      border-radius: 64px;
+      background: linear-gradient(145deg, #303741, #0f141b 72%);
+      box-shadow: var(--device-shadow);
+    }
+    .app-phone::after { content: ""; position: absolute; top: 160px; left: -5px; width: 4px; height: 96px; border-radius: 4px 0 0 4px; background: #222833; box-shadow: 0 118px 0 #222833; }
+    .app-surface { position: relative; overflow: hidden; border-radius: 50px; color: var(--text-app); background: var(--surface-app); font-family: var(--body); }
+    .app-surface.image-screen img { display: block; width: 100%; height: auto; }
+    .home-ui { padding: 14px 22px 96px; }
+    .home-toolbar { display: grid; grid-template-columns: 1fr auto auto; gap: 12px; align-items: center; }
+    .condo-pill { min-height: 48px; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 9px; border: 1px solid var(--line); border-radius: 999px; padding: 0 14px; color: #344054; background: white; box-shadow: 0 4px 12px rgba(18,23,43,.06); font-size: 16px; font-weight: 700; }
+    .condo-pill .condo-value { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .condo-chevron { width: 9px; height: 9px; border-right: 2px solid #98a2b3; border-bottom: 2px solid #98a2b3; transform: rotate(45deg) translateY(-2px); }
+    .app-icon-button, .app-avatar { display: grid; place-items: center; width: 48px; height: 48px; border: 1px solid var(--line); border-radius: 50%; color: var(--blue); background: white; font: 700 16px var(--display); }
+    .home-greeting { margin-top: 34px; }
+    .home-greeting h3 { font-size: 32px; line-height: 1.05; }
+    .home-greeting p { margin-top: 6px; color: var(--text-app-muted); font-size: 18px; }
+    .app-pillar-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 30px; }
+    .app-pillar { min-height: 86px; display: flex; align-items: center; gap: 12px; border: 1px solid color-mix(in srgb, var(--pillar) 38%, white); border-radius: 20px; padding: 14px; color: var(--text-app); background: var(--pillar-bg); font: 700 17px var(--display); }
+    .app-pillar i { display: grid; place-items: center; flex: 0 0 48px; width: 48px; height: 48px; border-radius: 15px; color: white; background: var(--pillar); font-style: normal; }
+    .app-pillar.criar { --pillar: var(--coral); --pillar-bg: var(--coral-soft); }
+    .app-pillar.mover { --pillar: var(--teal); --pillar-bg: var(--teal-soft); }
+    .app-pillar.descobrir { --pillar: var(--violet); --pillar-bg: var(--violet-soft); }
+    .app-pillar.brincar { --pillar: var(--pink); --pillar-bg: var(--pink-soft); }
+    .app-section-head { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-top: 34px; }
+    .app-section-head h4 { font-size: 23px; }
+    .app-section-head p { margin-top: 4px; color: var(--text-app-muted); font-size: 16px; }
+    .app-section-head a { color: var(--blue); font-size: 16px; font-weight: 700; text-decoration: none; white-space: nowrap; }
+    .mini-activity-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 18px; overflow: hidden; }
+    .mini-activity { overflow: hidden; border: 1px solid var(--line); border-radius: 22px; background: white; box-shadow: 0 10px 26px rgba(18,23,43,.1); }
+    .mini-activity-head { min-height: 142px; padding: 18px; color: white; background: linear-gradient(135deg, #ff7445, #ee4f13); }
+    .mini-activity.teal .mini-activity-head { background: linear-gradient(135deg, #1abdaf, #078e83); }
+    .mini-activity-head span { display: inline-flex; border-radius: 999px; padding: 7px 10px; color: var(--ink); background: white; font-size: 16px; font-weight: 700; }
+    .mini-activity-head h4 { margin-top: 18px; font-size: 22px; line-height: 1.15; }
+    .mini-activity-body { padding: 16px; }
+    .mini-owner { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; }
+    .mini-owner img { width: 38px; height: 38px; border-radius: 50%; }
+    .mini-meta { display: flex; justify-content: space-between; gap: 10px; margin-top: 14px; color: var(--text-app-muted); font-size: 16px; }
+    .mini-progress { height: 8px; margin-top: 14px; overflow: hidden; border-radius: 999px; background: #edf1f5; }
+    .mini-progress::before { content: ""; display: block; width: 68%; height: 100%; border-radius: inherit; background: var(--coral); }
+    .mini-activity.teal .mini-progress::before { background: var(--teal); }
+    .mini-price { display: flex; align-items: end; justify-content: space-between; gap: 8px; margin-top: 14px; }
+    .mini-price strong { font: 800 24px var(--display); }
+    .mini-price b { border-radius: 12px; padding: 10px 12px; color: white; background: var(--blue); font-size: 16px; }
+    .request-teaser { margin-top: 26px; padding: 22px; border: 1px solid #cfe3fb; border-radius: 22px; background: #edf6ff; }
+    .request-teaser strong { display: block; font: 700 19px var(--display); }
+    .request-teaser p { margin-top: 6px; color: #49617e; font-size: 16px; line-height: 1.5; }
+    .request-input { min-height: 58px; display: flex; align-items: center; margin-top: 16px; border: 1px solid #9fc8fb; border-radius: 15px; padding: 10px 14px; color: #718096; background: white; font-size: 16px; line-height: 1.35; }
+    .request-action { min-height: 54px; display: grid; place-items: center; margin-top: 12px; border-radius: 15px; color: white; background: var(--night); font-size: 17px; font-weight: 700; }
+    .security-note { margin-top: 18px; padding: 18px; border: 1px solid #a9ead7; border-radius: 18px; color: #076747; background: #eafaf4; font-size: 16px; font-weight: 700; line-height: 1.45; }
+    .app-tabbar { position: absolute; z-index: 5; left: 0; right: 0; bottom: 0; min-height: 82px; display: grid; grid-template-columns: repeat(5, 1fr); align-items: center; border-top: 1px solid var(--line); color: #718096; background: rgba(255,255,255,.97); }
+    .app-tabbar span { display: grid; place-items: center; gap: 3px; font-size: 16px; }
+    .app-tabbar .active { color: var(--blue); font-weight: 700; }
+    .core-copy { position: sticky; top: 48px; display: grid; gap: 16px; }
+    .core-copy .decision { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.12); }
+    .core-copy .decision p { color: #aab8cf; }
+    .core-copy .decision > b { background: #1685ff; }
+    .detail-grid { display: grid; grid-template-columns: minmax(500px, 1fr) minmax(0, 1fr); gap: 64px; align-items: start; }
+    .detail-prototype .app-surface { background: #eef2f6; }
+    .detail-hero { position: relative; min-height: 360px; padding: 24px; color: white; background: linear-gradient(0deg, rgba(8,20,36,.68), rgba(8,20,36,.06)), url("assets/detalhe-hero.png") center/cover; }
+    .detail-actions { display: flex; justify-content: space-between; }
+    .detail-actions span { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; color: var(--ink); background: rgba(255,255,255,.94); font-size: 22px; }
+    .detail-actions div { display: flex; gap: 10px; }
+    .detail-context { position: absolute; left: 24px; right: 24px; bottom: 24px; display: flex; gap: 10px; }
+    .detail-context span { border-radius: 999px; padding: 10px 14px; background: rgba(9,26,42,.72); font-size: 16px; }
+    .detail-context .confirmed { background: #079f73; }
+    .detail-sheet { position: relative; margin-top: -18px; border-radius: 30px 30px 0 0; padding: 26px 22px 132px; background: #f6f8fb; }
+    .detail-summary { padding: 22px; border-radius: 22px; background: white; }
+    .detail-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+    .detail-badges span { border-radius: 999px; padding: 7px 10px; color: var(--blue-dark); background: var(--blue-soft); font-size: 16px; font-weight: 700; }
+    .detail-badges span:first-child { color: #9e4319; background: var(--coral-soft); }
+    .detail-summary h3 { margin-top: 18px; font-size: 30px; line-height: 1.1; }
+    .detail-summary p { margin-top: 10px; color: var(--text-app-muted); font-size: 16px; line-height: 1.55; }
+    .detail-panel { margin-top: 16px; padding: 22px; border-radius: 22px; background: white; }
+    .detail-panel h4 { font-size: 21px; }
+    .detail-info-row { display: grid; grid-template-columns: 42px 1fr; gap: 12px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+    .detail-info-row:last-child { border-bottom: 0; padding-bottom: 0; }
+    .detail-info-row i { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 13px; color: var(--blue); background: var(--blue-soft); font-style: normal; }
+    .detail-info-row span { color: var(--text-app-muted); font-size: 16px; }
+    .detail-info-row strong { display: block; margin-top: 3px; font-size: 17px; }
+    .detail-safe { display: inline-flex; margin-top: 7px; border-radius: 999px; padding: 5px 9px; color: #027a48; background: #d1fadf; font-size: 16px; font-style: normal; }
+    .detail-teacher { display: flex; align-items: center; gap: 14px; }
+    .detail-teacher img { width: 58px; height: 58px; border-radius: 50%; }
+    .detail-teacher strong { display: block; font-size: 17px; }
+    .detail-teacher span { display: block; margin-top: 4px; color: var(--text-app-muted); font-size: 16px; line-height: 1.4; }
+    .reserve-bar { position: absolute; z-index: 5; left: 14px; right: 14px; bottom: 14px; min-height: 110px; display: flex; align-items: center; justify-content: space-between; gap: 16px; border-radius: 0 0 48px 48px; padding: 18px 22px; background: white; box-shadow: 0 -8px 28px rgba(15,23,42,.14); }
+    .reserve-bar small { display: block; color: var(--text-app-muted); font-size: 16px; }
+    .reserve-bar strong { display: block; margin-top: 3px; font: 800 28px var(--display); }
+    .reserve-bar b { display: grid; place-items: center; min-height: 58px; border-radius: 16px; padding: 0 24px; color: white; background: var(--blue); font-size: 17px; }
+    .detail-copy { display: grid; gap: 14px; padding-top: 30px; }
+    .signal-card { padding: 22px; border-left: 3px solid var(--blue); background: var(--blue-soft); }
+    .signal-card span { color: var(--blue-dark); font: 500 10px var(--mono); text-transform: uppercase; letter-spacing: .05em; }
+    .signal-card h3 { margin-top: 8px; font-size: 24px; }
+    .signal-card p { margin-top: 7px; color: #49617e; font-size: 13px; line-height: 1.65; }
+
+    .demand-layout { display: grid; grid-template-columns: minmax(500px, 1fr) minmax(0, 1fr); gap: 58px; align-items: center; }
+    .demand-builder { overflow: hidden; border: 1px solid rgba(255,255,255,.12); border-radius: 28px; color: var(--ink); background: white; box-shadow: var(--device-shadow); }
+    .demand-builder-head { padding: 28px; color: white; background: linear-gradient(135deg, #075dc7, #0986ff); }
+    .demand-builder-head span { display: inline-flex; border-radius: 999px; padding: 8px 12px; background: rgba(255,255,255,.16); font-size: 16px; font-weight: 700; }
+    .demand-builder-head h3 { margin-top: 18px; font-size: 32px; }
+    .demand-builder-head p { margin-top: 8px; color: rgba(255,255,255,.84); font-size: 16px; line-height: 1.55; }
+    .demand-form { padding: 26px; }
+    .demand-field + .demand-field { margin-top: 18px; }
+    .demand-field label { display: block; margin-bottom: 8px; color: #344054; font-size: 16px; font-weight: 700; }
+    .demand-input { min-height: 54px; display: flex; align-items: center; border: 1px solid var(--line); border-radius: 14px; padding: 0 16px; color: var(--text-app-muted); background: #fbfcfe; font-size: 16px; }
+    .demand-options { display: flex; flex-wrap: wrap; gap: 10px; }
+    .demand-options span { border: 1px solid var(--line); border-radius: 999px; padding: 10px 14px; color: #344054; background: white; font-size: 16px; }
+    .demand-options .selected { color: var(--blue-dark); border-color: #88bcfb; background: var(--blue-soft); font-weight: 700; }
+    .demand-submit { min-height: 56px; display: grid; place-items: center; margin-top: 24px; border-radius: 16px; color: white; background: var(--blue); font-size: 17px; font-weight: 700; }
+    .demand-result { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; border-top: 1px solid var(--line); background: var(--line); }
+    .demand-result div { padding: 20px; background: #f8fafc; }
+    .demand-result b { display: block; color: var(--blue-dark); font: 800 26px var(--display); }
+    .demand-result span { display: block; margin-top: 4px; color: var(--text-app-muted); font-size: 16px; line-height: 1.35; }
+    .hypothesis { display: grid; gap: 16px; }
+    .hypothesis article { padding: 22px; border: 1px solid rgba(255,255,255,.12); border-radius: 18px; background: rgba(255,255,255,.055); }
+    .hypothesis article span { color: #83c0ff; font: 500 10px var(--mono); text-transform: uppercase; letter-spacing: .06em; }
+    .hypothesis article h3 { margin-top: 8px; font-size: 21px; }
+    .hypothesis article p { margin-top: 6px; color: #aab8cf; font-size: 13px; line-height: 1.65; }
+
+    .system-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .system-card { padding: 28px; border: 1px solid var(--line); border-radius: 20px; background: white; }
+    .system-card h3 { font-size: 22px; }
+    .system-card > p { margin-top: 8px; color: var(--muted); font-size: 12px; line-height: 1.65; }
+    .swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 28px; }
+    .swatch { min-height: 105px; border-radius: 14px; padding: 12px; display: flex; align-items: end; color: white; font: 500 9px var(--mono); }
+    .swatch:nth-child(1) { background: var(--blue); }
+    .swatch:nth-child(2) { background: var(--coral); }
+    .swatch:nth-child(3) { background: var(--teal); }
+    .swatch:nth-child(4) { background: var(--violet); }
+    .swatch:nth-child(5) { background: var(--pink); }
+    .type-samples { display: grid; gap: 14px; margin-top: 24px; }
+    .type-row { display: flex; align-items: baseline; justify-content: space-between; gap: 22px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+    .type-row b { font-family: var(--display); }
+    .type-row:nth-child(1) b { font-size: 34px; }
+    .type-row:nth-child(2) b { font-size: 24px; }
+    .type-row:nth-child(3) b { font: 500 15px var(--body); }
+    .type-row span { color: var(--muted); font: 400 10px var(--mono); white-space: nowrap; }
+    .checks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 24px; }
+    .check { padding: 16px; border-radius: 14px; background: var(--green-soft); color: #126241; }
+    .check b { display: block; font: 500 10px var(--mono); text-transform: uppercase; }
+    .check span { display: block; margin-top: 7px; font-size: 12px; line-height: 1.5; }
+    .token-rails { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 24px; }
+    .token { padding: 18px; border: 1px solid var(--line); border-radius: 14px; background: white; }
+    .token b { color: var(--blue-dark); font: 500 9px var(--mono); letter-spacing: .04em; text-transform: uppercase; }
+    .token strong { display: block; margin-top: 10px; font: 600 18px var(--display); }
+    .token small { display: block; margin-top: 5px; color: var(--muted); font-size: 10px; line-height: 1.5; }
+    .component-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: stretch; }
+    .component-sheet { display: grid; align-content: start; gap: 24px; padding: 28px; border: 1px solid var(--line); border-radius: 24px; color: var(--ink); background: white; box-shadow: var(--shadow); }
+    .component-sheet-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+    .component-sheet-head h3 { font-size: 26px; }
+    .component-sheet-head p { max-width: 32ch; color: var(--muted); font-size: 16px; line-height: 1.55; text-align: right; }
+    .demo-group { display: grid; gap: 14px; }
+    .demo-label { color: var(--blue-dark); font-size: 16px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+    .ds-button-row, .ds-badge-row { display: flex; flex-wrap: wrap; gap: 10px; }
+    .ds-button { min-height: var(--control-height); display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid transparent; border-radius: var(--radius-control); padding: 0 18px; color: white; background: var(--blue); font-size: 16px; font-weight: 700; }
+    .ds-button.outline { border-color: var(--blue); color: var(--blue); background: white; }
+    .ds-button.ghost { color: var(--blue-dark); background: var(--blue-soft); }
+    .ds-button.danger { background: #d92d20; }
+    .ds-button.success { background: #079455; }
+    .ds-button.disabled { color: #98a2b3; background: #eef1f5; }
+    .ds-chip { min-height: 44px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 999px; padding: 0 14px; color: #344054; background: white; font-size: 16px; font-weight: 700; }
+    .ds-chip.active { border-color: #84adff; color: var(--blue-dark); background: var(--blue-soft); }
+    .ds-icon-button { width: 48px; height: 48px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; color: var(--blue); background: white; font-size: 20px; }
+    .ds-field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .ds-field { display: grid; gap: 8px; }
+    .ds-field.wide { grid-column: 1 / -1; }
+    .ds-field label { color: #344054; font-size: 16px; font-weight: 700; }
+    .ds-input { min-height: 52px; display: flex; align-items: center; justify-content: space-between; border: 1px solid #cfd6df; border-radius: var(--radius-control); padding: 0 15px; color: #667085; background: white; font-size: 16px; }
+    .ds-select-wrap { position: relative; }
+    .ds-select-wrap::after { content: ""; position: absolute; top: 50%; right: 17px; width: 9px; height: 9px; border-right: 2px solid #667085; border-bottom: 2px solid #667085; transform: translateY(-70%) rotate(45deg); pointer-events: none; }
+    .ds-select { width: 100%; min-height: 52px; appearance: none; border: 1px solid var(--blue); border-radius: var(--radius-control); padding: 0 46px 0 15px; color: #344054; background: white; box-shadow: 0 0 0 3px rgba(10,111,232,.14); font: 500 16px var(--body); }
+    .ds-input.focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(10,111,232,.14); }
+    .ds-input.error { border-color: #d92d20; color: #b42318; }
+    .ds-input.disabled { color: #98a2b3; background: #f2f4f7; }
+    .ds-helper { color: var(--muted); font-size: 16px; line-height: 1.45; }
+    .ds-check { min-height: 48px; display: flex; align-items: center; gap: 10px; font-size: 16px; }
+    .ds-check i { width: 22px; height: 22px; display: grid; place-items: center; border-radius: 6px; color: white; background: var(--blue); font-size: 16px; font-style: normal; }
+    .ds-stepper { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .ds-step { min-height: 48px; display: flex; align-items: center; gap: 8px; color: #667085; font-size: 16px; }
+    .ds-step i { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; color: #667085; background: #eaecf0; font-style: normal; font-weight: 700; }
+    .ds-step.done i { color: #027a48; background: #d1fadf; }
+    .ds-step.active { color: var(--ink); font-weight: 700; }
+    .ds-step.active i { color: white; background: var(--blue); }
+    .ds-badge { display: inline-flex; align-items: center; gap: 7px; border-radius: 999px; padding: 8px 12px; color: #344054; background: #f2f4f7; font-size: 16px; font-weight: 700; }
+    .ds-badge.success { color: #027a48; background: #d1fadf; }
+    .ds-badge.warning { color: #b54708; background: #fef0c7; }
+    .ds-badge.info { color: var(--blue-dark); background: var(--blue-soft); }
+    .ds-badge.danger { color: #b42318; background: #fee4e2; }
+    .ds-pillar-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .ds-pillar-tile { min-height: 104px; display: grid; align-content: center; gap: 8px; border: 1px solid color-mix(in srgb, var(--pillar) 32%, white); border-radius: 18px; padding: 16px; color: var(--pillar-text); background: var(--pillar-bg); }
+    .ds-pillar-tile b { font-size: 19px; }
+    .ds-pillar-tile span { font-size: 16px; line-height: 1.4; }
+    .ds-pillar-tile.criar { --pillar: var(--coral); --pillar-text: #99400e; --pillar-bg: var(--coral-soft); }
+    .ds-pillar-tile.mover { --pillar: var(--teal); --pillar-text: #006b63; --pillar-bg: var(--teal-soft); }
+    .ds-pillar-tile.descobrir { --pillar: var(--violet); --pillar-text: #5131c8; --pillar-bg: var(--violet-soft); }
+    .ds-pillar-tile.brincar { --pillar: var(--pink); --pillar-text: #b81765; --pillar-bg: var(--pink-soft); }
+    .ds-progress { height: 12px; overflow: hidden; border-radius: 999px; background: #eaecf0; }
+    .ds-progress::before { content: ""; display: block; width: 68%; height: 100%; border-radius: inherit; background: var(--teal); }
+    .ds-stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .ds-stat { min-height: 108px; padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: #f8fafc; }
+    .ds-stat b { display: block; color: var(--blue-dark); font: 800 28px var(--display); }
+    .ds-stat span { display: block; margin-top: 6px; color: var(--muted); font-size: 16px; line-height: 1.35; }
+    .ds-list-row { min-height: 72px; display: grid; grid-template-columns: 46px 1fr auto; align-items: center; gap: 12px; border: 1px solid var(--line); border-radius: 16px; padding: 12px; }
+    .ds-list-row i { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 14px; color: var(--blue); background: var(--blue-soft); font-style: normal; }
+    .ds-list-row strong { display: block; font-size: 17px; }
+    .ds-list-row span { color: var(--muted); font-size: 16px; }
+    .ds-list-row b { color: var(--blue-dark); font-size: 16px; }
+    .ds-notice { padding: 18px; border-left: 4px solid var(--blue); border-radius: 12px; color: #344054; background: var(--blue-soft); font-size: 16px; line-height: 1.5; }
+    .component-principles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 24px; }
+    .component-principles article { padding: 18px; border-radius: 15px; color: #dbe9fb; background: #142238; }
+    .component-principles b { color: #7fc0ff; font: 500 9px var(--mono); text-transform: uppercase; }
+    .component-principles p { margin-top: 8px; font-size: 11px; line-height: 1.55; }
+
+    .validation-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .experiment { min-height: 310px; padding: 26px; border: 1px solid var(--line); border-radius: 20px; background: white; }
+    .experiment > span { display: inline-flex; padding: 6px 9px; border-radius: 7px; color: var(--blue-dark); background: var(--blue-soft); font: 500 10px var(--mono); text-transform: uppercase; }
+    .experiment h3 { margin-top: 32px; font-size: 25px; }
+    .experiment p { margin-top: 10px; color: var(--muted); font-size: 13px; line-height: 1.65; }
+    .experiment ul { margin-top: 20px; padding-left: 18px; color: var(--ink-2); font-size: 12px; line-height: 1.8; }
+    .what-i-learned { display: grid; grid-template-columns: .7fr 1.3fr; gap: 50px; margin-top: 42px; padding: 30px; border-radius: 20px; color: white; background: var(--blue); }
+    .what-i-learned h3 { font-size: 29px; }
+    .what-i-learned p { color: rgba(255,255,255,.86); font-size: 14px; line-height: 1.75; }
+
+    .board.dark.closing { position: relative; min-height: 760px; display: grid; place-items: center; overflow: hidden; text-align: center; background: linear-gradient(rgba(6,16,32,.46), rgba(6,16,32,.62)), url("assets/closing-mockups.jpg") center/cover; }
+    .closing::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 50% 46%, rgba(6,16,32,.12), rgba(6,16,32,.36) 74%); }
+    .closing-inner { position: relative; z-index: 1; max-width: 920px; padding: 44px 52px; border: 1px solid rgba(255,255,255,.12); border-radius: 30px; background: rgba(6,16,32,.44); box-shadow: 0 30px 80px rgba(0,0,0,.24); backdrop-filter: blur(4px); }
+    .closing .brand { margin-bottom: 32px; }
+    .closing h2 { margin-inline: auto; font-size: clamp(54px, 5.5vw, 82px); }
+    .closing p { max-width: 66ch; margin: 26px auto 0; color: #aab8cf; font-size: 17px; line-height: 1.75; }
+    .credit { display: inline-flex; align-items: center; gap: 16px; margin-top: 42px; padding: 14px 22px; border: 1px solid rgba(255,255,255,.2); border-radius: 18px; background: rgba(7,18,35,.64); box-shadow: 0 18px 50px rgba(0,0,0,.24); backdrop-filter: blur(14px); text-align: left; }
+    .credit-avatar { width: 64px; height: 64px; flex: 0 0 64px; border: 2px solid rgba(255,255,255,.28); border-radius: 50%; object-fit: cover; object-position: center 28%; }
+    .credit strong { display: block; font-size: 18px; }
+    .credit small { display: block; margin-top: 5px; color: #b8c7dc; font-size: 16px; }
+
+    /* Legibilidade: nenhum texto funcional ou editorial fica abaixo de 16 px. */
+    .eyebrow, .brand small, .role-chip, .cover-tags span, .cover-foot,
+    .fact span, .scope-list b, .scope-list strong, .scope-list small, .truth-note,
+    .decision > b, .decision p, .not-building, .actor b, .actor p,
+    .north-star > span, .north-star small, .persona-intro > span, .persona-intro p,
+    .persona-tags i, .persona-block b, .persona-block ul, .persona-note,
+    .workshop-note, .strategy-panel > p, .swot-item b, .swot-item ul, .csd-item b,
+    .csd-item ul, .flow-node b, .flow-node p, .flow-bridge, .flow-legend,
+    .pillar-head, .pillar p, .activity-kicker span, .activity-kicker b,
+    .activity-owner strong, .activity-rating, .activity-meta, .activity-icon,
+    .activity-capacity, .activity-price small, .activity-price sup, .activity-cta,
+    .screen-note strong, .screen-note p, .risk-bar b, .risk-bar p,
+    .signal-card span, .signal-card p, .hypothesis article span, .hypothesis article p,
+    .system-card > p, .swatch, .type-row:nth-child(3) b, .type-row span,
+    .check b, .check span, .token b, .token small,
+    .component-principles b, .component-principles p, .experiment > span,
+    .experiment p, .experiment ul, .what-i-learned p { font-size: 16px; }
+
+    .reveal { opacity: 1; transform: none; }
+    .reveal.in { opacity: 1; transform: none; }
+
+    @media (hover: hover) {
+      .decision:hover, .experiment:hover { transform: translateY(-2px); box-shadow: 0 15px 30px rgba(20,45,80,.08); }
+      .decision, .experiment { transition: transform 180ms ease-out, box-shadow 180ms ease-out; }
+    }
+
+    @media (max-width: 980px) {
+      .board { min-height: auto; padding: 72px 28px; }
+      .cover { padding: 34px 26px; }
+      .cover-grid, .board-head, .recruiter-grid, .problem-layout, .persona-grid, .strategy-grid, .core-grid, .detail-grid, .demand-layout, .what-i-learned { grid-template-columns: 1fr; }
+      .cover-grid { padding: 54px 0; }
+      .cover-visual { min-height: 650px; }
+      .cover-home { left: 2%; }
+      .cover-detail { right: 2%; }
+      .facts, .ecosystem, .registration-grid { grid-template-columns: 1fr 1fr; }
+      .pillar-grid, .activity-showcase { grid-template-columns: 1fr 1fr; }
+      .screens-3, .validation-grid, .component-gallery { grid-template-columns: 1fr; }
+      .screen-shell { max-width: 480px; margin-inline: auto; }
+      .registration-grid .screen-card { margin-top: 0 !important; }
+      .core-copy { position: static; }
+      .system-grid { grid-template-columns: 1fr; }
+      .flow-row { grid-template-columns: 1fr 1fr; }
+      .flow-node::after { display: none; }
+      .token-rails, .component-principles { grid-template-columns: 1fr 1fr; }
+      .component-sheet-head { display: grid; }
+      .component-sheet-head p { max-width: 52ch; text-align: left; }
+    }
+
+    @media (max-width: 620px) {
+      .cover-top { align-items: flex-start; gap: 18px; }
+      .role-chip { max-width: 190px; text-align: right; }
+      .cover h1 { font-size: 64px; }
+      .cover-visual { min-height: 540px; }
+      .phone { width: 210px; border-width: 6px; border-radius: 34px; }
+      .phone img { height: 480px; }
+      .cover-home { top: 72px; left: 0; }
+      .cover-detail { top: 14px; right: -6px; }
+      .cover-foot { gap: 20px; align-items: flex-start; }
+      .facts, .ecosystem, .pillar-grid, .activity-showcase, .registration-grid, .system-grid, .checks, .token-rails, .component-principles, .swot-grid, .flow-row { grid-template-columns: 1fr; }
+      .fact + .fact { border-left: 0; padding-left: 0; }
+      .fact { border-bottom: 1px solid var(--line); }
+      .north-star { grid-template-columns: 1fr; }
+      .swatches { grid-template-columns: repeat(2, 1fr); }
+      .persona-top { grid-template-columns: 1fr; }
+      .persona-photo { min-height: 290px; background-size: 200% auto; }
+      .persona-photo.actor-family { background-position: 0 15%; }
+      .persona-photo.actor-professional { background-position: 100% 15%; }
+      .persona-body { grid-template-columns: 1fr; }
+      .persona-block:nth-child(odd) { border-right: 0; }
+      .persona-block { border-bottom: 1px solid var(--line); }
+      .csd-item { grid-template-columns: 1fr; }
+      .app-phone { border-radius: 48px; padding: 9px; }
+      .app-surface { border-radius: 40px; }
+      .home-ui { padding-inline: 16px; }
+      .home-toolbar { grid-template-columns: 1fr auto; }
+      .home-toolbar .app-icon-button { display: none; }
+      .condo-pill { padding-inline: 12px; }
+      .mini-activity-row, .ds-field-grid, .ds-pillar-grid, .ds-stat-grid { grid-template-columns: 1fr; }
+      .ds-field.wide { grid-column: auto; }
+      .ds-stepper { grid-template-columns: 1fr; }
+      .detail-context { flex-wrap: wrap; }
+      .reserve-bar { left: 9px; right: 9px; bottom: 9px; border-radius: 0 0 38px 38px; padding-inline: 16px; }
+      .reserve-bar b { padding-inline: 16px; }
+      .demand-result { grid-template-columns: 1fr; }
+      .credit { align-items: flex-start; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1; transform: none; transition: opacity 120ms linear; }
+      .decision, .experiment { transition: none; }
+    }
+
+    @media print {
+      html, body { background: white; }
+      .skip-link { display: none !important; }
+      .canvas { width: 1440px; box-shadow: none; }
+      .board { break-inside: avoid; }
+      .reveal { opacity: 1 !important; transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <main class="canvas" id="conteudo">
+    <section class="board cover" data-export="01-capa">
+      <div class="cover-top">
+        <div class="brand" aria-label="Kintaw Kids">kintaw <small>kids</small><span class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i></span></div>
+        <span class="role-chip">PRODUCT DESIGN · ESTRATÉGIA, UX/UI &amp; SISTEMA</span>
+      </div>
+      <div class="cover-grid">
+        <div class="cover-copy reveal">
+          <span class="eyebrow">Case study · 2026</span>
+          <h1>O mundo começa <em>perto.</em></h1>
+          <p>Um ecossistema hiperlocal que transforma espaços do condomínio em experiências infantis seguras, descobertas pela família e viabilizadas por uma operação integrada.</p>
+          <div class="cover-tags" aria-label="Escopo do projeto">
+            <span>Marketplace B2B2C</span><span>Mobile PWA</span><span>Design system</span><span>MVP</span>
+          </div>
+        </div>
+        <div class="cover-visual" aria-label="Telas reais do produto Kintaw Kids">
+          <figure class="phone cover-home"><img src="../assets/kintaw/home.webp" alt="Home atualizada do aplicativo Kintaw Kids" fetchpriority="high"></figure>
+          <figure class="phone cover-detail"><img src="../assets/kintaw/activity-detail.webp" alt="Página atualizada de detalhes da oficina de pintura" fetchpriority="high"></figure>
+        </div>
+      </div>
+      <div class="cover-foot"><span>KINTAW KIDS · CASE DE PORTFÓLIO</span><span>RIO DE JANEIRO · BRASIL</span></div>
+    </section>
+
+    <section class="board" id="estrategia" data-export="02-contexto-papel">
+      <header class="board-head single reveal">
+        <span class="eyebrow">01 · Contexto e papel</span>
+        <h2>O case em 30 segundos — sem esconder o que ainda é hipótese.</h2>
+      </header>
+      <div class="facts reveal">
+        <div class="fact"><span>Produto</span><strong>Marketplace hiperlocal infantil</strong></div>
+        <div class="fact"><span>Superfícies</span><strong>Família, profissional e condomínio</strong></div>
+        <div class="fact"><span>Atuação</span><strong>Estratégia, UX/UI e Design System</strong></div>
+        <div class="fact"><span>Estágio</span><strong>Protótipo de MVP para validação</strong></div>
+      </div>
+      <div class="recruiter-grid">
+        <p class="statement reveal">O desafio não era desenhar apenas um app. Era projetar <em>confiança e liquidez</em> entre famílias, profissionais e condomínios.</p>
+        <ul class="scope-list reveal" aria-label="Escopo de contribuição">
+          <li><b>01</b><span><strong>Enquadramento do problema</strong><small>Conectei conveniência familiar, oferta qualificada e governança condominial numa mesma tese de produto.</small></span></li>
+          <li><b>02</b><span><strong>Arquitetura da experiência</strong><small>Modelei onboarding, descoberta, decisão, reserva e manifestação de demanda.</small></span></li>
+          <li><b>03</b><span><strong>Linguagem de interface</strong><small>Criei uma taxonomia infantil que preserva clareza para adultos e personalidade para crianças.</small></span></li>
+          <li><b>04</b><span><strong>Fundação escalável</strong><small>Organizei tokens, componentes, contraste e padrões para mobile e web.</small></span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="board mist" data-export="03-problema-decisoes">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">02 · Tese de produto</span><h2>Ativar o que já existe perto de casa.</h2></div>
+        <p class="lead">Famílias querem experiências confiáveis sem transformar cada atividade em deslocamento. Condomínios têm espaços ociosos. Profissionais precisam de demanda agrupada. A oportunidade está na orquestração.</p>
+      </header>
+      <div class="problem-layout">
+        <figure class="problem-photo reveal"><img src="assets/detalhe-hero.png" alt="Quatro crianças pintando juntas em um jardim"><figcaption>Menos logística para os adultos. Mais mundo para as crianças.</figcaption></figure>
+        <div>
+          <div class="decision-stack reveal">
+            <article class="decision"><b>01</b><div><h3>Proximidade como proposta de valor</h3><p>A descoberta começa pelo condomínio selecionado, reduzindo incerteza sobre distância, local e acesso.</p></div></article>
+            <article class="decision"><b>02</b><div><h3>Confiança antes da conversão</h3><p>Verificação profissional, segurança, idade, materiais e capacidade aparecem antes da reserva.</p></div></article>
+            <article class="decision"><b>03</b><div><h3>Demanda também é sinal de produto</h3><p>Quando o catálogo não atende, a intenção não vira beco sem saída: alimenta a formação de uma nova turma.</p></div></article>
+          </div>
+          <div class="not-building reveal"><strong>Recorte de MVP:</strong> priorizar descoberta, confiança e manifestação de demanda; adiar rede social, gamificação e automações complexas até provar utilidade e operação.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="board dark" data-export="04-ecossistema">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">03 · Arquitetura do ecossistema</span><h2>Quatro atores. Uma unidade de valor.</h2></div>
+        <p class="lead">A oficina pronta para acontecer — profissional, espaço, faixa etária, horário, capacidade e regra de acesso — é a unidade central do produto.</p>
+      </header>
+      <div class="ecosystem reveal">
+        <article class="actor"><div class="actor-photo actor-family" role="img" aria-label="Responsável com criança em um condomínio"></div><div class="actor-copy"><b>ATOR 01</b><h3>Família</h3><p>Descobre, entende o contexto, reserva e acompanha a atividade da criança.</p></div></article>
+        <article class="actor"><div class="actor-photo actor-professional" role="img" aria-label="Educadora preparando uma oficina infantil"></div><div class="actor-copy"><b>ATOR 02</b><h3>Profissional</h3><p>Oferece disponibilidade e conduz turmas com demanda previamente sinalizada.</p></div></article>
+        <article class="actor"><div class="actor-photo actor-condo" role="img" aria-label="Gestor de condomínio em espaço de atividades"></div><div class="actor-copy"><b>ATOR 03</b><h3>Condomínio</h3><p>Disponibiliza espaços e mantém governança de agenda, acesso e comunicação.</p></div></article>
+        <article class="actor"><div class="actor-photo actor-kintaw" role="img" aria-label="Profissional de operações da Kintaw"></div><div class="actor-copy"><b>ATOR 04</b><h3>Kintaw</h3><p>Orquestra confiança, catálogo, demanda e operação entre as partes.</p></div></article>
+      </div>
+      <div class="north-star reveal"><span>North Star proposta</span><strong>Experiências realizadas</strong><small>Mais próxima do valor real do que downloads ou cadastros isolados.</small></div>
+    </section>
+
+    <section class="board mist" id="personas" data-export="05-personas">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">04 · Arquétipos comportamentais</span><h2>Duas jornadas ligadas pela mesma necessidade de previsibilidade.</h2></div>
+        <p class="lead">As personas consolidam o blueprint, os fluxos existentes e as decisões do produto. Elas orientam hipóteses de teste; não são apresentadas como participantes de pesquisa já recrutados.</p>
+      </header>
+      <div class="persona-grid reveal">
+        <article class="persona-card">
+          <div class="persona-top"><div class="persona-photo actor-family" role="img" aria-label="Renata e uma criança no jardim do condomínio"></div><div class="persona-intro"><span>Persona primária · Família</span><h3>Renata Silva, 38</h3><p>Responsável por duas crianças, mora em condomínio na Zona Sul do Rio e equilibra trabalho, escola e rotina doméstica.</p><div class="persona-tags"><i>MOBILE FIRST</i><i>4–8 ANOS</i><i>POUCO TEMPO</i></div></div></div>
+          <div class="persona-body">
+            <div class="persona-block"><b>Trabalho a realizar</b><ul><li>Encontrar uma atividade segura perto de casa</li><li>Comparar idade, horário, preço e disponibilidade</li><li>Reservar sem negociação paralela por WhatsApp</li></ul></div>
+            <div class="persona-block"><b>Objetivos</b><ul><li>Reduzir deslocamentos</li><li>Ampliar repertório e convivência das crianças</li><li>Ter clareza sobre profissional, materiais e local</li></ul></div>
+            <div class="persona-block"><b>Dores &amp; riscos</b><ul><li>Oferta fragmentada e agenda incompatível</li><li>Receio sobre segurança e credenciais</li><li>Dados pessoais solicitados cedo demais</li></ul></div>
+            <div class="persona-block"><b>Sinais de decisão</b><ul><li>Profissional verificado e condomínio confirmado</li><li>Vagas, preço final e política claros</li><li>Informações sobre alergias e cuidados</li></ul></div>
+          </div>
+        </article>
+        <article class="persona-card">
+          <div class="persona-top"><div class="persona-photo actor-professional" role="img" aria-label="Mariana preparando materiais de arte para crianças"></div><div class="persona-intro"><span>Persona secundária · Profissional</span><h3>Mariana Silva, 35</h3><p>Educadora de artes, formada em Artes Visuais pela UFRJ, com especialização Waldorf e oito anos de experiência com crianças.</p><div class="persona-tags"><i>RAIO DE 5 KM</i><i>2–12 ANOS</i><i>AGENDA FLEXÍVEL</i></div></div></div>
+          <div class="persona-body">
+            <div class="persona-block"><b>Trabalho a realizar</b><ul><li>Preencher turmas com demanda qualificada</li><li>Organizar agenda, materiais e capacidade</li><li>Conduzir atividades sem custo de espaço próprio</li></ul></div>
+            <div class="persona-block"><b>Objetivos</b><ul><li>Previsibilidade de receita e repasse</li><li>Menos esforço comercial e deslocamento</li><li>Construir reputação entre condomínios</li></ul></div>
+            <div class="persona-block"><b>Dores &amp; riscos</b><ul><li>Demanda irregular e horários ociosos</li><li>Verificação documental trabalhosa</li><li>Logística entre múltiplos condomínios</li></ul></div>
+            <div class="persona-block"><b>Sinais de decisão</b><ul><li>Quórum, endereço e remuneração antecipados</li><li>Regras de acesso e cancelamento</li><li>Agenda centralizada e comunicação objetiva</li></ul></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="board" id="diagnostico" data-export="06-swot-csd">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">05 · Enquadramento estratégico</span><h2>Clareza sobre potencial, risco e aquilo que ainda não sabemos.</h2></div>
+        <p class="lead">A leitura estratégica foi transformada em decisões de MVP e perguntas testáveis, mantendo fatos, apostas e dúvidas em camadas separadas.</p>
+      </header>
+      <div class="workshop-note reveal">Construído em conjunto com o dono do projeto</div>
+      <div class="strategy-grid reveal">
+        <article class="strategy-panel"><h3>Análise SWOT</h3><p>Leitura interna e externa para orientar prioridade, não uma promessa de resultado.</p><div class="swot-grid">
+          <div class="swot-item strength"><b>Forças</b><ul><li>Proposta hiperlocal e concreta</li><li>Espaços existentes no condomínio</li><li>Demanda como sinal de produto</li><li>Camada de confiança e Design System</li></ul></div>
+          <div class="swot-item weakness"><b>Fraquezas</b><ul><li>Cold start de múltiplos lados</li><li>Operação e verificação intensivas</li><li>Ciclo de aprovação condominial</li><li>Pagamento e backend ainda por integrar</li></ul></div>
+          <div class="swot-item opportunity"><b>Oportunidades</b><ul><li>Ativar áreas comuns ociosas</li><li>Menos trânsito e mais convivência</li><li>Diferenciação para condomínios</li><li>Programas recorrentes por demanda</li></ul></div>
+          <div class="swot-item threat"><b>Ameaças</b><ul><li>LGPD, menores e responsabilidade civil</li><li>Incidentes operacionais</li><li>Baixa liquidez inicial</li><li>Substituição por grupos informais</li></ul></div>
+        </div></article>
+        <article class="strategy-panel"><h3>Matriz CSD</h3><p>O que tratamos como certeza, suposição e dúvida na fase atual.</p><div class="csd-stack">
+          <div class="csd-item"><b>Certezas</b><ul><li>Há quatro atores e o condomínio fornece contexto e espaço.</li><li>Segurança, idade, agenda e acesso são requisitos centrais.</li><li>O MVP deve começar pequeno, com um condomínio piloto.</li></ul></div>
+          <div class="csd-item"><b>Suposições</b><ul><li>Proximidade compensa menor variedade inicial.</li><li>Verificação aumenta intenção de reserva.</li><li>“Pedir atividade” gera sinal útil para formar turmas.</li></ul></div>
+          <div class="csd-item"><b>Dúvidas</b><ul><li>Quem paga, qual take rate e qual quórum mínimo?</li><li>Quais documentos precisam vir antes da reserva?</li><li>Como funcionam aprovação, cancelamento, acesso e responsabilidade?</li></ul></div>
+        </div></article>
+      </div>
+    </section>
+
+    <section class="board dark" id="fluxo" data-export="07-fluxograma">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">06 · Fluxo do aplicativo</span><h2>O catálogo resolve o presente. A demanda ajuda a criar o próximo.</h2></div>
+        <p class="lead">O fluxo principal conecta descoberta e reserva; o fluxo de exceção transforma ausência de oferta em oportunidade operacional.</p>
+      </header>
+      <div class="flow-map reveal" aria-label="Fluxograma principal e fluxo de demanda do aplicativo Kintaw Kids">
+        <div class="flow-row">
+          <article class="flow-node"><b>Entrada</b><h3>Onboarding</h3><p>Proximidade, confiança e comunidade.</p></article>
+          <article class="flow-node"><b>Identificação</b><h3>Conta familiar</h3><p>Login ou criação de acesso.</p></article>
+          <article class="flow-node"><b>Contexto</b><h3>Responsável + condomínio + criança</h3><p>Dados progressivos para elegibilidade.</p></article>
+          <article class="flow-node accent"><b>Descoberta</b><h3>Home</h3><p>Pilares, busca, atividades e agenda.</p></article>
+          <article class="flow-node"><b>Decisão</b><h3>Detalhe</h3><p>Fit, local, profissional, preço e segurança.</p></article>
+        </div>
+        <div class="flow-bridge">Se houver oferta: reservar · Se não houver: sinalizar demanda</div>
+        <div class="flow-row">
+          <article class="flow-node accent"><b>Conversão</b><h3>Reserva</h3><p>Criança, pagamento e confirmação.</p></article>
+          <article class="flow-node"><b>Pós-reserva</b><h3>Agenda &amp; acesso</h3><p>Lembrete, instruções e acompanhamento.</p></article>
+          <article class="flow-node"><b>Exceção</b><h3>Pedir atividade</h3><p>Tema, idade, local e preferência.</p></article>
+          <article class="flow-node"><b>Orquestração</b><h3>Agrupar demanda</h3><p>Kintaw encontra quórum e profissional.</p></article>
+          <article class="flow-node"><b>Retorno</b><h3>Nova turma publicada</h3><p>Condomínio aprova e famílias são notificadas.</p></article>
+        </div>
+        <div class="flow-legend"><span><b>Fluxo direto:</b> intenção → reserva</span><span><b>Fluxo de aprendizado:</b> intenção sem oferta → nova turma</span><span><b>Pontos críticos:</b> consentimento, quórum, pagamento e regras de acesso</span></div>
+      </div>
+    </section>
+
+    <section class="board mist" data-export="08-taxonomia-pilares">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">07 · Modelo mental</span><h2>Quatro portas para responder “o que vamos fazer hoje?”</h2></div>
+        <p class="lead">A taxonomia troca categorias escolares por verbos simples, reconhecíveis e expansíveis. Cada pilar combina intenção, cor e linguagem visual.</p>
+      </header>
+      <div class="pillar-grid reveal">
+        <article class="pillar coral">
+          <div class="pillar-head"><span>Pilar 01</span><span>#FF7A45</span></div>
+          <div class="pillar-icon" aria-hidden="true"><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M13 22l7-7 3 3-7 7-3-3z"/><path d="M19 16l-1.5-8L3 4l4 15 7.5 1.5L19 16z"/><path d="M3 4l8 8"/><circle cx="12" cy="13" r="2"/></svg></div>
+          <h3>Criar</h3><p>Artes visuais, pintura criativa, experimentação de texturas, música, modelagem e imaginação.</p>
+        </article>
+        <article class="pillar teal">
+          <div class="pillar-head"><span>Pilar 02</span><span>#12B3A6</span></div>
+          <div class="pillar-icon" aria-hidden="true"><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="6" r="2.5"/><path d="M6 25l4-6 4-3-1-5 5 1 2 5 5 2"/><path d="M11 14l5 3"/></svg></div>
+          <h3>Movimentar</h3><p>Mini futebol, dança, capoeira, coordenação motora, psicomotricidade e energia ao ar livre.</p>
+        </article>
+        <article class="pillar violet">
+          <div class="pillar-head"><span>Pilar 03</span><span>#7C5CFC</span></div>
+          <div class="pillar-icon" aria-hidden="true"><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3l2.4 6.2L22 11l-5.6 1.8L14 19l-2.4-6.2L6 11l5.6-1.8L14 3z"/><path d="M23 18l1.1 2.8L27 22l-2.9 1.2L23 26l-1.1-2.8L19 22l2.9-1.2L23 18z"/></svg></div>
+          <h3>Descobrir</h3><p>Pequenos cientistas, exploração da natureza no jardim, curiosidade e raciocínio investigativo.</p>
+        </article>
+        <article class="pillar pink">
+          <div class="pillar-head"><span>Pilar 04</span><span>#FF4FA3</span></div>
+          <div class="pillar-icon" aria-hidden="true"><svg viewBox="0 0 30 30" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M13 7a3 3 0 016 0v1h4a1 1 0 011 1v4h1a3 3 0 010 6h-1v4a1 1 0 01-1 1h-4v-1a3 3 0 00-6 0v1H9a1 1 0 01-1-1v-4H7a3 3 0 010-6h1V9a1 1 0 011-1h4V7z"/></svg></div>
+          <h3>Brincar</h3><p>Teatro infantil, contação de histórias, jogos dramáticos, recreação e novos amigos no prédio.</p>
+        </article>
+      </div>
+      <div class="activity-showcase reveal" aria-label="Componentes de atividade dos quatro pilares">
+        <article class="activity-card coral">
+          <div class="activity-head"><div class="activity-kicker"><span>4 a 7 anos</span><b>Criar</b></div><h3>Oficina de Pintura Criativa</h3></div>
+          <div class="activity-body"><div class="activity-owner"><span class="activity-avatar" aria-hidden="true">🎨</span><strong>Mariana Silva</strong><span class="activity-rating">★ 4.9</span></div><div class="activity-meta"><span><i class="activity-icon">▣</i>Sáb – 10h</span><span><i class="activity-icon">⌖</i>Salão de festas</span></div><div class="activity-capacity"><strong>Restam 4 vagas! 🔥</strong><span>8/12</span></div><div class="activity-progress"></div><div class="activity-foot"><div class="activity-price"><small>Investimento</small><strong><sup>R$</sup>50<sup>,00</sup></strong></div><a class="activity-cta" href="#detalhe">Ver detalhes&nbsp; →</a></div></div>
+        </article>
+        <article class="activity-card teal">
+          <div class="activity-head"><div class="activity-kicker"><span>4 a 7 anos</span><b>Movimentar</b></div><h3>Futebol Kids &amp; Coordenação Motora</h3></div>
+          <div class="activity-body"><div class="activity-owner"><span class="activity-avatar" aria-hidden="true">⚽</span><strong>Mariana Silva</strong><span class="activity-rating">★ 4.9</span></div><div class="activity-meta"><span><i class="activity-icon">▣</i>Sáb – 10h</span><span><i class="activity-icon">⌖</i>Salão de festas</span></div><div class="activity-capacity"><strong>Restam 4 vagas! 🔥</strong><span>8/12</span></div><div class="activity-progress"></div><div class="activity-foot"><div class="activity-price"><small>Investimento</small><strong><sup>R$</sup>50<sup>,00</sup></strong></div><a class="activity-cta" href="#detalhe">Ver detalhes&nbsp; →</a></div></div>
+        </article>
+        <article class="activity-card violet">
+          <div class="activity-head"><div class="activity-kicker"><span>4 a 7 anos</span><b>Descobrir</b></div><h3>Argila e Modelagem Lúdica</h3></div>
+          <div class="activity-body"><div class="activity-owner"><span class="activity-avatar" aria-hidden="true">🧪</span><strong>Mariana Silva</strong><span class="activity-rating">★ 4.9</span></div><div class="activity-meta"><span><i class="activity-icon">▣</i>Sáb – 10h</span><span><i class="activity-icon">⌖</i>Salão de festas</span></div><div class="activity-capacity"><strong>Restam 4 vagas! 🔥</strong><span>8/12</span></div><div class="activity-progress"></div><div class="activity-foot"><div class="activity-price"><small>Investimento</small><strong><sup>R$</sup>50<sup>,00</sup></strong></div><a class="activity-cta" href="#detalhe">Ver detalhes&nbsp; →</a></div></div>
+        </article>
+        <article class="activity-card pink">
+          <div class="activity-head"><div class="activity-kicker"><span>4 a 7 anos</span><b>Brincar</b></div><h3>Dança Criativa &amp; Consciência Corporal</h3></div>
+          <div class="activity-body"><div class="activity-owner"><span class="activity-avatar" aria-hidden="true">🎭</span><strong>Mariana Silva</strong><span class="activity-rating">★ 4.9</span></div><div class="activity-meta"><span><i class="activity-icon">▣</i>Sáb – 10h</span><span><i class="activity-icon">⌖</i>Salão de festas</span></div><div class="activity-capacity"><strong>Restam 4 vagas! 🔥</strong><span>8/12</span></div><div class="activity-progress"></div><div class="activity-foot"><div class="activity-price"><small>Investimento</small><strong><sup>R$</sup>50<sup>,00</sup></strong></div><a class="activity-cta" href="#detalhe">Ver detalhes&nbsp; →</a></div></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="board" id="produto" data-export="09-onboarding">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">08 · Primeiro contato</span><h2>Explicar valor antes de pedir dados.</h2></div>
+        <p class="lead">O onboarding apresenta, em sequência, proximidade, confiança e pertencimento. Três argumentos para reduzir a dúvida inicial antes do cadastro.</p>
+      </header>
+      <div class="screens-3 reveal">
+        <figure class="screen-card"><div class="screen-shell"><img src="../assets/kintaw/onboarding-1.webp" alt="Onboarding: atividades no quintal do condomínio" loading="lazy"></div><figcaption class="screen-note"><strong>Benefício imediato</strong><p>Transforma o endereço em uma vantagem prática: experiências sem deslocamento.</p></figcaption></figure>
+        <figure class="screen-card"><div class="screen-shell"><img src="../assets/kintaw/onboarding-2.webp" alt="Onboarding: educadores e instrutores auditados" loading="lazy"></div><figcaption class="screen-note"><strong>Risco reduzido</strong><p>Antecipa o principal receio da família antes de apresentar o catálogo.</p></figcaption></figure>
+        <figure class="screen-card"><div class="screen-shell"><img src="../assets/kintaw/onboarding-3.webp" alt="Onboarding: quatro pilares e comunidade" loading="lazy"></div><figcaption class="screen-note"><strong>Amplitude com estrutura</strong><p>Mostra variedade sem recorrer a uma lista extensa de categorias.</p></figcaption></figure>
+      </div>
+    </section>
+
+    <section class="board mist" data-export="10-cadastro-progressivo">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">09 · Cadastro</span><h2>Uma conta familiar ligada ao lugar e ao cuidado.</h2></div>
+        <p class="lead">O fluxo organiza responsável, condomínio e criança em etapas explícitas. A estrutura prepara personalização, elegibilidade e segurança — mas também introduz fricção que precisa ser testada.</p>
+      </header>
+      <div class="registration-grid reveal">
+        <figure class="screen-card"><div class="screen-shell"><img src="../assets/kintaw/login.webp" alt="Tela atualizada de login da Kintaw Kids" loading="lazy"></div></figure>
+        <figure class="screen-card"><div class="screen-shell"><img src="../assets/kintaw/register-responsible.webp" alt="Tela atualizada de cadastro dos dados do responsável" loading="lazy"></div></figure>
+        <figure class="screen-card"><div class="screen-shell"><img src="../assets/kintaw/register-condo.webp" alt="Tela atualizada de vínculo da família com o condomínio" loading="lazy"></div></figure>
+        <figure class="screen-card"><div class="screen-shell"><img src="../assets/kintaw/register-child.webp" alt="Tela atualizada de perfil, interesses e cuidados da criança" loading="lazy"></div></figure>
+      </div>
+      <div class="risk-bar reveal"><b>Risco a validar</b><p>CPF, endereço e dados da criança aparecem cedo. O teste crítico é descobrir quais dados são indispensáveis antes da primeira reserva e quais podem ser solicitados no momento de maior intenção.</p></div>
+    </section>
+
+    <section class="board dark" id="home" data-export="11-descoberta-home">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">10 · Descoberta</span><h2>Da pergunta aberta a uma escolha contextual.</h2></div>
+        <p class="lead">A Home combina localização, quatro pilares, disponibilidade, confiança e uma saída quando o catálogo não resolve.</p>
+      </header>
+      <div class="core-grid">
+        <figure class="app-phone home-prototype reveal" aria-label="Home do aplicativo Kintaw Kids">
+          <div class="app-surface image-screen"><img src="../assets/kintaw/home.webp" alt="Tela completa da Home do Kintaw Kids" loading="lazy"></div>
+        </figure>
+        <div class="core-copy reveal">
+          <article class="decision"><b>01</b><div><h3>Localização no primeiro plano</h3><p>O condomínio ativo estabelece relevância e reduz a necessidade de filtros complexos.</p></div></article>
+          <article class="decision"><b>02</b><div><h3>Escaneabilidade antes da densidade</h3><p>Pilares, idade, ocupação, profissional e preço permitem comparar sem abrir cada item.</p></div></article>
+          <article class="decision"><b>03</b><div><h3>Escassez com contexto</h3><p>Vagas restantes aparecem junto à capacidade total; o objetivo é informar, não pressionar sem base.</p></div></article>
+          <article class="decision"><b>04</b><div><h3>Catálogo sem dead end</h3><p>“Pedir atividade” captura uma necessidade que ainda não encontrou oferta.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="board" id="detalhe" data-export="12-decisao-detalhe">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">11 · Decisão</span><h2>Confiança não é um selo. É uma sequência de respostas.</h2></div>
+        <p class="lead">A página de atividade organiza as dúvidas que antecedem a reserva: para quem é, quando acontece, onde, com quem, o que inclui e como funciona a segurança.</p>
+      </header>
+      <div class="detail-grid">
+        <figure class="app-phone detail-prototype reveal" aria-label="Detalhes da atividade no aplicativo Kintaw Kids">
+          <div class="app-surface image-screen"><img src="../assets/kintaw/activity-detail.webp" alt="Tela completa de detalhes da atividade" loading="lazy"></div>
+        </figure>
+        <div class="detail-copy reveal">
+          <article class="signal-card"><span>Camada 01</span><h3>Fit da atividade</h3><p>Idade, duração, proposta pedagógica e benefícios ajudam a família a julgar adequação.</p></article>
+          <article class="signal-card"><span>Camada 02</span><h3>Previsibilidade operacional</h3><p>Data, horário, local, ocupação e materiais inclusos reduzem perguntas antes da compra.</p></article>
+          <article class="signal-card"><span>Camada 03</span><h3>Confiança na pessoa</h3><p>Perfil, experiência e status de verificação dão contexto ao profissional responsável.</p></article>
+          <article class="signal-card"><span>Camada 04</span><h3>Próxima ação inequívoca</h3><p>Investimento e CTA permanecem no fechamento da leitura longa, sem disputar atenção com o conteúdo.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="board dark" data-export="13-motor-demanda">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">12 · Diferencial de produto</span><h2>Quando a oferta não existe, a intenção vira sinal.</h2></div>
+        <p class="lead">“Pedir atividade” transforma uma busca frustrada em dado acionável para formar turmas e orientar aquisição de profissionais.</p>
+      </header>
+      <div class="demand-layout">
+        <section class="demand-builder reveal" aria-label="Componente para solicitar uma atividade">
+          <header class="demand-builder-head"><span>Pedido inteligente</span><h3>Qual atividade está faltando por perto?</h3><p>Descreva a necessidade da sua família. Quando houver interesse suficiente no condomínio, a Kintaw busca o profissional certo.</p></header>
+          <div class="demand-form">
+            <div class="demand-field"><label>Atividade desejada</label><div class="demand-input">Ex.: iniciação musical, judô, robótica…</div></div>
+            <div class="demand-field"><label>Faixa etária</label><div class="demand-options"><span>2 a 4 anos</span><span class="selected">5 a 7 anos</span><span>8 a 10 anos</span></div></div>
+            <div class="demand-field"><label>Melhor horário</label><div class="demand-options"><span>Manhã</span><span>Tarde</span><span class="selected">Fim de semana</span></div></div>
+            <div class="demand-field"><label>O que seria importante?</label><div class="demand-input">Conte um objetivo, cuidado especial ou preferência.</div></div>
+            <div class="demand-submit">Enviar pedido para a comunidade →</div>
+          </div>
+          <div class="demand-result"><div><b>18</b><span>famílias interessadas</span></div><div><b>7</b><span>pedidos semelhantes</span></div><div><b>1</b><span>nova turma potencial</span></div></div>
+        </section>
+        <div class="hypothesis reveal">
+          <article><span>Entrada</span><h3>Linguagem natural</h3><p>A família descreve atividade, idade e preferência de horário sem aprender filtros internos.</p></article>
+          <article><span>Estruturação</span><h3>Necessidades comparáveis</h3><p>O sistema organiza os pedidos por tema, faixa etária, local e disponibilidade.</p></article>
+          <article><span>Agrupamento</span><h3>Demanda coletiva</h3><p>Pedidos próximos revelam oportunidade de turma — hipótese que depende de operação, consentimento e volume.</p></article>
+          <article><span>Validação</span><h3>O principal teste</h3><p>Descobrir se a família percebe esse fluxo abaixo do catálogo e entende o que acontece depois do envio.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="board mist" id="design-system" data-export="14-design-system">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">13 · Fundação visual</span><h2>Consistência para crescer. Personalidade para conectar.</h2></div>
+        <p class="lead">O sistema equilibra energia infantil e leitura adulta, com cores semânticas, tipografia de alta legibilidade e componentes pensados para diferentes superfícies.</p>
+      </header>
+      <div class="system-grid reveal">
+        <article class="system-card"><h3>Paleta por intenção</h3><p>O azul ancora ações e confiança. As quatro cores dos pilares ajudam orientação sem depender apenas do texto.</p><div class="swatches"><div class="swatch">AÇÃO</div><div class="swatch">CRIAR</div><div class="swatch">MOVER</div><div class="swatch">DESCOBRIR</div><div class="swatch">BRINCAR</div></div></article>
+        <article class="system-card"><h3>Hierarquia tipográfica</h3><p>Outfit dá identidade aos títulos; Plus Jakarta Sans sustenta conteúdo, formulários e dados.</p><div class="type-samples"><div class="type-row"><b>O mundo começa perto.</b><span>DISPLAY / 48</span></div><div class="type-row"><b>Oficina de pintura</b><span>TÍTULO / 24</span></div><div class="type-row"><b>Informação clara para decidir.</b><span>CORPO / 16</span></div></div></article>
+      </div>
+      <div class="token-rails reveal">
+        <div class="token"><b>Grid</b><strong>4 px</strong><small>Escala consistente para espaçamento e alinhamento.</small></div>
+        <div class="token"><b>Touch target</b><strong>≥ 44 px</strong><small>Controles dimensionados para interação por toque.</small></div>
+        <div class="token"><b>Raios</b><strong>10 → pill</strong><small>10, 14, 18, 24 e cápsula conforme hierarquia.</small></div>
+        <div class="token"><b>Motion</b><strong>150 / 220 / 340</strong><small>Feedback, transição e mudança de contexto em ms.</small></div>
+      </div>
+      <div class="checks reveal">
+        <div class="check"><b>Contraste</b><span>Azul primário #0A6FE8 atinge 4,72:1 sobre branco.</span></div>
+        <div class="check"><b>Pilares acessíveis</b><span>Tints recebem texto escuro próprio; branco não é usado sobre a cor-base.</span></div>
+        <div class="check"><b>Semântica</b><span>Estados combinam cor, texto e hierarquia — nunca cor isolada.</span></div>
+      </div>
+    </section>
+
+    <section class="board dark" id="componentes" data-export="15-componentes-design-system">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">14 · Biblioteca de componentes</span><h2>O sistema especifica comportamento, não apenas aparência.</h2></div>
+        <p class="lead">Estados, hierarquia e conteúdo foram documentados para reduzir decisões repetidas entre cadastro, catálogo, reserva e operação.</p>
+      </header>
+      <div class="component-gallery reveal">
+        <article class="component-sheet">
+          <header class="component-sheet-head"><h3>Botões &amp; ações</h3><p>Hierarquia explícita, rótulos orientados a resultado e alvos de toque consistentes.</p></header>
+          <div class="demo-group"><span class="demo-label">Hierarquia</span><div class="ds-button-row"><span class="ds-button">Reservar vaga →</span><span class="ds-button outline">Ver detalhes</span><span class="ds-button ghost">Voltar</span></div></div>
+          <div class="demo-group"><span class="demo-label">Semântica e estado</span><div class="ds-button-row"><span class="ds-button success">Confirmado ✓</span><span class="ds-button danger">Cancelar</span><span class="ds-button disabled">Indisponível</span><span class="ds-icon-button">♡</span></div></div>
+          <div class="demo-group"><span class="demo-label">Filtros</span><div class="ds-button-row"><span class="ds-chip active">✓ 4 a 7 anos</span><span class="ds-chip">Fim de semana</span><span class="ds-chip">Até R$ 60</span></div></div>
+          <div class="ds-notice">Um único CTA primário por contexto. Hover, pressed, focus, loading e disabled preservam o mesmo tamanho.</div>
+        </article>
+        <article class="component-sheet">
+          <header class="component-sheet-head"><h3>Formulários</h3><p>Campos, seleções e etapas com ajuda contextual, feedback e redução de erro.</p></header>
+          <div class="ds-field-grid">
+            <div class="ds-field"><label>Nome completo</label><div class="ds-input">Daniel Silva</div><span class="ds-helper">Como aparece no condomínio.</span></div>
+            <div class="ds-field"><label for="ds-condominio">Condomínio</label><div class="ds-select-wrap"><select id="ds-condominio" class="ds-select"><option selected>Solar das Flores</option><option>Jardins do Parque</option><option>Vila das Árvores</option></select></div><span class="ds-helper">Seleção validada pela portaria.</span></div>
+            <div class="ds-field"><label>WhatsApp</label><div class="ds-input error">(11) 9888</div><span class="ds-helper">Informe um número válido.</span></div>
+            <div class="ds-field"><label>Código de convite</label><div class="ds-input disabled">Opcional</div><span class="ds-helper">Disponível após validação.</span></div>
+          </div>
+          <div class="ds-check"><i>✓</i><span>Li e concordo com os termos de participação.</span></div>
+          <div class="ds-stepper"><div class="ds-step done"><i>✓</i><span>Responsável</span></div><div class="ds-step active"><i>2</i><span>Condomínio</span></div><div class="ds-step"><i>3</i><span>Criança</span></div></div>
+        </article>
+        <article class="component-sheet">
+          <header class="component-sheet-head"><h3>Status &amp; portas</h3><p>Vocabulário semântico consistente e quatro portas que combinam cor, ícone e texto.</p></header>
+          <div class="demo-group"><span class="demo-label">Status operacionais</span><div class="ds-badge-row"><span class="ds-badge success">● Confirmada</span><span class="ds-badge warning">◷ Aguardando</span><span class="ds-badge info">✓ Verificada</span><span class="ds-badge danger">! Últimas vagas</span></div></div>
+          <div class="ds-pillar-grid"><div class="ds-pillar-tile criar"><b>✎ Criar</b><span>Artes, música e imaginação</span></div><div class="ds-pillar-tile mover"><b>⚽ Movimentar</b><span>Esportes e coordenação</span></div><div class="ds-pillar-tile descobrir"><b>✦ Descobrir</b><span>Ciência e natureza</span></div><div class="ds-pillar-tile brincar"><b>✿ Brincar</b><span>Teatro e convivência</span></div></div>
+          <div class="demo-group"><span class="demo-label">Ocupação · 8 de 12 vagas</span><div class="ds-progress"></div></div>
+        </article>
+        <article class="component-sheet">
+          <header class="component-sheet-head"><h3>Cartões &amp; dados</h3><p>Resumos operacionais claros para atividade, profissional, preço e comunidade.</p></header>
+          <div class="ds-stat-grid"><div class="ds-stat"><b>18</b><span>famílias interessadas</span></div><div class="ds-stat"><b>4,9</b><span>avaliação média</span></div><div class="ds-stat"><b>8/12</b><span>vagas preenchidas</span></div></div>
+          <div class="ds-list-row"><i>◷</i><div><strong>Sábado · 10h</strong><span>60 minutos</span></div><b>Agenda</b></div>
+          <div class="ds-list-row"><i>⌖</i><div><strong>Salão de festas</strong><span>Condomínio Solar das Flores</span></div><b>Mapa</b></div>
+          <div class="ds-list-row"><i>R$</i><div><strong>R$ 50,00</strong><span>Materiais inclusos</span></div><b>Resumo</b></div>
+          <div class="ds-notice">Densidade controlada: cada cartão responde a uma pergunta e mantém ação, estado e conteúdo previsíveis.</div>
+        </article>
+      </div>
+      <div class="component-principles reveal">
+        <article><b>Ação</b><p>O texto do botão descreve o resultado: reservar, confirmar ou enviar pedido.</p></article>
+        <article><b>Estado</b><p>Default, hover, pressed, focus, disabled e loading fazem parte do componente.</p></article>
+        <article><b>Conteúdo</b><p>Datas, vagas e status usam formatos previsíveis em toda a experiência.</p></article>
+        <article><b>Responsividade</b><p>Mobile abaixo de 600 px; tablet até 899 px; desktop a partir de 900 px.</p></article>
+      </div>
+    </section>
+
+    <section class="board" id="validacao" data-export="16-validacao">
+      <header class="board-head reveal">
+        <div><span class="eyebrow">15 · Próxima etapa</span><h2>O design termina onde o aprendizado começa.</h2></div>
+        <p class="lead">Antes de ampliar escopo, eu testaria as três incertezas que sustentam a proposta de valor e a operação.</p>
+      </header>
+      <div class="validation-grid reveal">
+        <article class="experiment"><span>Experimento 01</span><h3>Valor antes do cadastro</h3><p>Teste moderado com responsáveis percorrendo onboarding, cadastro e primeira atividade.</p><ul><li>Compreensão da proposta</li><li>Abandono por etapa</li><li>Campos percebidos como invasivos</li></ul></article>
+        <article class="experiment"><span>Experimento 02</span><h3>Confiança para reservar</h3><p>Entrevista + protótipo para identificar quais evidências realmente reduzem risco.</p><ul><li>Informações buscadas</li><li>Dúvidas antes do pagamento</li><li>Clareza sobre responsabilidade</li></ul></article>
+        <article class="experiment"><span>Experimento 03</span><h3>Demanda sem oferta</h3><p>Teste A/B de posição e mensagem do fluxo “Pedir atividade” na Home.</p><ul><li>Descoberta da funcionalidade</li><li>Pedidos concluídos</li><li>Expectativa sobre o retorno</li></ul></article>
+      </div>
+      <div class="what-i-learned reveal"><h3>Decisão de senioridade</h3><p>O próximo investimento não deveria ser mais tela. Deveria ser evidência: provar que famílias completam o primeiro fluxo, que confiança é suficiente para reservar e que a manifestação de demanda gera um sinal operacional útil.</p></div>
+    </section>
+
+    <section class="board dark closing" data-export="17-encerramento">
+      <div class="closing-inner reveal">
+        <div class="brand" aria-label="Kintaw Kids">kintaw <small>kids</small></div>
+        <h2>Projetar perto é enxergar o sistema inteiro.</h2>
+        <p>Um case de Product Design que conecta estratégia, arquitetura da experiência, interface, confiança e validação — sem confundir hipótese com resultado.</p>
+        <div class="credit"><img class="credit-avatar" src="assets/avatar novo.png" alt="Daniel Leite"><span><strong>Daniel Leite - Senior Product Designer / Design Engineer</strong><small>Estratégia de produto · UX/UI · Design System · Prototipação</small></span></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const pageParams = new URLSearchParams(location.search);
+    const previewSection = pageParams.get('preview');
+    const exportAll = pageParams.has('exportAll');
+    if (previewSection) {
+      const boards = [...document.querySelectorAll('.board')];
+      const target = boards.find(board => board.id === previewSection || board.dataset.export === previewSection);
+      boards.forEach(board => { board.hidden = board !== target; });
+      document.body.classList.add('export-mode');
+      document.documentElement.style.overflowY = 'scroll';
+    }
+    if (exportAll) {
+      document.body.classList.add('export-mode');
+      document.documentElement.style.overflowY = 'scroll';
+      addEventListener('load', async () => {
+        document.querySelectorAll('img').forEach(image => { image.loading = 'eager'; });
+        scrollTo(0, document.documentElement.scrollHeight);
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        const imagesReady = Promise.all([...document.images].map(image => image.complete
+          ? image.decode?.().catch(() => {})
+          : new Promise(resolve => { image.onload = resolve; image.onerror = resolve; })));
+        await Promise.race([imagesReady, new Promise(resolve => setTimeout(resolve, 5000))]);
+        await Promise.race([document.fonts.ready, new Promise(resolve => setTimeout(resolve, 3000))]);
+        scrollTo(0, 0);
+        const metrics = [...document.querySelectorAll('[data-export]')].map(board => {
+          const rect = board.getBoundingClientRect();
+          return {
+            name: board.dataset.export,
+            y: Math.round(rect.y + scrollY),
+            width: Math.round(rect.width),
+            height: Math.ceil(rect.height)
+          };
+        });
+        const output = document.createElement('script');
+        output.id = 'export-metrics';
+        output.type = 'application/json';
+        output.textContent = JSON.stringify(metrics);
+        document.body.append(output);
+        const textElements = [...document.body.querySelectorAll('*')].filter(element => {
+          if (!element.getClientRects().length || ['SCRIPT', 'STYLE'].includes(element.tagName)) return false;
+          return [...element.childNodes].some(node => node.nodeType === Node.TEXT_NODE && node.textContent.trim());
+        });
+        const fontAudit = textElements.map(element => ({
+          element: element.tagName.toLowerCase(),
+          className: typeof element.className === 'string' ? element.className : '',
+          size: Number.parseFloat(getComputedStyle(element).fontSize),
+          text: element.textContent.trim().replace(/\s+/g, ' ').slice(0, 90)
+        })).filter(item => item.size < 16).sort((a, b) => a.size - b.size);
+        const fontOutput = document.createElement('script');
+        fontOutput.id = 'font-audit';
+        fontOutput.type = 'application/json';
+        fontOutput.textContent = JSON.stringify({ minimum: fontAudit[0]?.size ?? 16, offenders: fontAudit });
+        document.body.append(fontOutput);
+        document.documentElement.dataset.exportReady = 'true';
+      }, { once: true });
+    }
+    addEventListener('load', () => {
+      if (location.hash) {
+        const target = document.querySelector(location.hash);
+        setTimeout(() => target?.scrollIntoView({ block: 'start' }), 900);
+      }
+    });
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced || !('IntersectionObserver' in window)) {
+      document.querySelectorAll('.reveal').forEach(element => element.classList.add('in'));
+    } else {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: .08 });
+      document.querySelectorAll('.reveal').forEach(element => observer.observe(element));
+    }
+  </script>
+</body>
+</html>
